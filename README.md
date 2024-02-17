@@ -42,17 +42,19 @@ To get started with the Online Learning Platform locally, follow these steps:
 ## Clone the Repository:
 
 ```
-Insert code here
+git clone https://github.com/MatthewFuchs/Ogopogo-Tech.git
 ```
 
 ## Install Dependencies:
 
 ```
-Insert code here
+virtualenv venv
+activate venv
 ```
-
 ```
-Inser code here
+cd Ogopogo-Tech
+pnpm install                      # For frontend 
+pip install -r requirements.txt   # For backend
 ```
 
 ## Configure Environment Variables:
@@ -62,13 +64,13 @@ Set up environment variables for sensitive information such as API keys and data
 Start the React.js development server for the front-end.
 
 ```
-Insert code here
+pnpm dev run
 ```
 
 ## Launch the Python backend server.
 
 ```
-Insert code here
+python server.py
 ```
 
 Open in Browser:
