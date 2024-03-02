@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Learning Platform</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; 
+            background-color: #AFFFFD;}
+        .header { background-color: #f1f1f1; padding: 20px; text-align: center; }
+        .nav { overflow: hidden; background-color: #333; }
+        .nav a, .nav button { float: left; color: #f2f2f2; text-align: center; padding: 14px 16px; text-decoration: none; background-color: #333; border: none; cursor: pointer; }
+        .nav button:hover { background-color: #ddd; color: black; }
+        .content img { width: 100%; max-width: 300px; padding: 10px; }
+        .footer { background-color: #f1f1f1; padding: 10px; text-align: center; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <img src="https://via.placeholder.com/600x150?text=E-Learning+Platform" alt="E-Learning Banner">
+    <h1>Welcome to Our E-Learning Platform</h1>
+    <p id="welcomeMessage"></p>
+</div>
+
+<div class="nav">
+    <a href="#">Home</a>
+    <a href="#">Courses</a>
+    <a href="#">About</a>
+    <a href="#">Contact</a>
+    <button id="loginBtn" style="float:right;">Login</button>
+</div>
+
+<div class="content">
+    <h2>Available Courses</h2>
+    <img src="https://via.placeholder.com/150?text=Course+1" alt="Course 1">
+    <img src="https://via.placeholder.com/150?text=Course+2" alt="Course 2">
+    <img src="https://via.placeholder.com/150?text=Course+3" alt="Course 3">
+    <p>Explore our wide range of courses and start learning today!</p>
+</div>
+
+<div class="footer">
+    <p>Ogopogo-Tech &copy; 2024 E-Learning Platform</p>
+</div>
+
+<script>
+    function showWelcomeMessage() {
+        const now = new Date();
+        const hour = now.getHours();
+        let message = "Hello! Welcome to our E-Learning Platform.";
+        if (hour < 12) {
+            message = "Good morning! Welcome to our E-Learning Platform.";
+        } else if (hour < 18) {
+            message = "Good afternoon! Welcome to our E-Learning Platform.";
+        } else {
+            message = "Good evening! Welcome to our E-Learning Platform.";
+        }
+        document.getElementById('welcomeMessage').innerText = message;
+    }
+
+    document.getElementById('loginBtn').addEventListener('click', function() {
+        alert('Login button clicked. Implement login functionality here.');
+    });
+
+    // Call the function when the page loads
+    showWelcomeMessage();
+</script>
+
+</body>
+</html>
