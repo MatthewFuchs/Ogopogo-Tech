@@ -4,23 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>E-Learning Platform</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; 
-            background-color: #AFFFFD;}
-        .header { background-color: #f1f1f1; padding: 20px; text-align: center; }
-        .nav { overflow: hidden; background-color: #333; }
-        .nav a, .nav button { float: left; color: #f2f2f2; text-align: center; padding: 14px 16px; text-decoration: none; background-color: #333; border: none; cursor: pointer; }
-        .nav button:hover { background-color: #ddd; color: black; }
-        .content img { width: 100%; max-width: 300px; padding: 10px; }
-        .footer { background-color: #f1f1f1; padding: 10px; text-align: center; }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <div class="header">
-    <img src="https://via.placeholder.com/600x150?text=E-Learning+Platform" alt="E-Learning Banner">
+    <img src="images/banner.png" alt="E-Learning Platform Banner" class="banner-image">
     <h1>Welcome to Our E-Learning Platform</h1>
     <p id="welcomeMessage"></p>
+</div>
+
+<div class="top-right-menu">
+    <div class="hamburger" id="hamburgerMenu">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+    </div>
+    <div class="menu" id="menu">
+        <a href="#" onclick="toggleMenu()">Profile</a>
+        <a href="#" id="loginBtn" onclick="toggleMenu()">Login</a>
+        <a href="#" id="signupBtn" onclick="toggleMenu()">Sign Up</a>
+    </div>
 </div>
 
 <div class="nav">
@@ -28,43 +32,62 @@
     <a href="#">Courses</a>
     <a href="#">About</a>
     <a href="#">Contact</a>
-    <button id="loginBtn" style="float:right;">Login</button>
 </div>
 
 <div class="content">
     <h2>Available Courses</h2>
-    <img src="https://via.placeholder.com/150?text=Course+1" alt="Course 1">
-    <img src="https://via.placeholder.com/150?text=Course+2" alt="Course 2">
-    <img src="https://via.placeholder.com/150?text=Course+3" alt="Course 3">
+        <a href="technology-and-innovation.html">
+            <img src="images/technology-and-innovation.png" alt="Technology and Innovation" class="course-image">
+        </a>
+        <a href="business-and-leadership.html">
+            <img src="images/business-and-leadership.png" alt="Business and Leadership" class="course-image">
+        </a>
+        <a href="creative-arts-and-design.html">
+            <img src="images/creative-arts-and-design.png" alt="Creative Arts and Design" class="course-image">
+        </a>
     <p>Explore our wide range of courses and start learning today!</p>
 </div>
+
 
 <div class="footer">
     <p>Ogopogo-Tech &copy; 2024 E-Learning Platform</p>
 </div>
 
-<script>
-    function showWelcomeMessage() {
-        const now = new Date();
-        const hour = now.getHours();
-        let message = "Hello! Welcome to our E-Learning Platform.";
-        if (hour < 12) {
-            message = "Good morning! Welcome to our E-Learning Platform.";
-        } else if (hour < 18) {
-            message = "Good afternoon! Welcome to our E-Learning Platform.";
-        } else {
-            message = "Good evening! Welcome to our E-Learning Platform.";
-        }
-        document.getElementById('welcomeMessage').innerText = message;
-    }
+<!-- Modals for Login and Signup -->
+<!-- Login Modal -->
+<div id="loginModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Login</h2>
+        <form>
+            <label for="username">Username:</label><br>
+            <input type="text" id="username" name="username"><br>
+            <label for="password">Password:</label><br>
+            <input type="password" id="password" name="password"><br>
+            <a href="#" onclick="alert('Reset link not implemented.'); return false;" class="forgot-link">Forgot Username or Password?</a><br>
+            <button type="button" onclick="alert('Login functionality not implemented.');">Login</button>
+        </form>
+    </div>
+</div>
 
-    document.getElementById('loginBtn').addEventListener('click', function() {
-        alert('Login button clicked. Implement login functionality here.');
-    });
+<!-- Signup Modal -->
+<div id="signupModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Sign Up</h2>
+        <form>
+            <label for="newUsername">Username:</label><br>
+            <input type="text" id="newUsername" name="newUsername"><br>
+            <label for="newPassword">Password:</label><br>
+            <input type="password" id="newPassword" name="newPassword"><br>
+            <label for="email">Email:</label><br>
+            <input type="email" id="email" name="email"><br><br>
+            <button type="button" onclick="alert('Signup functionality not implemented.');">Sign Up</button>
+        </form>
+    </div>
+</div>
 
-    // Call the function when the page loads
-    showWelcomeMessage();
-</script>
+<script src="scripts/script.js"></script>
 
 </body>
 </html>
