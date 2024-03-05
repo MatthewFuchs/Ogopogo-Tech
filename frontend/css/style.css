@@ -1,0 +1,239 @@
+/* General Resets */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #fff;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Header */
+.header {
+    background-color: #ffa500; /* Orange */
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+}
+
+/* Navigation */
+.nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #333;
+    padding: 10px 0;
+}
+
+.nav a {
+    color: #f2f2f2;
+    padding: 10px 15px;
+    margin: 0 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.nav a:hover {
+    background-color: #ddd;
+    color: #333;
+}
+
+/* Top Right Menu Styling */
+.top-right-menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    padding: 10px;
+    z-index: 100;
+}
+
+.hamburger {
+    cursor: pointer;
+    display: inline-block;
+}
+
+.hamburger .line {
+    width: 30px;
+    height: 3px;
+    background-color: #fff;
+    margin: 5px 0;
+}
+
+.menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 40px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    width: 200px;
+}
+
+.menu a, .menu button {
+    display: block;
+    padding: 10px;
+    color: #333;
+    text-decoration: none;
+}
+
+.menu.active {
+    display: block;
+}
+
+/* Content Styles */
+.content {
+    padding: 20px;
+    background-color: #f4f4f4;
+    margin: 20px 0;
+    text-align: center; /* Center content */
+}
+
+/* Header Banner Image */
+.banner-image {
+    max-width: 50%; /* Ensures the image is never wider than its container */
+    height: auto; /* Maintains aspect ratio */
+    display: block; /* Removes any inline spacing */
+    margin: 0 auto; /* Centers the image if it's not as wide as the container */
+}
+
+/* Course Images */
+.course-image {
+    max-width: 100%; /* Adjusts width to fit container */
+    height: auto; /* Maintains aspect ratio */
+    margin: 20px 0; /* Adds some vertical space around the images */
+    border-radius: 8px; /* Optional: Adds rounded corners for a softer look */
+}
+
+/* Content Section Adjustments */
+.content {
+    text-align: center; /* Centers the content text and images */
+}
+
+.content img {
+    width: auto; /* Adjusts width automatically */
+    max-width: 250px; /* Maximum width for course images */
+    height: auto; /* Maintains aspect ratio */
+    margin: 10px; /* Adds margin around images */
+}
+
+.course {
+    text-align: center; /* Centers the course image and name */
+    margin-bottom: 30px; /* Adds space between each course section */
+}
+
+.course-name {
+    font-size: 1.2em; /* Adjusts the size of the course name text */
+    color: #333; /* Dark grey color for readability */
+    margin-top: 10px; /* Space between the image and the course name */
+    display: block; /* Ensures the name aligns correctly under the image */
+    text-decoration: none; /* Removes underline from links */
+}
+
+a {
+    color: inherit; /* Ensures links use the current text color */
+    text-decoration: none; /* Removes the underline from all links */
+}
+
+a:hover .course-name {
+    text-decoration: underline; /* Adds an underline to course names on hover for visual feedback */
+}
+
+/* Footer */
+.footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+}
+
+/* Modals */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%;
+    min-width: 300px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    position: relative;
+    animation: animatetop 0.4s;
+    text-align: center;
+}
+
+/* Input and Button Styles */
+.modal-content form input[type="text"],
+.modal-content form input[type="password"],
+.modal-content form input[type="email"],
+.modal-content form button {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.modal-content form input[type="text"]:focus,
+.modal-content form input[type="password"]:focus,
+.modal-content form input[type="email"]:focus {
+    border-color: #ffa500;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.2), 0 0 8px rgba(255,165,0,0.6);
+}
+
+.modal-content form button {
+    background-color: #ffa500;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.2s;
+}
+
+.modal-content form button:hover {
+    background-color: #e69500;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Forgot Password Link */
+.forgot-link {
+    color: #007bff;
+    text-decoration: underline;
+    font-size: 0.9em;
+    margin-top: 10px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Animation */
+@keyframes animatetop {
+    from {top: -300px; opacity: 0}
+    to {top: 0; opacity: 1}
+}
