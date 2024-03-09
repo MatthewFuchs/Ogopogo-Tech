@@ -1,13 +1,12 @@
 const express = require('express');
 const router = express.Router();
-
+const {registerUser} = require('../controller/userController')
+//
 router.get('/', (req, res) => {
     res.status(200).json({message: 'Get user'});
 });
 
-router.post('/', (req, res) => {
-    res.status(200).json({message: 'Create user'});
-});
+router.post('/', registerUser);
 
 router.put('/:id', (req, res) => {
     res.status(200).json({message: `Update user ${req.params.id}`});

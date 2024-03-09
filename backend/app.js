@@ -1,12 +1,12 @@
 const express = require('express');
-const dotenv = require('dotenv').config();
+const dotenv = require('dotenv').config({path: '../.env'});
 
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const cors = require('cors');
 
 const app = express();
-
+console.log(process.env.MONGO_URI)
 // MONGO_URI saved in .env file with cluster username and password
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
