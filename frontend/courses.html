@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses - E-Learning Platform</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="header">
+    <img src="images/banner.png" alt="E-Learning Platform Banner" class="banner-image">
+    <h1>Courses Offered</h1>
+    <p>Find a course that’s right for you.</p>
+</div>
+
+<div class="top-right-menu">
+    <!-- Reusing the hamburger menu for consistency -->
+    <div class="hamburger" id="hamburgerMenu">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+    </div>
+    <div class="menu" id="menu">
+        <a href="#" onclick="toggleMenu()">Profile</a>
+        <a href="#" id="loginBtn" onclick="toggleMenu()">Login</a>
+        <a href="#" id="signupBtn" onclick="toggleMenu()">Sign Up</a>
+    </div>
+</div>
+
+<div class="nav">
+    <a href="index.html">Home</a>
+    <a href="courses.html">Courses</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+</div>
+
+<div class="content">
+    <h2>Our Courses</h2>
+    <ul>
+        <li>
+            <a href="CoursesList/computer-science.html">
+                <img src="images/computer-science.png" alt="Computer Science" class="course-icon">  
+                <!-- This is an Chatpgt generated image -->
+                Computer Science
+            </a>
+        </li>
+        <li>
+            <a href="CoursesList/art.html">
+                <img src="images/art.png" alt="Art" class="course-icon">
+                <!-- This is an Chatpgt generated image -->
+                Art
+            </a>
+        </li>
+        <li>
+            <a href="CoursesList/english.html">
+                <img src="images/english.png" alt="English" class="course-icon">
+                <!-- This is an Chatpgt generated image -->
+                English
+            </a>
+        </li>
+        <!-- Add more courses with their respective images and links as needed -->
+    </ul>
+</div>
+
+<div class="footer">
+    <p>Ogopogo-Tech &copy; 2024 E-Learning Platform</p>
+</div>
+
+<!-- Reusing the Modals for Login and Signup from the provided code -->
+<!-- Login Modal -->
+<div id="loginModal" class="modal">
+    <!-- ... existing login modal content ... -->
+</div>
+
+<!-- Signup Modal -->
+<div id="signupModal" class="modal">
+    <!-- ... existing signup modal content ... -->
+</div>
+
+<script src="scripts/script.js"></script>
+
+</body>
+</html>
