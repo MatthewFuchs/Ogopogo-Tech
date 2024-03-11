@@ -1,33 +1,63 @@
 const request = require('supertest');
-const app = require('../app.js'); 
+const app = require('../app.js');
 
+// Describe block defines a test suite for User Routes
 describe('User Routes', () => {
-    test('GET /api/user', async () => {
-        const response = await request(app).get('/api/user');
-        expect(response.statusCode).toBe(200);
-        expect(response.body).toEqual({message: 'Get user'});
-    });
+    // user token for authenticated requests
+    let userToken; 
 
-    test('POST /api/user', async () => {
+    // Test for user registration
+    test('POST /api/user (register)', async () => {
+        // Sends a POST request to the registration endpoint with sample user data
         const response = await request(app)
             .post('/api/user')
-            // sample data send
-            .send({name: 'John Doe', email: 'john@example.com'}); 
-        expect(response.statusCode).toBe(200);
-        expect(response.body).toEqual({message: 'Create user'});
+            .send({
+                firstName: 'Test',
+                lastName: 'User',
+                email: 'testuser@example.com',
+                password: 'password123',
+                birthday: '1990-01-01'
+            });
+        
+        // Checks if the status code of the response is 201 (Created)
+        expect(response.statusCode).toBe(201);
+        // Check if response body includes a token
+        expect(response.body).toHaveProperty('token');
+
+        // Stores the token 
+        userToken = response.body.token; 
     });
 
-    test('PUT /api/user/:id', async () => {
-        // sample id set as 1 for testing purposes
-        const response = await request(app).put('/api/user/1');
+    // Test for user login
+    test('POST /api/user/login', async () => {
+        // Sends a POST request to the login endpoint with the credentials of the previously registered user
+        const response = await request(app)
+            .post('/api/user/login') 
+            .send({
+                email: 'testuser@example.com',
+                password: 'password123'
+            });
+        
+        // Checks if the status code of the response is 200 (OK)
         expect(response.statusCode).toBe(200);
-        expect(response.body).toEqual({message: 'Update user 1'});
+        // Verifies the response body includes a token
+        expect(response.body).toHaveProperty('token');
+
+        // Optionally updates the userToken with the new token from login
+        userToken = response.body.token;
     });
 
-    test('DELETE /api/user/:id', async () => {
-        // sample id set as 1 for testing purposes
-        const response = await request(app).delete('/api/user/1'); 
+    // Test for retrieving the current user's profile information
+    test('GET /api/user/me (requires auth)', async () => {
+        // Sends a GET request to the user profile endpoint, including the Authorization header with the token
+        const response = await request(app)
+            .get('/api/user/me')
+            // Uses the token for authentication
+            .set('Authorization', `Bearer ${userToken}`); 
+        
+        // Checks if the status code of the response is 200 (OK)
         expect(response.statusCode).toBe(200);
-        expect(response.body).toEqual({message: 'Delete user 1'});
+        // Verifies the response includes a the placeholder message
+        expect(response.body).toHaveProperty('message', 'User data display');
     });
 });
