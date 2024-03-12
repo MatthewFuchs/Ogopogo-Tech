@@ -15,6 +15,7 @@ mongoose.connect(process.env.MONGO_URI, {
 
 app.use(express.json());
 app.use('/api/user', require('./routes/userRoutes'));
+app.use('/api/courses', require('./routes/courseRoutes')); 
 
 app.use(morgan("dev"));
 app.use(cors({ origin: true, credentials: true }));
