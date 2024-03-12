@@ -237,3 +237,27 @@ a:hover .course-name {
     from {top: -300px; opacity: 0}
     to {top: 0; opacity: 1}
 }
+
+/* contact */
+.team-members {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin: 0 auto; /* This centers the div if it has a specified width */
+    width: 50%; /* Adjust the width as needed */
+}
+
+/* Optionally, if you want the list items to be more centered */
+.team-members ul {
+    list-style-type: none; /* Removes the default list styling */
+    padding: 0; /* Removes default padding */
+}
+
+/* Adjust the width and margin of the .team-members for smaller screens if necessary */
+@media screen and (max-width: 600px) {
+    .team-members {
+        width: 80%; /* Makes the div wider on smaller screens */
+    }
+}
