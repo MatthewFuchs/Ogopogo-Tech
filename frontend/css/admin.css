@@ -1,12 +1,14 @@
-body, html {
-    font-family: 'Arial', sans-serif;
-    background: #f7f7f7;
+/* Reset */
+* {
     margin: 0;
     padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    font-family: 'Arial', sans-serif;
+    background-color: #f7f7f7; /* Adjusted to a lighter shade for a neutral background */
 }
 
 .container {
@@ -14,8 +16,9 @@ body, html {
     padding: 40px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    width: 100%;
-    max-width: 500px;
+    width: 80%;
+    max-width: 800px; /* Adjusted for a better layout on larger screens */
+    margin: 2rem auto; /* Center the container with automatic margins */
 }
 
 .input-group {
@@ -25,6 +28,7 @@ body, html {
 .input-group label {
     display: block;
     margin-bottom: 5px;
+    color: #333; /* Darker text for better readability */
 }
 
 .input-group input, .input-group textarea, .input-group select {
@@ -34,19 +38,23 @@ body, html {
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 16px;
+    background-color: #fff; /* Ensure input fields are clearly distinguishable */
+    color: #333; /* Text color for input fields */
 }
 
 .admin-btn {
     display: inline-block;
-    background-color: #FF6A55;
+    background-color: #00aff0; /* Updated button color to match  new theme */
     color: white;
     padding: 10px 20px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
 }
 
 .admin-btn:hover {
-    background-color: #e04e41;
+    background-color: #008cd0; /* Darker shade on hover */
 }
+
