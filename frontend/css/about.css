@@ -1,0 +1,68 @@
+/* Basic reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    font-family: 'Arial', sans-serif;
+}
+
+p {
+    margin-bottom: 15px;
+}
+
+/* Styling for the main content sections */
+section {
+    color:#666;
+    padding: 40px 20px;
+    margin: 20px 0;
+}
+
+/* Specific styles for sections */
+#about, #mission-vision, #team {
+    background-color: #fff; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-radius: 8px; 
+    max-width: 960px; 
+    margin: 40px auto; 
+    padding: 40px; 
+}
+
+/* Team Section */
+.team-members {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+}
+
+.team-member {
+    width: calc(50% - 15px); 
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.team-member h3 {
+    color: #666;
+}
+
+.team-member p {
+    color: #666; 
+}
+
+.team-member:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+}
+
+@media screen and (max-width: 768px) {
+    .team-member {
+        width: 100%;
+    }
+}
