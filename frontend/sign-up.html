@@ -29,10 +29,6 @@
     <h2>Sign Up</h2>
     <form id="signupForm">
         <div class="form-group">
-            <label for="profilePicture">Upload a profile picture:</label>
-            <input type="file" id="profilePicture" name="profilePicture" accept="image/*">
-        </div>
-        <div class="form-group">
             <label for="firstName">First Name:</label>
             <input type="text" id="firstName" name="firstName" required>
         </div>
@@ -40,6 +36,10 @@
             <label for="lastName">Last Name:</label>
             <input type="text" id="lastName" name="lastName" required>
         </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>        
         <div class="form-group">
             <label for="dob">Date of Birth:</label>
             <input type="date" id="dob" name="dob" required>
@@ -69,27 +69,44 @@
                 <li><a href="contact.html">Contact</a></li>
             </ul>
         </div>
-        <div class="footer-section">
-            <h4>Follow Us</h4>
-            <div class="social-icons">
-                <a href="#facebook"><img src="facebook-icon.png" alt="Facebook"></a>
-                <a href="#twitter"><img src="twitter-icon.png" alt="Twitter"></a>
-                <a href="#linkedin"><img src="linkedin-icon.png" alt="LinkedIn"></a>
-                <a href="#instagram"><img src="instagram-icon.png" alt="Instagram"></a>
-            </div>
-        </div>
-        <div class="footer-section">
-            <h4>Newsletter</h4>
-            <form action="#">
-                <input type="email" placeholder="Your email" required>
-                <button type="submit">Subscribe</button>
-            </form>
-        </div>
-    </div>
     <div class="footer-bottom">
         <p>&copy; 2024 Ogopogo Tech. All rights reserved.</p>
     </div>
 </footer>
+<script>
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // Prevent default form submission
+
+        const formData = {
+            firstName: document.getElementById('firstName').value,
+            lastName: document.getElementById('lastName').value,
+            email: document.getElementById('email').value,
+            password: document.getElementById('password').value,
+            birthday: document.getElementById('dob').value,
+        };
+
+        fetch('http://localhost:8002/api/user/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Handle your data here
+            console.log(data);
+        })
+        .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+        });
+    }); // This closes the addEventListener function
+</script> <!-- This closes the script tag -->
 
 </body>
 </html>
