@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv').config({path: '../.env'});
+const assignmentRouter = require('./routes/assignmentRoutes');
 
 const mongoose = require('mongoose');
 const morgan = require('morgan');
@@ -18,5 +19,7 @@ app.use('/api/user', require('./routes/userRoutes'));
 
 app.use(morgan("dev"));
 app.use(cors({ origin: true, credentials: true }));
+
+app.use('/api/v1/assignments', assignmentRouter);
 
 module.exports = app;
