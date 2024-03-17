@@ -20,6 +20,8 @@ app.use(cors({
     credentials: true // Allow sending of cookies and authentication headers
   }));
 app.use('/api/user', require('./routes/userRoutes'));
+app.use('/api/courses', require('./routes/courseRoutes')); 
+
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
   });
