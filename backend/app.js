@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const cors = require('cors');
 const path = require('path');
+const assignmentRouter = require('./routes/assignmentRoutes'); 
 
 const app = express();
 console.log(process.env.MONGO_URI)
@@ -26,5 +27,6 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
   });
 app.use(morgan("dev"));
+app.use('/api/v1/assignments', assignmentRouter); 
 
 module.exports = app;
