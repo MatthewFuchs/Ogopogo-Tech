@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const cors = require('cors');
 const path = require('path');
-const assignmentRouter = require('./routes/assignmentRoutes'); // Included from #87 branch
+const assignmentRouter = require('./routes/assignmentRoutes');
 
 const app = express();
 console.log(process.env.MONGO_URI)
@@ -13,23 +13,20 @@ mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }).then(() => console.log("MongoDB connected")).catch((err) => console.log("MongoDB connection failed!", err));
-
+app.use(express.static(path.join(__dirname, '../frontend')));
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '../frontend'))); // Retained from main branch
-app.use('/api/user', require('./routes/userRoutes'));
-app.use('/api/courses', require('./routes/courseRoutes')); // Retained from main branch
-
-app.use(morgan("dev"));
 app.use(cors({
-    origin: 'http://127.0.0.1:5500', // Combination of both branches' CORS configurations
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Included methods from main branch
-    credentials: true // Retained from #87 branch
+    origin: 'http://127.0.0.1:5500', // Allow only this origin to access
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
+    credentials: true // Allow sending of cookies and authentication headers
   }));
+app.use('/api/user', require('./routes/userRoutes'));
+app.use('/api/courses', require('./routes/courseRoutes')); 
 
-app.use('/api/v1/assignments', assignmentRouter); // Included from #87 branch
-
-app.get('*', (req, res) => { // Retained from main branch
+app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
   });
+app.use(morgan("dev"));
+app.use('/api/v1/assignments', assignmentRouter);
 
 module.exports = app;
