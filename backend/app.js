@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const cors = require('cors');
 const path = require('path');
-const assignmentRouter = require('./routes/assignmentRoutes');
+const assignmentRouter = require('./routes/assignmentRoutes'); // Keep if needed
 
 const app = express();
 console.log(process.env.MONGO_URI)
@@ -13,20 +13,24 @@ mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }).then(() => console.log("MongoDB connected")).catch((err) => console.log("MongoDB connection failed!", err));
+
 app.use(express.static(path.join(__dirname, '../frontend')));
 app.use(express.json());
 app.use(cors({
-    origin: 'http://127.0.0.1:5500', // Allow only this origin to access
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
-    credentials: true // Allow sending of cookies and authentication headers
+    origin: 'http://127.0.0.1:5500', // Choose the correct CORS policy
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
   }));
 app.use('/api/user', require('./routes/userRoutes'));
-app.use('/api/courses', require('./routes/courseRoutes')); 
+app.use('/api/courses', require('./routes/courseRoutes')); // Keep if needed
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
-  });
-app.use(morgan("dev"));
-app.use('/api/v1/assignments', assignmentRouter);
+});
+
+app.use(morgan("dev")); // Keep only one call to morgan
+
+// Use the assignmentRouter if it's part of the feature you're working on
+app.use('/api/v1/assignments', assignmentRouter); 
 
 module.exports = app;
