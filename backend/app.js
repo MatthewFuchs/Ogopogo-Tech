@@ -25,8 +25,6 @@ app.use('/api/courses', require('./routes/courseRoutes'));
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
   });
-  
-  
 app.use(morgan("dev"));
 
 module.exports = app;
