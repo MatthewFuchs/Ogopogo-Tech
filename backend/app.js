@@ -1,10 +1,10 @@
 const express = require('express');
 const dotenv = require('dotenv').config({path: '../.env'});
-const assignmentRouter = require('./routes/assignmentRoutes');
-
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const cors = require('cors');
+const path = require('path');
+const assignmentRouter = require('./routes/assignmentRoutes');
 
 const app = express();
 console.log(process.env.MONGO_URI)
