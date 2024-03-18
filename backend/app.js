@@ -29,4 +29,12 @@ app.get('*', (req, res) => {
 app.use(morgan("dev"));
 app.use('/api/v1/assignments', assignmentRouter); 
 
+//courses route
+
+const courseRoutes = require('./routes/courses');
+app.use('/api/courses', courseRoutes);
+
+
+
 module.exports = app;
+
