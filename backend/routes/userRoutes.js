@@ -1,7 +1,7 @@
 // Import necessary modules
 const express = require('express');
 const router = express.Router(); 
-const { registerUser, loginUser, getMe } = require('../controller/userController');
+const { registerUser, loginUser, getMe , updateUserDetails} = require('../controller/userController');
 const { protect } = require('../middleware/authMiddleware');
 
 /**
@@ -30,6 +30,14 @@ router.post('/login', loginUser);
  * @access Private
  */
 router.get('/me', protect, getMe);
+
+/**
+ * Route to update the current user's profile information.
+ * This endpoint allows the currently authenticated user to update their personal information, such as name, email, password, birthday, and profile photo. It requires authentication to ensure that only the user can update their own information. The request must include the fields to be updated in the JSON body. The operation is handled by the updateUserDetails function imported from the user controller. The protect middleware is used to ensure only authenticated requests access this route.
+ * @route PUT /api/user/me
+ * @access Private
+ */
+router.put('/me', protect, updateUserDetails);
 
 // Export the router to be mounted by the main application
 module.exports = router;

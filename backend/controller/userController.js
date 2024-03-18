@@ -85,12 +85,59 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 /**
- * Placeholder for getting user data.
+ * Getting user data.
  * @route GET /api/user/me
  * @access Public
  */
 const getMe = asyncHandler(async (req, res) => {
-    res.json({ message: 'User data display' });
+    res.status(200).json(req.user)
+});
+
+/**
+ * Update user details.
+ * This function allows authenticated users to update their personal details such as name, email, password, birthday, and profile photo. 
+ * It verifies the user's identity, optionally validates the provided input data, updates the user information in the database, 
+ * and returns the updated user details. Password updates are securely handled by hashing before storage.
+ * @route PUT /api/user/me
+ * @access Private
+ */
+const updateUserDetails = asyncHandler(async (req, res) => {
+    const userId = req.user._id; 
+    const { firstName, lastName, email, password, birthday, profilePhoto } = req.body;
+
+
+    // Find the user by ID
+    const user = await User.findById(userId);
+
+    if (!user) {
+        res.status(404);
+        throw new Error('User not found');
+    }
+
+    // Update user details
+    user.firstName = firstName || user.firstName;
+    user.lastName = lastName || user.lastName;
+    user.email = email || user.email;
+    // Optionally hash the password if it's being updated
+    if (password) {
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(password, salt);
+    }
+    user.birthday = birthday || user.birthday;
+    user.profilePhoto = profilePhoto || user.profilePhoto;
+
+    // Save the updated user details
+    const updatedUser = await user.save();
+
+    res.json({
+        _id: updatedUser._id,
+        firstName: updatedUser.firstName,
+        lastName: updatedUser.lastName,
+        email: updatedUser.email,
+        birthday: updatedUser.birthday,
+        profilePhoto: updatedUser.profilePhoto,
+        token: generateToken(updatedUser._id), // Optionally regenerate the token if necessary
+    });
 });
 
 /**
@@ -109,4 +156,5 @@ module.exports = {
     registerUser,
     loginUser,
     getMe,
+    updateUserDetails
 };

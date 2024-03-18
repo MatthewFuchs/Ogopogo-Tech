@@ -99,14 +99,15 @@
             return response.json();
         })
         .then(data => {
-            // Handle your data here
+            alert('Registration successful! Welcome to SkillQuik!');
             console.log(data);
         })
         .catch(error => {
             console.error('There has been a problem with your fetch operation:', error);
         });
-    }); // This closes the addEventListener function
-</script> <!-- This closes the script tag -->
+    }); 
+</script> 
 
 </body>
 </html>
+

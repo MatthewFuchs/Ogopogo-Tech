@@ -60,4 +60,20 @@ describe('User Routes', () => {
         // Verifies the response includes a the placeholder message
         expect(response.body).toHaveProperty('message', 'User data display');
     });
+
+    // Test for updating the current user's profile information
+    test('PUT /api/user/me - Update User Details', async () => {
+        const updateResponse = await request(app)
+            .put('/api/user/me')
+            .set('Authorization', `Bearer ${userToken}`) // Set the authorization header with the obtained token
+            .send({
+                firstName: 'UpdatedFirstName',
+                lastName: 'UpdatedLastName',
+                // Include other fields you wish to update
+            });
+
+        expect(updateResponse.statusCode).toBe(200); // Assuming 200 is your success status code
+        expect(updateResponse.body.firstName).toBe('UpdatedFirstName');
+        expect(updateResponse.body.lastName).toBe('UpdatedLastName');
+    });
 });

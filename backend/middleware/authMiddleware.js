@@ -28,7 +28,6 @@ const protect = asyncHandler(async (req, res, next) => {
 
             // Retrieve the user associated with this token from the database, excluding their password
             req.user = await User.findById(decoded.id).select('-password');
-
             // Continue to the next middleware with the user attached to the request
             next();
         } catch (error) {
