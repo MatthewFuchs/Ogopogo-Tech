@@ -1,3 +1,5 @@
+// This is for when admins create a new course.
+
 // Import the mongoose module to interact with MongoDB
 const mongoose = require('mongoose');
 
