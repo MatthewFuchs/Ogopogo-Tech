@@ -31,8 +31,8 @@ app.use('/api/v1/assignments', assignmentRouter);
 
 //courses route
 
-const courseRoutes = require('./routes/courses');
-app.use('/api/courses', courseRoutes);
+const courseRoutes = require('./routes/courseRoute-admin.js');
+app.use('/api/courseRoute-admin', courseRoutes);
 
 //For starting  server
 const PORT = process.env.PORT || 3000;
