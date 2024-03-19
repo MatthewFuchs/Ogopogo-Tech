@@ -16,7 +16,7 @@
                 <label for="courseName">Course Name</label>
                 <input type="text" id="courseName" name="courseName" required>
             </div>
-            <div class="input-group">
+            <div class="input-group">   
                 <label for="courseDescription">Course Description</label>
                 <textarea id="courseDescription" name="courseDescription" rows="4" required></textarea>
             </div>
@@ -30,31 +30,45 @@
     <script>
         document.getElementById('createCourseForm').addEventListener('submit', function(e) {
             e.preventDefault(); // Prevent default form submission
-            
+    
             const formData = {
                 name: document.getElementById('courseName').value,
                 description: document.getElementById('courseDescription').value,
                 instructor: document.getElementById('courseInstructor').value,
             };
-
-            fetch('/api/courses', { // Make sure this endpoint matches your server configuration
+    
+            fetch('/api/courses', { // Adjust this URL if necessary
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(formData),
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok (${response.status})`);
+                }
+                return response.text(); // First read it as text
+            })
+            .then(text => {
+                try {
+                    return text ? JSON.parse(text) : {};
+                } catch (error) {
+                    console.error('Failed to parse JSON:', error);
+                    throw new Error('Failed to parse JSON response');
+                }
+            })
             .then(data => {
                 console.log('Success:', data);
                 alert('Course created successfully!');
-                // Optionally, redirect or clear form here
+                // Optionally, redirect or clear the form here
             })
             .catch((error) => {
                 console.error('Error:', error);
-                alert('Failed to create course');
+                alert(error);
+                alert('Failed to create course. Check console for more details.');
             });
         });
-    </script>
+    </script>    
 </body>
 </html>

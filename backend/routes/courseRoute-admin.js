@@ -1,7 +1,7 @@
 // routes/courseRoute-admin.js
 const express = require('express');
 const router = express.Router();
-const { createCourse, getCourses, updateCourse, deleteCourse } = require('../controllers/courseController-admin');
+const { createCourse, getCourses, updateCourse, deleteCourse } = require("backend/controller/courseController.js");
 const { protect } = require('../middleware/authMiddleware');
 
 router.post('/', protect, createCourse);
