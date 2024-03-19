@@ -1,11 +1,13 @@
+// routes/courses.js
 const express = require('express');
 const router = express.Router();
-const Course = require('backend/models/courses.js'); // Adjust the path as necessary
+const Course = require('../models/courseModel'); // Corrected path
+const { protect } = require('../middleware/authMiddleware'); // Assuming you have this for route protection
 
-// POST route to create a new course
-router.post('/', async (req, res) => {
-    const course = new Course(req.body);
+router.post('/', protect, async (req, res) => { // Ensure `protect` middleware is properly implemented
+    const { name, description, instructor } = req.body;
     try {
+        const course = new Course({ name, description, instructor });
         const savedCourse = await course.save();
         res.status(201).json(savedCourse);
     } catch (err) {
@@ -13,6 +15,6 @@ router.post('/', async (req, res) => {
     }
 });
 
-// Add other routes as needed for getting, updating, and deleting courses
+// Add other routes as needed
 
 module.exports = router;
