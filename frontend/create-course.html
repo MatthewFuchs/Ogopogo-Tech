@@ -37,7 +37,8 @@
                 instructor: document.getElementById('courseInstructor').value,
             };
     
-            fetch('/api/courses', { // Adjust this URL if necessary
+            // Use the full URL including the endpoint to make the request
+            fetch('http://localhost:8080/api/courseRoute-admin/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -48,23 +49,15 @@
                 if (!response.ok) {
                     throw new Error(`Network response was not ok (${response.status})`);
                 }
-                return response.text(); // First read it as text
-            })
-            .then(text => {
-                try {
-                    return text ? JSON.parse(text) : {};
-                } catch (error) {
-                    console.error('Failed to parse JSON:', error);
-                    throw new Error('Failed to parse JSON response');
-                }
+                return response.json(); // Assuming the server responds with JSON
             })
             .then(data => {
                 console.log('Success:', data);
                 alert('Course created successfully!');
+                // Optionally, redirect or clear the form here
             })
             .catch((error) => {
                 console.error('Error:', error);
-                alert(error);
                 alert('Failed to create course. Check console for more details.');
             });
         });

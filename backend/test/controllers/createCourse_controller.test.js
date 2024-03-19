@@ -1,7 +1,7 @@
 // Import supertest for making HTTP requests
 const request = require('supertest');
 // Import your app where you define your API
-const app = require('../../app'); // Adjust  path to  Express app
+const app = require('../../app'); // path to  Express app
 
 describe('POST /api/courses', () => {
   test('should create a new course and return it', async () => {

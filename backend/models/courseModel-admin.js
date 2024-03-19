@@ -9,6 +9,10 @@ const courseSchema = new mongoose.Schema({
     type: String, // Specifies the data type as String
     required: true // Makes this field mandatory
   },
+  courseID:{
+    type: String,
+    required: true
+  },
   // 'description' field for the course's description
   description: {
     type: String,
