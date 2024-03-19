@@ -1,7 +1,7 @@
 // Import supertest for making HTTP requests
 const request = require('supertest');
 // Import your app where you define your API
-const app = require('../app'); // Adjust the path to where your Express app is exported
+const app = require('../../app'); // Adjust  path to  Express app
 
 describe('POST /api/courses', () => {
   test('should create a new course and return it', async () => {
@@ -12,7 +12,7 @@ describe('POST /api/courses', () => {
       instructor: "John Doe"
     };
 
-    // Make a POST request to your endpoint
+    // Make a POST request to endpoint
     const response = await request(app)
       .post('/api/courses')
       .send(newCourse)
@@ -25,10 +25,5 @@ describe('POST /api/courses', () => {
       description: expect.any(String),
       instructor: expect.any(String)
     }));
-
-    // Optionally, clean up by deleting the created course
-    // if your database supports it or if you are using a test database
   });
-
-  // Additional tests for error cases, e.g., missing required fields
 });

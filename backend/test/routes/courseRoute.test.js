@@ -1,9 +1,9 @@
 // Import the necessary modules
 const request = require('supertest');
-const app = require('../app'); // Adjust the path to your Express app
+const app = require('../../app'); // Adjust the path to your Express app
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
-const Course = require('../models/courseModel-admin'); // Adjust the path to your Course model
+const Course = require('../models/courseModel-admin'); // Adjust  path to Course model
 
 describe('Course Routes Test', () => {
   let mongoServer;
