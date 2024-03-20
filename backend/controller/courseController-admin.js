@@ -3,14 +3,14 @@ const Course = require('../models/courseModel-admin');
 
 // Create a new course
 exports.createCourse = asyncHandler(async (req, res) => {
-    const { name, description, instructor } = req.body;
+    const { name, courseID, description, instructor } = req.body;
     // Check for required fields
     if (!name || !description || !instructor) {
         res.status(400);
         throw new Error('All fields are required');
     }
     // Create and save the course
-    const course = await Course.create({ name, description, instructor });
+    const course = await Course.create({ name, courseID, description, instructor });
     res.status(201).json(course);
 });
 
