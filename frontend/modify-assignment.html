@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modify Assignment</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+
+<main>
+    <div class="container" id="modifyAssignmentForm">
+        <h2>Modify Assignment</h2>
+        <form action="/path-to-update-assignment" method="POST">
+            <!-- Form for updating assignment details like title, description -->
+            <!-- ... -->
+        </form>
+
+        <section id="questionsContainer">
+            <h3>Questions</h3>
+            <!-- List existing questions here -->
+            <!-- Each question could have its own form for updating or a button for deleting -->
+            <!-- Example question item -->
+            <div class="question-item">
+                <span>Question: How does XYZ work?</span>
+                <button class="btn btn-edit">Edit</button>
+                <button class="btn btn-delete">Delete</button>
+
+                <!-- Hidden form to edit the question, shown when 'Edit' is clicked -->
+                <form class="form-edit-question" style="display:none;">
+                    <!-- Inputs for editing the question -->
+                </form>
+            </div>
+
+            <!-- Form to add a new question -->
+            <!-- TODO: Need To Modify Here -->
+            <form action="/path-to-add-question" method="POST">
+                <textarea name="question" placeholder="Enter new question"></textarea>
+                <button type="submit" class="btn btn-add">Add Question</button>
+            </form>
+        </section>
+        
+        <!-- Button to save all changes and go back to the assignments list -->
+        <button class="btn btn-save" onclick="window.location.href='assignments-list.html';">Save Changes</button>
+    </div>
+</main>
+
+</body>
+</html>
