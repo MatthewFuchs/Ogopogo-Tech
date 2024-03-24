@@ -478,3 +478,50 @@ footer button {
 footer button:hover {
     background-color: #008cd0;
 }
+
+
+.question-item {
+    background-color: #f9f9f9;
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 5px;
+    position: relative;
+}
+
+.question-actions {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+.btn-small {
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    margin-left: 5px;
+}
+
+/* Additional styles as needed for form elements */
+
+
+.popup {
+    position: fixed; /* Use fixed positioning */
+    top: 50%; /* Position the popup halfway down the screen */
+    left: 50%; /* Position the popup halfway across the screen */
+    transform: translate(-50%, -50%); /* Adjust the position to truly center based on popup's own size */
+    z-index: 1000; /* Ensure it sits above other content */
+    background-color: #fff; /* Background color */
+    padding: 20px;
+    border: 1px solid #ccc; /* Add some border */
+    border-radius: 5px; /* Optional: round the corners */
+}
+
+.popup-content {
+    text-align: center; /* Center the content inside the popup */
+}
+
+
+/* Ensure visibility of questions and their options */
+
+#questionsContainer {
+    color: #000000; /* Black color for text */
+}
