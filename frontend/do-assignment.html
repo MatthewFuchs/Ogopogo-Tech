@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Do Assignment</title>
+    <link rel="stylesheet" href="css/index.css"> <!-- Ensure correct path -->
+</head>
+<body>
+
+<main>
+    <div class="container" id="doAssignment">
+        <h2>Assignment Title</h2>
+        <!-- Description or instructions for the assignment, if any -->
+        <p>Complete the questions below and submit your answers.</p>
+        
+        <form id="assignmentForm" action="/path-to-submit-assignment" method="POST">
+            <!-- Dynamically generate questions based on the assignment -->
+            <div class="question-item">
+                <label for="question1">1. What is the capital of France?</label>
+                <input type="text" id="question1" name="question1" class="form-control">
+            </div>
+
+            <!-- Repeat for each question in the assignment -->
+            <!-- ... -->
+
+            <!-- Submit button for the assignment -->
+            <button type="submit" class="btn-explore">Submit Assignment</button>
+        </form>
+    </div>
+</main>
+
+<script>
+    // Simple script to handle form submission
+    document.getElementById('assignmentForm').onsubmit = function(event) {
+        event.preventDefault();
+        // Here you would normally add AJAX call to submit the form data
+        // For now, we'll just simulate a submission and redirect
+        alert('Assignment submitted!');
+        window.location.href = 'assignments-list-student.html'; // Redirect to student's assignments list
+    };
+</script>
+
+</body>
+</html>

@@ -500,28 +500,68 @@ footer button:hover {
     margin-left: 5px;
 }
 
-/* Additional styles as needed for form elements */
-
-
-.popup {
-    position: fixed; /* Use fixed positioning */
-    top: 50%; /* Position the popup halfway down the screen */
-    left: 50%; /* Position the popup halfway across the screen */
-    transform: translate(-50%, -50%); /* Adjust the position to truly center based on popup's own size */
-    z-index: 1000; /* Ensure it sits above other content */
-    background-color: #fff; /* Background color */
-    padding: 20px;
-    border: 1px solid #ccc; /* Add some border */
-    border-radius: 5px; /* Optional: round the corners */
-}
-
-.popup-content {
-    text-align: center; /* Center the content inside the popup */
-}
-
 
 /* Ensure visibility of questions and their options */
 
 #questionsContainer {
     color: #000000; /* Black color for text */
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.5em;
+    margin-top: 0.5em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Existing .btn-explore styles can be used for the submit button */
+
+#createAssignmentForm {
+    background-color: rgb(255, 255, 255); /* Set background to black */
+    color: #000000; /* Change text color to white for contrast */
+    padding: 2rem; /* Add some padding around the content */
+    border-radius: 8px; /* Optional: adds rounded corners */
+}
+
+
+.assignment-item {
+    background-color: #f9f9f9; /* Light grey background for contrast */
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    position: relative; /* For potential absolute positioning of buttons or other elements */
+}
+
+.modify-assignment,
+.delete-assignment {
+    margin-top: 10px;
+    display: inline-block; /* Display buttons inline */
+    /* Further customization to match your site's design */
+}
+
+.modify-assignment {
+    background-color: #00aff0; /* Consistent with the "explore" button style */
+}
+
+.delete-assignment {
+    background-color: #ff6347; /* A red variant for deletion, adjust as needed */
+}
+
+/* Ensure the "Create New Assignment" button is visually distinct or matches your site's theme */
+
+#assignmentsContainer {
+    color: #000; /* This sets the text color to black */
+}
+
+#doAssignment{
+    color: #000; 
+}
+
+#assignmentsListStudent{
+    color: #000; 
 }
