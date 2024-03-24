@@ -21,7 +21,8 @@ function fetchAndFillUserData() {
         document.getElementById('firstName').value = data.firstName;
         document.getElementById('lastName').value = data.lastName;
         document.getElementById('email').value = data.email;
-        document.getElementById('dob').value = formatDate(data.birthday); // Formatting date before setting
+        document.getElementById('dob').value = data.birthday.split('T')[0];
+        document.getElementById('dob').value = datePart;
     })
     .catch(error => {
         console.error('There has been a problem with fetching user data:', error);
@@ -53,25 +54,26 @@ document.getElementById('updateProfileForm').addEventListener('submit', function
     e.preventDefault(); // Preventing default form submission behavior
 
     // Gathering form data to send in the update request
-    const formData = {
-        firstName: document.getElementById('firstName').value,
-        lastName: document.getElementById('lastName').value,
-        email: document.getElementById('email').value,
-        birthday: document.getElementById('dob').value ? new Date(document.getElementById('dob').value).toISOString() : undefined,
-        password: document.getElementById('password').value,
-    };
+    const formData = new FormData();
+    formData.append('firstName', document.getElementById('firstName').value);
+    formData.append('lastName', document.getElementById('lastName').value);
+    formData.append('email', document.getElementById('email').value);
+    formData.append('birthday', new Date(document.getElementById('dob').valueAsNumber + new Date().getTimezoneOffset() * 60000).toISOString());
+    
+    const password = document.getElementById('password').value;
+    if (password) formData.append('password', password);
 
-    // Removing any undefined properties to avoid unintended updates
-    Object.keys(formData).forEach(key => formData[key] === undefined && delete formData[key]);
+    const profilePhoto = document.getElementById('profilePhoto').files[0];
+    if (profilePhoto) formData.append('profilePhoto', profilePhoto);
 
-    // Making a PUT request to update the user's details
-    fetch('http://localhost:8002/api/user/me', { 
+    // Send formData with fetch using 'PUT' method and multipart/form-data
+    // Note: Omit the 'Content-Type' header to allow the browser to set it with the boundary
+    fetch('http://localhost:8002/api/user/me', {
         method: 'PUT',
         headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('userToken')}`, // Including the JWT token in the Authorization header
+            'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
         },
-        body: JSON.stringify(formData),
+        body: formData,
     })
     .then(response => {
         if (!response.ok) {
