@@ -3,6 +3,15 @@ const asyncHandler = require('express-async-handler');
 const User = require('../models/userModel'); 
 const jwt = require('jsonwebtoken'); 
 const bcrypt = require('bcryptjs');
+const multer = require('multer');
+
+const upload = multer({
+    storage: multer.memoryStorage(),
+    limits: { fileSize: 1024 * 1024 * 5 } // Limit file size to 5MB
+});
+
+const uploadMiddleware = upload.single('profilePhoto');
+
 
 /**
  * Register a new user.
@@ -90,7 +99,16 @@ const loginUser = asyncHandler(async (req, res) => {
  * @access Public
  */
 const getMe = asyncHandler(async (req, res) => {
-    res.status(200).json(req.user)
+    const user = await User.findById(req.user._id);
+    res.status(200).json({
+        _id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        birthday: user.birthday,
+        profilePhoto: user.profilePhoto ? user.profilePhoto.toString('base64') : null,
+        role: user.role
+    });
 });
 
 /**
@@ -102,41 +120,42 @@ const getMe = asyncHandler(async (req, res) => {
  * @access Private
  */
 const updateUserDetails = asyncHandler(async (req, res) => {
-    const userId = req.user._id; 
-    const { firstName, lastName, email, password, birthday, profilePhoto } = req.body;
-
-
-    // Find the user by ID
-    const user = await User.findById(userId);
+    const user = await User.findById(req.user._id);
 
     if (!user) {
         res.status(404);
         throw new Error('User not found');
     }
 
-    // Update user details
-    user.firstName = firstName || user.firstName;
-    user.lastName = lastName || user.lastName;
-    user.email = email || user.email;
-    // Optionally hash the password if it's being updated
+    const { firstName, lastName, email, password, birthday } = req.body;
+
+    if (firstName) user.firstName = firstName;
+    if (lastName) user.lastName = lastName;
+    if (email) user.email = email;
+    if (birthday) user.birthday = birthday;
+
+    // If a password is provided, hash it before saving
     if (password) {
         const salt = await bcrypt.genSalt(10);
         user.password = await bcrypt.hash(password, salt);
     }
-    user.birthday = birthday || user.birthday;
-    user.profilePhoto = profilePhoto || user.profilePhoto;
 
-    // Save the updated user details
-    const updatedUser = await user.save();
+    // If a file is uploaded, save the buffer to the user's profilePhoto
+    if (req.file) {
+        user.profilePhoto = req.file.buffer;
+    }
+
+    await user.save();
 
     res.json({
-        _id: updatedUser._id,
-        firstName: updatedUser.firstName,
-        lastName: updatedUser.lastName,
-        email: updatedUser.email,
-        birthday: updatedUser.birthday,
-        profilePhoto: updatedUser.profilePhoto,
-        token: generateToken(updatedUser._id), // Optionally regenerate the token if necessary
+        _id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        birthday: user.birthday,
+        // Send the profile photo as a base64 string if it exists
+        profilePhoto: user.profilePhoto ? user.profilePhoto.toString('base64') : null,
+        role: user.role
     });
 });
 
@@ -156,5 +175,6 @@ module.exports = {
     registerUser,
     loginUser,
     getMe,
-    updateUserDetails
+    updateUserDetails,
+    uploadMiddleware
 };

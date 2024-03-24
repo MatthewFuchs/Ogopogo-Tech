@@ -3,6 +3,9 @@ const express = require('express');
 const router = express.Router(); 
 const { registerUser, loginUser, getMe , updateUserDetails} = require('../controller/userController');
 const { protect } = require('../middleware/authMiddleware');
+const multer = require('multer');
+const storage = multer.memoryStorage(); // use memory storage
+const upload = multer({ storage: storage });
 
 /**
  * Route to register a new user.
@@ -30,6 +33,8 @@ router.post('/login', loginUser);
  * @access Private
  */
 router.get('/me', protect, getMe);
+
+router.put('/me', protect, upload.single('profilePhoto'), updateUserDetails);
 
 /**
  * Route to update the current user's profile information.

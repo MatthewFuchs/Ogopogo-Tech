@@ -31,21 +31,15 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('userFullNameHeading').textContent = `${user.firstName} ${user.lastName}`;
         document.getElementById('userFullName').textContent = `${user.firstName} ${user.lastName}`;
         document.getElementById('userEmail').textContent = user.email;
-        // Format the user's birthday and update the DOM so its in the format YYYY-MM-DD
-        const birthday = new Date(user.birthday);
-        const formattedBirthday = birthday.toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
-        });
-        document.getElementById('userBirthday').textContent = formattedBirthday;
+        document.getElementById('userBirthday').textContent = user.birthday.split('T')[0];
+
         const profilePhotoElement = document.getElementById('profilePhoto');
         if (user.profilePhoto) {
             // If user has a profile photo, convert the Buffer to base64 and set as img src
             profilePhotoElement.src = `data:image/jpeg;base64,${user.profilePhoto}`;
-        } else {
+          } else {
             // If no profile photo, use a default image from your static files
-            profilePhotoElement.src = '/path/to/default-profile-photo.jpg'; // Adjust the path as needed
+            profilePhotoElement.src = '/path/to/default-profile-photo.jpg'; 
         }
       })
       .catch(error => {
