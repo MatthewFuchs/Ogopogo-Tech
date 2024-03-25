@@ -6,8 +6,8 @@ exports.submitEnrollmentRequest = asyncHandler(async (req, res) => {
     const courseCode = req.params.courseId; 
     const studentId = req.user._id; 
 
-    // First, find the course by its code
-    const course = await Course.findOne({ courseID: courseCode }); // Adjust the attribute name as needed
+    // find the course by its code
+    const course = await Course.findOne({ courseID: courseCode });
     if (!course) {
         return res.status(404).json({ message: 'Course not found' });
     }
@@ -15,7 +15,7 @@ exports.submitEnrollmentRequest = asyncHandler(async (req, res) => {
     // Then check for existing enrollment requests
     const existingRequest = await Enrollment.findOne({
         student: studentId,
-        course: course._id, // Use the found course's ObjectId here
+        course: course._id,
         status: { $in: ['pending', 'accepted'] }
     });
 
@@ -26,7 +26,7 @@ exports.submitEnrollmentRequest = asyncHandler(async (req, res) => {
     // If no existing request, create a new enrollment request
     const enrollmentRequest = await Enrollment.create({
         student: studentId,
-        course: course._id, // Use ObjectId
+        course: course._id,
         status: 'pending'
     });
 

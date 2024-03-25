@@ -4,16 +4,16 @@ const Enrollment = require('../models/enrollmentModel');
 // Function to list all enrollment requests
 exports.listEnrollmentRequests = asyncHandler(async (req, res) => {
     const enrollmentRequests = await Enrollment.find()
-        .populate('student', 'firstName lastName email') // Adjust according to your User model
-        .populate('course', 'courseID description'); // Adjust according to your Course model
+        .populate('student', 'firstName lastName email')
+        .populate('course', 'courseID description');
 
     res.json(enrollmentRequests);
 });
 
 // Function to update the status of an enrollment request
 exports.updateEnrollmentRequest = asyncHandler(async (req, res) => {
-    const { requestId } = req.params; // Get the request ID from URL parameters
-    const { status } = req.body; // Expected to be either "accepted" or "denied"
+    const { requestId } = req.params; 
+    const { status } = req.body; 
 
     const enrollmentRequest = await Enrollment.findById(requestId);
 
