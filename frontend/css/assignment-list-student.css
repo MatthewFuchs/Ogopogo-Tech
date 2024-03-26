@@ -1,0 +1,66 @@
+/* Main Content Styling */
+.container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-top: 10px; /* Adjust for topbar */
+    overflow: auto;
+    padding: 20px;
+}
+
+.assignment-list {
+    width: 100%; /* Adjust based on preferred width */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.assignment-item {
+    background-color: #e9f5ff;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 80%; /* Adjust based on preferred width */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.assignment-item:hover {
+    background-color: #d1e4ff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+h3 {
+    margin-bottom: 10px;
+}
+
+p {
+    margin-bottom: 20px;
+}
+
+.btn-explore {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-explore:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive Design Adjustments */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .assignment-item {
+        width: 100%;
+    }
+}
