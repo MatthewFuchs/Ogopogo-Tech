@@ -15,10 +15,22 @@ exports.createCourse = asyncHandler(async (req, res) => {
 });
 
 // Get all courses
-exports.getCourses = asyncHandler(async (req, res) => {
+
+
+exports.getCourses = async (req, res) => {
+  try {
     const courses = await Course.find({});
     res.status(200).json(courses);
-});
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+// const Course = require('../models/Course');
+// exports.getCourses = asyncHandler(async (req, res) => {
+//     const courses = await Course.find({});
+//     res.status(200).json(courses);
+// });
+
 
 // Update a course
 exports.updateCourse = asyncHandler(async (req, res) => {
