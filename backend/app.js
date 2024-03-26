@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const cors = require('cors');
 const path = require('path');
-// const assignmentRouter = require('./routes/assignmentRoutes'); 
 
 const app = express();
 console.log(process.env.MONGO_URI)
@@ -21,6 +20,7 @@ app.use(cors({
     credentials: true // Allow sending of cookies and authentication headers
   }));
 app.use('/api/user', require('./routes/userRoutes'));
+app.use('/api/assignments', require('./routes/assignmentRoutes')); 
 
 //courses route
 const courseRoutes = require('./routes/courseRoute-admin');

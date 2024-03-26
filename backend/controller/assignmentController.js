@@ -1,106 +1,111 @@
-const Assignment = require('../models/assignmentModel');
-const Course = require('../models/courseModel');
+const asyncHandler = require('express-async-handler'); // Provides error handling for async routes
+const Assignment = require('../models/assignmentModel'); // Assuming you have an Assignment model
 
-const assignmentController = {
-  // Create an assignment associated with a course
-  createAssignment: async (req, res) => {
-    try {
-      const { course: courseId } = req.body;
-      const course = await Course.findById(courseId);
+// @desc    Get Assignment by ID
+// @route   GET /api/assignments/:id
+// @access  Public
+const getAssignment = asyncHandler(async (req, res) => {
+    const assigns = await Assignment.findById(req.params.id); 
+    // Finds an assignment by its ID from the database
 
-      if (!course) {
-        return res.status(404).json({
-          status: 'fail',
-          message: 'No course found with that ID'
-        });
-      }
+    res.status(200).json(assigns); 
+    // Returns the assignment as JSON with a 200 (success) status code
+});
 
-      const newAssignment = await Assignment.create(req.body);
-      course.assignments.push(newAssignment._id);
-      await course.save();
+// @desc    Get all Assignments
+// @route   GET /api/assignments/all
+// @access  Private (admin only)
+const getAllAssignments = asyncHandler(async (req, res) => {
+    const assigns = await Assignment.find({}); 
+    // Finds all assignments in your database
 
-      res.status(201).json({
-        status: 'success',
-        data: { assignment: newAssignment }
-      });
-    } catch (error) {
-      res.status(400).json({
-        status: 'fail',
-        message: error
-      });
+    res.status(200).json(assigns); 
+    // Returns all assignments as JSON with a 200 (success) status code
+});
+
+// @desc    Create an Assignment
+// @route   POST /api/assignments
+// @access  Private (Instructor or Admin)
+const createAssignment = asyncHandler(async (req, res) => {
+    if (!req.body.title || !req.body.description || !req.body.type || !req.body.courseID) {
+        res.status(400); // Bad Request status
+        throw new Error('Please provide all fields'); 
     }
-  },
 
-  // Update an assignment
-  updateAssignment: async (req, res) => {
-    try {
-      const assignment = await Assignment.findByIdAndUpdate(req.params.id, req.body, {
-        new: true,
-        runValidators: true
-      });
+    // Set the instructor as the logged-in user 
+    req.body.instructorID = req.user.id; // Assuming you have user authentication
 
-      if (!assignment) {
-        return res.status(404).json({
-          status: 'fail',
-          message: 'No assignment found with that ID'
-        });
-      }
+    const assignment = await Assignment.create(req.body); // Creates a new assignment document
+    res.status(201).json(assignment); // 201 Created status
+});
 
-      res.status(200).json({
-        status: 'success',
-        data: { assignment }
-      });
-    } catch (error) {
-      res.status(400).json({
-        status: 'fail',
-        message: error
-      });
+// @desc    Add Question to Assignment
+// @route   PUT /api/assignments/question
+// @access  Private (Instructor)
+const addQuestionToAssignment = asyncHandler(async (req, res) => {
+    if (!req.body.question) {
+      res.status(400); 
+      throw new Error('Please provide a question to add!');
     }
-  },
 
-  // Delete an assignment
-  deleteAssignment: async (req, res) => {
-    try {
+    const assignment = await Assignment.findById(req.params.id); 
+    if (!assignment) {
+      res.status(404); // Not Found status
+      throw new Error('Assignment not found');
+    }
+
+    // Authorization: Ensure the user is the instructor of the assignment
+    if (assignment.instructorID.toString() !== req.user.id) {
+      res.status(403); // Forbidden status
+      throw new Error('Forbidden - You are not the instructor of this assignment');
+    }
+
+    assignment.questions.push(req.body.question); 
+    assignment.answers.push(""); // Adds a new question and a placeholder answer
+    await assignment.save(); // Saves the changes to the database
+
+    res.status(201).json(assignment); 
+});
+
+// @desc    Add Answer to Assignment
+// @route   PUT /api/assignments/answer/:id
+// @access  Private 
+const addAnswerToAssignment = asyncHandler(async (req, res) => {
+    if (!req.body.answer || !req.body.questionNum || req.body.questionNum == 0) {
+        res.status(400);
+        throw new Error('Please provide an answer to add!');
+      }
+      
       const assignment = await Assignment.findById(req.params.id);
-
       if (!assignment) {
-        return res.status(404).json({
-          status: 'fail',
-          message: 'No assignment found with that ID'
-        });
+        res.status(404);
+        throw new Error('Assignment not found');
+      }
+  
+      assignment.answers[req.body.questionNum] = req.body.answer;
+      await assignment.save();
+      
+      res.status(201).json(assignment);
+});
+
+// @desc    Delete an Assignment
+// @route   DELETE /api/assignments/:id
+// @access  Private (Instructor or Admin)
+const deleteAssignment = asyncHandler(async (req, res) => {
+    const assignment = await Assignment.findById(req.params.id);
+    if (!assignment) {
+        res.status(404);
+        throw new Error('Assignment not found');
+    }
+
+    // Authorization check needed
+    if (assignment.instructorID.toString() !== req.user.id) {
+        res.status(403); // Forbidden status
+        throw new Error('Forbidden - You are not the instructor of this assignment');
       }
 
-      await Course.updateMany({ assignments: assignment._id }, { $pull: { assignments: assignment._id } });
-      await assignment.remove();
+    await assignment.deleteOne(); 
+    res.status(200).json({ id: req.params.id }); 
+});
 
-      res.status(204).json({
-        status: 'success',
-        data: null
-      });
-    } catch (error) {
-      res.status(400).json({
-        status: 'fail',
-        message: error
-      });
-    }
-  }
-};
-
-//"read" function
-exports.getAssignments = async (req, res) => {
-  try {
-    const assignments = await Assignment.find();
-    res.status(200).json({
-      status: 'success',
-      results: assignments.length,
-      data: { assignments }
-    });
-  } catch (error) {
-    res.status(404).json({
-      status: 'fail',
-      message: error
-    });
-  }
-};
-
-module.exports = assignmentController;
+module.exports = { getAssignment, createAssignment, getAllAssignments, addQuestionToAssignment, deleteAssignment, addAnswerToAssignment }; 
