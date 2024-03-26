@@ -1,567 +1,142 @@
-/* Basic reset */
-* {
+body {
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+    background-color: #f4f7fa;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+    overflow: auto;
 }
 
-body, html {
-    height: 100%;
-    font-family: 'Arial', sans-serif;
+.container {
+    flex: 1;
+    display: flex;
+    width: 100%;
+    margin-top: 10px; /* Adjusted for topbar */
+    overflow: auto;
 }
 
-/* Header and navigation styles */
-header {
-    background-color: #0e0e0e;
-    color: white;
-    padding: 1em 0;
-}
-
-nav {
+.topbar {
+    background-color: #000;
+    color: #fff;
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 2em;
 }
 
-.nav-links a {
-    color: white;
-    text-decoration: none;
-    margin-left: 1em;
-}
-
-.promo {
-    background-color: #00aff0;
-    color: white;
-    padding: 0.5em 1em;
+.user-profile, .logout {
+    background-color: transparent;
+    padding: 10px 15px;
     border-radius: 5px;
-}
-
-/* Main content styles */
-main {
-    background: url('background-image.jpg') no-repeat center center fixed;
-    background-size: cover;
-    color: white;
-    text-align: center;
-    padding: 5em 0;
-}
-
-/* Welcome Section Styles */
-#welcome {
-    background: url('welcome-background.jpg') no-repeat center center/cover;
-    color:#0e0e0e;
-    padding: 4rem 0;
-    text-align: center;
-}
-
-#welcome .container {
-    width: 80%;
-    margin: 0 auto;
-}
-
-#welcome h2 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-}
-
-#welcome p {
-    font-size: 1rem;
-    margin-bottom: 2rem;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.btn-explore {
+    margin-right: 20px;
+    transition: background-color 0.3s, color 0.3s;
     display: inline-block;
-    background-color: #00aff0;
-    color:white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: bold;
 }
 
-/* How It Works Section Styles */
-#howItWorks {
-    background-color: #0e0e0e;
-    padding: 4rem 0;
-}
-
-#howItWorks .container {
-    width: 80%;
-    height: auto;
-    margin: 0 auto;
-    text-align: center;
-}
-
-#howItWorks h2 {
-    font-size: 2.5rem;
-    color: #fff;
-    margin-bottom: 2rem;
-}
-
-#howItWorks .steps {
+.nav-menu {
     display: flex;
-    flex-direction: column;
-    gap: 2rem;
+    align-items: center;
+    flex-grow: 1;
+    justify-content: space-evenly;
 }
 
-#howItWorks .step {
-    background-color:#fff;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-#howItWorks .step-number {
-    display: inline-block;
-    width: 50px;
-    height: 50px;
-    line-height: 50px;
-    border-radius: 50%;
-    background-color: #00aff0;
-    color:white;
-    margin-bottom: 1rem;
-    font-size: 1.25rem;
-}
-
-#howItWorks .step-title {
-    font-size: 1.75rem;
-    margin-bottom: 1rem;
-}
-
-#howItWorks .step-description {
-    font-size: 1rem;
-    color:#0e0e0e;
-}
-
-@media (min-width: 768px) {
-    #howItWorks .steps {
-        flex-direction: row;
-        justify-content: space-between;
-    }
-
-    #howItWorks .step {
-        flex: 1;
-        max-width: calc(33.333% - 1rem);
-    }
-}
-
-/* Featured Courses section */
-#featuredCourses {
-    text-align: center;
-    padding: 4rem 0;
-}
-
-#featuredCourses h2 {
-    font-size: 2.5rem;
-    color: #333;
-    margin-bottom: 2rem;
-}
-
-.course-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-}
-
-.course {
-    background-color: #0e0e0e;
-    color: white;
-    width: 100%;
-    max-width: 350px;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 2rem;
-}
-
-.course-image {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-}
-
-.course-info {
-    padding: 20px;
-}
-
-.course-title {
-    font-size: 1.5em;
-    margin-bottom: 10px;
-}
-
-.course-description {
-    font-size: 1em;
-    margin-bottom: 20px;
-}
-
-.course-enroll {
-    padding: 10px 20px;
-    background-color: #00aff0;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    align-self: start;
-}
-
-@media (min-width: 768px) {
-    .course {
-        width: calc(50% - 10px);
-    }
-}
-
-@media (min-width: 1024px) {
-    .course {
-        width: calc(33.333% - 13.333px);
-    }
-}
-
-/* Testimonials Section Styles */
-#testimonials {
-    background-color: #f0f0f0;
-    padding: 4rem 0;
-}
-
-#testimonials .container {
-    width: 80%;
-    margin: 0 auto;
-    text-align: center;
-}
-
-#testimonials h2 {
-    font-size: 2.5rem;
-    color:#0e0e0e;
-    margin-bottom: 2rem;
-}
-
-#testimonials .testimonial-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-}
-
-#testimonials .testimonial {
-    background-color: white;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    font-style: italic;
-}
-
-#testimonials .testimonial-text {
-    font-size: 1rem;
-    line-height: 1.6;
-    color:#0e0e0e;
-}
-
-#testimonials .testimonial-footer {
-    margin-top: 1.5rem;
-    font-size: 0.9rem;
-    font-weight: bold;
-    color:#fff;
-    text-align: center;
-}
-
-@media (min-width: 768px) {
-    #testimonials .testimonial-grid {
-        flex-direction: row;
-        justify-content: space-between;
-    }
-
-    #testimonials .testimonial {
-        flex: 1;
-        max-width: calc(33.333% - 1rem);
-    }
-}
-    
-/* Instructors Section Styles */
-#instructors {
-    background-color: #f9f9f9;
-    padding: 4rem 0;
-    text-align: center;
-}
-
-#instructors .container {
-    width: 80%;
-    margin: 0 auto;
-}
-
-#instructors h2 {
-    font-size: 2.5rem;
-    color: #333;
-    margin-bottom: 2rem;
-}
-
-#instructors .instructor-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-}
-
-#instructors .instructor {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 300px;
-}
-
-#instructors .instructor-photo {
-    width: 100%;
-    height: auto;
-    border-radius: 50%;
-    margin-bottom: 20px;
-}
-
-#instructors .instructor-name {
-    font-size: 1.5rem;
-    color: #333;
-    margin-bottom: 10px;
-}
-
-#instructors .instructor-bio {
-    font-size: 1rem;
-    margin-bottom: 20px;
-    color: #666;
-}
-
-.btn-view-courses, .btn-view-bio {
-    display: inline-block;
-    background-color: #00aff0;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: bold;
-    margin: 5px;
-}
-
-/* FAQ Section Styles */
-#faq {
-    background-color: white;
-    padding: 4rem 0;
-    text-align: center;
-}
-
-#faq .container {
-    width: 80%;
-    margin: 0 auto;
-}
-
-#faq h2 {
-    font-size: 2.5rem;
-    color:#0e0e0e;
-    margin-bottom: 2rem;
-}
-
-.faq-container {
-    text-align: left;
-}
-
-.faq-item {
-    margin-bottom: 1rem;
-}
-
-.faq-question {
-    width: 100%;
-    background-color: #00aff0;
-    color: white;
-    padding: 15px;
-    border: none;
-    text-align: left;
-    font-size: 1rem;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-.faq-question:hover {
-    background-color: #0090c0;
-}
-
-.faq-answer {
-    display: none; /* Hidden by default */
-    padding: 15px;
-    background-color: white;
-    color: #0e0e0e;
-    border: 1px solid #0e0e0e;
-    margin-top: 5px;
-    border-radius: 5px;
-}
-
-.faq-answer p {
+.nav-menu ul {
+    list-style: none;
+    padding: 0;
     margin: 0;
-}
-
-/* Footer styles */
-footer {
-    background-color: #0e0e0e;
-    color: white;
-    padding: 2em 0;
-}
-
-.footer-container {
     display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    padding: 0 2em;
+    align-items: center;
 }
 
-.footer-section {
-    margin: 1em;
-}
-
-.footer-section h3, .footer-section h4 {
-    margin-bottom: 0.5em;
-}
-
-.footer-section ul {
-    list-style-type: none;
-}
-
-.footer-section ul li a {
-    color: white;
+.nav-menu ul li a, .user-profile a, .logout a {
     text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.footer-section ul li a:hover {
-    color: #00aff0;
-}
-
-.social-icons {
-    display: flex;
-    justify-content: flex-start;
-}
-
-.social-icons a {
-    display: inline-block;
-    margin-right: 0.5em;
-}
-
-.social-icons img {
-    width: 24px;
-    height: auto;
-}
-
-.footer-bottom {
-    text-align: center;
-    margin-top: 2em;
-}
-
-footer form {
-    display: flex;
-    justify-content: flex-start;
-    gap: 0.5em;
-}
-
-footer input[type="email"] {
-    padding: 0.5em;
-    border: none;
-    border-radius: 5px;
-}
-
-footer button {
-    padding: 0.5em 1em;
-    background-color: #00aff0;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-footer button:hover {
-    background-color: #008cd0;
-}
-
-
-.question-item {
-    background-color: #f9f9f9;
-    margin-top: 20px;
-    padding: 15px;
-    border-radius: 5px;
-    position: relative;
-}
-
-.question-actions {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-}
-
-.btn-small {
+    color: #fff;
     padding: 5px 10px;
-    font-size: 0.8rem;
-    margin-left: 5px;
+    display: block;
+    transition: background-color 0.3s, color 0.3s;
 }
 
-
-/* Ensure visibility of questions and their options */
-
-#questionsContainer {
-    color: #000000; /* Black color for text */
+.user-profile:hover, .logout:hover, .nav-menu ul li a:hover {
+    background-color: #007bff;
+    color: #fff;
 }
 
-.form-group {
-    margin-bottom: 1rem;
+.footer {
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.form-control {
-    width: 100%;
-    padding: 0.5em;
-    margin-top: 0.5em;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-/* Existing .btn-explore styles can be used for the submit button */
-
-#createAssignmentForm {
-    background-color: rgb(255, 255, 255); /* Set background to black */
-    color: #000000; /* Change text color to white for contrast */
-    padding: 2rem; /* Add some padding around the content */
-    border-radius: 8px; /* Optional: adds rounded corners */
-}
-
-
-.assignment-item {
-    background-color: #f9f9f9; /* Light grey background for contrast */
+.main-content {
+    flex: 3; /* Adjusted for balanced layout */
+    background-color: #ffffff;
     padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    position: relative; /* For potential absolute positioning of buttons or other elements */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-right: 20px; /* Space between content and sidebar */
 }
 
-.modify-assignment,
-.delete-assignment {
-    margin-top: 10px;
-    display: inline-block; /* Display buttons inline */
-    /* Further customization to match your site's design */
+.notifications-sidebar {
+    flex: 1;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.modify-assignment {
-    background-color: #00aff0; /* Consistent with the "explore" button style */
+.courses-list a.course-item, .notifications-list li {
+    background-color: #e9f5ff;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+    color: #333;
+    display: block;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.delete-assignment {
-    background-color: #ff6347; /* A red variant for deletion, adjust as needed */
+.courses-list a.course-item:hover {
+    background-color: #d1e4ff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
 }
 
-/* Ensure the "Create New Assignment" button is visually distinct or matches your site's theme */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        margin-top: 0;
+    }
 
-#assignmentsContainer {
-    color: #000; /* This sets the text color to black */
-}
+    .topbar {
+        flex-direction: column;
+        align-items: center;
+    }
 
-#doAssignment{
-    color: #000; 
-}
+    .user-profile, .logout {
+        margin: 5px 0;
+    }
 
-#assignmentsListStudent{
-    color: #000; 
+    .nav-menu ul {
+        flex-direction: column;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .main-content, .notifications-sidebar {
+        width: 100%;
+        margin: 5px 0;
+        padding: 10px; /* Reduced padding for mobile */
+    }
+
+    /* Adjust flex-direction for smaller screens to stack content */
+    .container {
+        flex-direction: column-reverse;
+    }
 }

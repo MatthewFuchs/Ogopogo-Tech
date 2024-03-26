@@ -1,210 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Skillz E-Learning Platform</title>
-<link rel="stylesheet" href="css/index.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="scripts/auth.js">
 </head>
 <body>
-<header>
-    <nav>
-        <div class="nav-links">
-            <a href="index.html">SkillQuik</a>
+    <!-- Topbar Navigation -->
+    <header class="topbar">
+        <div class="user-profile">
+            <a href="profile.html">User Profile</a>
         </div>
-        <div class="nav-links">
-            <a href="courses.html">Courses</a>
-            <a href="blog.html">Blog</a>
-            <a href="about.html">About</a>
-            <!-- This needs to be linked to the backend so the page changes when someone is logged in-->
-            <a id="loginProfileLink" href="log-in.html">Log In</a>
-            <a id="signUpLink" href="sign-up.html">Sign Up</a>
-        </div>
-    </nav>
-</header>
-
-<main>
-    <!-- Welcome Section -->
-    <section id="welcome">
-        <div class="container">
-            <h2>Welcome to SkillQuik</h2>
-            <p>Discover a world of learning with our expertly crafted courses designed to fuel your passion, advance your career, and ignite your curiosity. Join our community today and start your journey to mastery.</p>
-            <a href="courses.html" class="btn-explore">Explore Courses</a>
-        </div>
-    </section>
-    <section id="howItWorks">
-        <div class="container">
-            <h2>How It Works</h2>
-            <div class="steps">
-                <div class="step">
-                    <span class="step-number">1</span>
-                    <h3 class="step-title">Choose Your Course</h3>
-                    <p class="step-description">Browse through our extensive catalog and pick the course that fits your needs.</p>
-                </div>
-                <div class="step">
-                    <span class="step-number">2</span>
-                    <h3 class="step-title">Sign Up & Enroll</h3>
-                    <p class="step-description">Create an account or sign in and enroll in the course of your choice with a single click.</p>
-                </div>
-                <div class="step">
-                    <span class="step-number">3</span>
-                    <h3 class="step-title">Start Learning</h3>
-                    <p class="step-description">Access your course materials anytime, anywhere, and start learning at your own pace.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <section id="featuredCourses">
-        <h2>Featured Courses</h2>
-        <div class="course-list">
-            <!-- Featured courses will be dynamically inserted here -->
-            <!-- Example of a featured course item -->
-            <article class="course">
-                <img src="path-to-image.jpg" alt="Course Title" class="course-image">
-                <div class="course-info">
-                    <h3 class="course-title">Introduction to Web Development</h3>
-                    <p class="course-description">Learn the fundamentals of web development, from HTML and CSS to JavaScript.</p>
-                    <a href="#" class="course-enroll">Enroll Now</a>
-                </div>
-            </article>
-            <article class="course">
-                <img src="path-to-image.jpg" alt="Course Title" class="course-image">
-                <div class="course-info">
-                    <h3 class="course-title">Software Engineering</h3>
-                    <p class="course-description">Learn the fundamentals of Software Engineering.</p>
-                    <a href="#" class="course-enroll">Enroll Now</a>
-                </div>
-            </article>
-            <article class="course">
-                <img src="path-to-image.jpg" alt="Course Title" class="course-image">
-                <div class="course-info">
-                    <h3 class="course-title">English Literature</h3>
-                    <p class="course-description">This course offers a journey through major epochs, examining transformative texts and their historical contexts in a concise and engaging format.</p>
-                    <a href="#" class="course-enroll">Enroll Now</a>
-                </div>
-            </article>
-            <!-- More featured courses -->
-        </div>
-    </section>
-    <section id="testimonials">
-        <div class="container">
-            <h2>What Our Students Say</h2>
-            <div class="testimonial-grid">
-                <!-- Testimonial 1 -->
-                <blockquote class="testimonial">
-                    <p class="testimonial-text">"This platform has transformed the way I learn. The courses are thorough, and the instructors are incredibly knowledgeable and engaging."</p>
-                    <footer class="testimonial-footer">
-                        - Jane Doe, Web Development Student
-                    </footer>
-                </blockquote>
-                <!-- Testimonial 2 -->
-                <blockquote class="testimonial">
-                    <p class="testimonial-text">"I've gained valuable skills that have allowed me to advance in my career. The flexibility of learning at my own pace was a game changer."</p>
-                    <footer class="testimonial-footer">
-                        - John Smith, Data Science Enthusiast
-                    </footer>
-                </blockquote>
-                <!-- Testimonial 3 -->
-                <blockquote class="testimonial">
-                    <p class="testimonial-text">"The interactive learning environment is top-notch. I particularly enjoyed the hands-on projects that helped solidify my understanding."</p>
-                    <footer class="testimonial-footer">
-                        - Emily Johnson, Aspiring Designer
-                    </footer>
-                </blockquote>
-            </div>
-        </div>
-    </section>
-    <!-- Instructors Section -->
-    <section id="instructors">
-        <div class="container">
-            <h2>Meet Our Top Instructors</h2>
-            <div class="instructor-grid">
-                <!-- Instructor 1 -->
-                <div class="instructor">
-                    <img src="instructor-1.jpg" alt="Instructor Name" class="instructor-photo">
-                    <h3 class="instructor-name">Instructor Name</h3>
-                    <p class="instructor-bio">Brief bio describing the instructor's expertise and background. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <a href="instructor-course-link.html" class="btn-view-courses">View Courses</a>
-                    <a href="instructor-bio-link.html" class="btn-view-bio">Read Bio</a>
-                </div>
-                <div class="instructor">
-                    <img src="instructor-1.jpg" alt="Instructor Name" class="instructor-photo">
-                    <h3 class="instructor-name">Instructor Name</h3>
-                    <p class="instructor-bio">Brief bio describing the instructor's expertise and background. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <a href="instructor-course-link.html" class="btn-view-courses">View Courses</a>
-                    <a href="instructor-bio-link.html" class="btn-view-bio">Read Bio</a>
-                </div>
-                <!-- More instructors -->
-            </div>
-        </div>
-    </section>
-    <section id="faq">
-        <div class="container">
-            <h2>Frequently Asked Questions</h2>
-            <div class="faq-container">
-                <div class="faq-item">
-                    <button class="faq-question">What courses do you offer?</button>
-                    <div class="faq-answer">
-                        <p>We offer a wide range of courses across various disciplines, including technology, business, arts, and science.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-question">How can I sign up for a course?</button>
-                    <div class="faq-answer">
-                        <p>You can sign up by creating an account on our platform and then enrolling in the course of your choice.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-question">Do you offer certifications?</button>
-                    <div class="faq-answer">
-                        <p>Yes, upon completion of a course, you will receive a certification that you can share with your network.</p>
-                    </div>
-                </div>
-                <!-- Add more FAQ items as needed -->
-            </div>
-        </div>
-    </section>
-</main>
-
-<footer>
-    <div class="footer-container">
-        <div class="footer-section">
-            <h3>Ogopogo Tech</h3>
-            <p>Innovating for a better tomorrow.</p>
-        </div>
-        <div class="footer-section">
-            <h4>Quick Links</h4>
+        <nav class="nav-menu">
             <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About Us</a></li>
-                <li><a href="services.html">Services</a></li>
-                <li><a href="blog.html">Blog</a></li>
-                <li><a href="contact.html">Contact</a></li>
+                <li><a href="index.html">Courses</a></li>
+                <li><a href="assignments.html">Assignments</a></li>
+                <li><a href="grades.html">Grades</a></li>
+                <li><a href="help.html">Help</a></li>
             </ul>
+        </nav>
+        <div class="logout">
+            <a href="log-out.html">Log Out</a>
         </div>
-        <div class="footer-section">
-            <h4>Follow Us</h4>
-            <div class="social-icons">
-                <a href="#facebook"><img src="facebook-icon.png" alt="Facebook"></a>
-                <a href="#twitter"><img src="twitter-icon.png" alt="Twitter"></a>
-                <a href="#linkedin"><img src="linkedin-icon.png" alt="LinkedIn"></a>
-                <a href="#instagram"><img src="instagram-icon.png" alt="Instagram"></a>
-            </div>
-        </div>
-        <div class="footer-section">
-            <h4>Newsletter</h4>
-            <form action="#">
-                <input type="email" placeholder="Your email" required>
-                <button type="submit">Subscribe</button>
-            </form>
-        </div>
-    </div>
-    <div class="footer-bottom">
-        <p>&copy; 2024 Ogopogo Tech. All rights reserved.</p>
-    </div>
-</footer>
+    </header>
 
-<script src="scripts/script.js"></script>
+    <div class="container">
+        <!-- Main Content -->
+        <main class="main-content">
+            <h1>Your Courses</h1>
+            <div class="courses-list">
+                <a href="" class="course-item">
+                    <h2>Introduction to Computer Science</h2>
+                    <p>Explore the basics of computer science with this introductory course, covering algorithms, data structures, and more.</p>
+                </a>
+                <a href="" class="course-item">
+                    <h2>Data Structures and Algorithms</h2>
+                    <p>Explore the basics of computer science with this introductory course, covering algorithms, data structures, and more.</p>
+                </a>
+                <a href="" class="course-item">
+                    <h2>Web Programming</h2>
+                    <p>Explore the basics of computer science with this introductory course, covering algorithms, data structures, and more.</p>
+                </a>
+                <a href="" class="course-item">
+                    <h2>Software Engineering</h2>
+                    <p>Explore the basics of computer science with this introductory course, covering algorithms, data structures, and more.</p>
+                </a>
+                <!-- Additional courses can be dynamically added here -->
+            </div>
+
+        </main>
+
+        <!-- Notifications Section -->
+        <aside class="notifications-sidebar">
+            <h2>Important Notifications</h2>
+            <ul class="notifications-list">
+                <li><strong>Due Date:</strong> Assignment #1 - <span>MM/DD/YYYY</span></li>
+                <!-- Additional notifications here -->
+            </ul>
+        </aside>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 Ogopogo Tech. All rights reserved.</p>
+    </footer>
 </body>
 </html>

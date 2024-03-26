@@ -22,15 +22,16 @@ app.use(cors({
 app.use('/api/user', require('./routes/userRoutes'));
 app.use('/api/assignments', require('./routes/assignmentRoutes')); 
 
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
-  });
-app.use(morgan("dev"));
-
 //courses route
 const courseRoutes = require('./routes/courseRoute-admin');
 app.use('/api/courses', courseRoutes);
 
+app.use('/api/enroll', require('./routes/enrollmentRoutes'));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
+});
+app.use(morgan("dev"));
 
 module.exports = app;
 
