@@ -5,6 +5,12 @@ const morgan = require('morgan');
 const cors = require('cors');
 const path = require('path');
 
+if (process.env.NODE_ENV === 'test') {
+  require('dotenv').config({ path: '.env' });
+} else {
+  require('dotenv').config({ path: '../.env' });
+}
+
 const app = express();
 console.log(process.env.MONGO_URI)
 // MONGO_URI saved in .env file with cluster username and password
