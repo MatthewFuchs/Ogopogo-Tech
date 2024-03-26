@@ -5,8 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Assignments</title>
     <link rel="stylesheet" href="css/index.css"> <!-- Ensure correct path -->
+    <link rel="stylesheet" href="css/assignment-list-student.css">
 </head>
 <body>
+
+<!-- Topbar Navigation -->
+<header class="topbar">
+    <div class="user-profile">
+        <a href="profile.html">User Profile</a>
+    </div>
+    <nav class="nav-menu">
+        <ul>
+            <li><a href="index.html">Courses</a></li>
+            <li><a href="assignments-list-student.html">Assignments</a></li>
+            <li><a href="grades.html">Grades</a></li>
+            <li><a href="help.html">Help</a></li>
+        </ul>
+    </nav>
+    <div class="logout">
+    <a href="log-out.html">Log Out</a>
+    </div>
+</header>
 
 <main>
     <div class="container" id="assignmentsListStudent">
@@ -16,17 +35,22 @@
             <div class="assignment-item">
                 <h3>Art Assignment</h3>
                 <p>Due Date: 2024-04-10</p>
-                <button onclick="location.href='do-assignment.html?assignmentId=1'" class="btn-explore">Do Assignment</button>
+                <button onclick="location.href='do-assignment.html?assignmentId=1'" class="btn-explore">Start Assignment</button>
             </div>
             <div class="assignment-item">
                 <h3>Computer Science Assignment</h3>
                 <p>Due Date: 2024-05-20</p>
-                <button onclick="location.href='do-assignment.html?assignmentId=2'" class="btn-explore">Do Assignment</button>
+                <button onclick="location.href='do-assignment.html?assignmentId=2'" class="btn-explore">Start Assignment</button>
             </div>
             <!-- Repeat for each assignment available to the student -->
         </div>
     </div>
 </main>
+
+<!-- Footer -->
+<footer class="footer">
+    <p>&copy; 2024 Ogopogo Tech. All rights reserved.</p>
+</footer>
 
 </body>
 </html>
