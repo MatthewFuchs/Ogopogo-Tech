@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const cors = require('cors');
 const path = require('path');
+<<<<<<< HEAD
 const fs = require('fs'); 
 
 // Create the submissions directory if it doesn't exist
@@ -18,6 +19,9 @@ if (process.env.NODE_ENV === 'test') {
 } else {
   require('dotenv').config({ path: '../.env' });
 }
+=======
+// const assignmentRouter = require('./routes/assignmentRoutes'); 
+>>>>>>> 2da9ed7 (added scrum files)
 
 const app = express();
 console.log(process.env.MONGO_URI)
@@ -34,18 +38,27 @@ app.use(cors({
     credentials: true // Allow sending of cookies and authentication headers
   }));
 app.use('/api/user', require('./routes/userRoutes'));
-app.use('/api/assignments', require('./routes/assignmentRoutes')); 
+// app.use('/api/courses', require('./routes/courseRoutes')); 
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
+  });
+app.use(morgan("dev"));
+// app.use('/api/v1/assignments', assignmentRouter); 
 
 //courses route
 const courseRoutes = require('./routes/courseRoute-admin');
 app.use('/api/courses', courseRoutes);
 
+<<<<<<< HEAD
 app.use('/api/enroll', require('./routes/enrollmentRoutes'));
 
 app.get('*', (req, res) => {
   app.use(express.static(path.join(__dirname, '../frontend')));
 });
 app.use(morgan("dev"));
+=======
+>>>>>>> 2da9ed7 (added scrum files)
 
 module.exports = app;
 
