@@ -4,35 +4,119 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Assignments List</title>
-    <link rel="stylesheet" href="css/index.css"> <!-- Ensure correct path -->
+    <link rel="stylesheet" href="css/assignment.css">
 </head>
 <body>
-
-<main>
+  <main>
     <div class="container">
         <h2>Assignments List</h2>
         <div id="assignmentsContainer">
-            <!-- Example Assignment 1 -->
-            <div class="assignment-item">
-                <h3>Art Assignment</h3>
-                <p>Due Date: 2024-04-10</p>
-                <button class="btn-explore modify-assignment">Modify Assignment</button>
-                <button class="btn-explore delete-assignment">Delete Assignment</button>
-            </div>
-            
-            <!-- Example Assignment 2 -->
-            <div class="assignment-item">
-                <h3>Computer Science Assignment</h3>
-                <p>Due Date: 2024-05-20</p>
-                <button class="btn-explore modify-assignment">Modify Assignment</button>
-                <button class="btn-explore delete-assignment">Delete Assignment</button>
-            </div>
-
-            <!-- Repeat the structure above for each assignment -->
+            <!-- Assignments -->
         </div>
         <button class="btn-explore" onclick="window.location.href='create-assignment.html';">Create New Assignment</button>
     </div>
 </main>
 
+<script>
+    const assignmentsContainer = document.getElementById('assignmentsContainer');
+
+    // Function to create assignment elements
+    function createAssignmentElement(title, description, type, courseID, _id) {
+        const assignmentItem = document.createElement('div');
+        assignmentItem.classList.add('assignment-item');
+
+        const assignmentTitle = document.createElement('h3');
+        assignmentTitle.textContent = title;
+
+        const assignmentDescription = document.createElement('p');
+        assignmentDescription.textContent = `Description: ${description}`;
+
+        const assignmentType = document.createElement('p');
+        assignmentType.textContent = `Type: ${type}`;
+
+        const assignmentCourse = document.createElement('p');
+        assignmentCourse.textContent = `CourseID: ${courseID}`;
+
+        const modifyButton = document.createElement('button');
+        modifyButton.addEventListener('click', function() {
+          window.location.href = `modify-assignment.html?assignmentId=${_id}`;
+        });
+        modifyButton.classList.add('btn-explore', 'modify-assignment');
+        modifyButton.textContent = 'Modify Assignment';
+
+        const deleteButton = document.createElement('button');
+        deleteButton.classList.add('btn-explore', 'delete-assignment');
+        deleteButton.textContent = 'Delete Assignment';
+        deleteButton.addEventListener('click', function() {
+
+          // Delete the assignment from the database
+            fetch('http://localhost:8080/api/assignments/'+_id, {
+              method: 'DELETE',
+              headers: {
+                      'Content-Type': 'application/json',
+                      'Authorization': `Bearer ${token}`
+                  },
+              user: {
+                  id: 12345
+              }
+          })
+          .then(response => {
+              alert('Assignment deleted successfully!');
+          })
+          .catch(error => {
+              alert('Error! Assignment deletion not succesful');
+              console.error(error);
+          });
+        });
+
+        assignmentItem.appendChild(assignmentTitle);
+        assignmentItem.appendChild(assignmentDescription);
+        assignmentItem.appendChild(assignmentType);
+        assignmentItem.appendChild(assignmentCourse);
+        assignmentItem.appendChild(modifyButton);
+        assignmentItem.appendChild(deleteButton);
+
+        return assignmentItem;
+    }
+
+    let token = localStorage.getItem('userToken');
+    if (!token) {
+        token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MDBlOTgxOTZjMmRkNTQxY2ZmYzdlNyIsImlhdCI6MTcxMTMzNTgwOSwiZXhwIjoxNzEzOTI3ODA5fQ.UFgAtXOeg1r7j-4Ug5DOgN_EG1gqbjNkihJMKeC9mXY'
+    }
+
+    // If a token exists, attempt to fetch assignments from server
+    if (token) {
+      fetch('http://localhost:8080/api/assignments/', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      .then(response => {
+        // If the server responds with an error, throw an error
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+        // parse the JSON response
+        return response.json();
+      })
+      .then(assignments => {
+            assignments.forEach(assignment => {
+                const { title, description, type, courseID, _id} = assignment;
+                console.log(assignment);
+                const newAssignmentElement = createAssignmentElement(title, description, type, courseID, _id);
+                assignmentsContainer.appendChild(newAssignmentElement);
+            });
+        })
+      .catch(error => {
+        console.error(error);
+      });
+    } else {
+      
+      window.location.href = '/frontend/log-in.html';
+    }
+
+</script>
 </body>
 </html>

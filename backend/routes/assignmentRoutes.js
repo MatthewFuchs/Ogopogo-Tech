@@ -63,7 +63,7 @@ router.put('/answer/:id', protect, addAnswerToAssignment);
  * @route DELETE /api/assignments/:id 
  * @access Private 
  */
-router.delete('/:id', deleteAssignment);
+router.delete('/:id', protect, deleteAssignment);
 
 // Export the router to be mounted by the main application
 module.exports = router;
