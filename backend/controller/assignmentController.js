@@ -119,4 +119,18 @@ const deleteAssignment = asyncHandler(async (req, res) => {
     res.status(200).json({ id: req.params.id }); 
 });
 
-module.exports = { getAssignment, createAssignment, getAllAssignments, addQuestionToAssignment, deleteAssignment, addAnswerToAssignment }; 
+const deleteQuestionAssignment = asyncHandler(async (req, res) => {
+    const assignment = await Assignment.findById(req.params.id);
+    if (!assignment) {
+        res.status(404);
+        throw new Error('Assignment not found');
+    }
+
+    assignment.questions.splice(req.body.questionNum, 1);
+    assignment.answers.splice(req.body.questionNum, 1);
+    await assignment.save();
+
+    res.status(200).json(assignment);
+});
+
+module.exports = { getAssignment, createAssignment, getAllAssignments, addQuestionToAssignment, deleteAssignment, addAnswerToAssignment, deleteQuestionAssignment }; 

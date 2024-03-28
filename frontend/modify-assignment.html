@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function displayQuestions(questions) {
+        let count = -1;
         questions.forEach(question => {
             const questionItem = document.createElement('div');
             questionItem.classList.add('question-item');
@@ -55,26 +56,18 @@ document.addEventListener('DOMContentLoaded', async () => {
             const questionText = document.createElement('h4');
             questionText.textContent = question;
 
-            const editButton = document.createElement('button');
-            editButton.classList.add('btn', 'btn-edit');
-            editButton.textContent = 'Edit';
-
             const deleteButton = document.createElement('button');
             deleteButton.classList.add('btn', 'btn-delete');
             deleteButton.textContent = 'Delete';
 
             questionItem.appendChild(questionText);
-            questionItem.appendChild(editButton);
             questionItem.appendChild(deleteButton);
-
-            // Add event listeners to 'Edit' and 'Delete' buttons
-            questionItem.querySelector('.btn-edit').addEventListener('click', () => {
-                // Show the edit form
-    });
 
     questionItem.querySelector('.btn-delete').addEventListener('click', () => {
         if (confirm('Are you sure you want to delete this question?')) {
             // Send DELETE request to `/api/questions/{questionId}`
+            count++;
+            handleDeleteQuestion(count);
         }
     });
 
@@ -94,9 +87,27 @@ document.addEventListener('DOMContentLoaded', async () => {
 
           if (response.ok) {
               alert("Question added Succesfully!")
+              window.location.reload();
           } 
         } catch (error) {
             console.error("Error adding question:", error);
+        }
+    }
+
+    async function handleDeleteQuestion(index) {
+        try {
+          const response = await fetch(`http://localhost:8080/api/assignments/question/${assignmentId}`, {
+              method: 'DELETE',
+              headers: { 'Content-Type': 'application/json' , 'Authorization': `Bearer ${token}`},
+              body: JSON.stringify({ questionNum: index })
+          });
+
+          if (response.ok) {
+              alert("Question deleted Succesfully!")
+              window.location.reload();
+          } 
+        } catch (error) {
+            console.error("Error deleting question:", error);
         }
     }
 
