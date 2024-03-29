@@ -48,8 +48,7 @@
         deleteButton.classList.add('btn-explore', 'delete-assignment');
         deleteButton.textContent = 'Delete Assignment';
         deleteButton.addEventListener('click', function() {
-
-          // Delete the assignment from the database
+          if (confirm('Are you sure you want to delete this assignment?')) {
             fetch('http://localhost:8080/api/assignments/'+_id, {
               method: 'DELETE',
               headers: {
@@ -68,6 +67,7 @@
               alert('Error! Assignment deletion not succesful');
               console.error(error);
           });
+          }
         });
 
         assignmentItem.appendChild(assignmentTitle);
