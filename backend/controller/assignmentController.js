@@ -82,10 +82,15 @@ const addQuestionToAssignment = asyncHandler(async (req, res) => {
 // @route   PUT /api/assignments/answer/:id
 // @access  Private 
 const addAnswerToAssignment = asyncHandler(async (req, res) => {
-    if (!req.body.answer || !req.body.questionNum || req.body.questionNum == 0) {
+    if (!req.body.answer) {
         res.status(400);
         throw new Error('Please provide an answer to add!');
       }
+  
+      if (!req.body.questionNum ) {
+        res.status(400);
+        throw new Error('Please provide a question number');
+      } 
       
       const assignment = await Assignment.findById(req.params.id);
       if (!assignment) {
@@ -93,7 +98,7 @@ const addAnswerToAssignment = asyncHandler(async (req, res) => {
         throw new Error('Assignment not found');
       }
   
-      assignment.answers[req.body.questionNum] = req.body.answer;
+      assignment.answers[req.body.questionNum - 1] = req.body.answer;
       await assignment.save();
       
       res.status(201).json(assignment);
@@ -133,4 +138,18 @@ const deleteQuestionAssignment = asyncHandler(async (req, res) => {
     res.status(200).json(assignment);
 });
 
-module.exports = { getAssignment, createAssignment, getAllAssignments, addQuestionToAssignment, deleteAssignment, addAnswerToAssignment, deleteQuestionAssignment }; 
+const submitAssignment = asyncHandler(async (req, res) => {
+  const assignment = await Assignment.findById(req.params.id);
+  if (!assignment) {
+    res.status(404);
+    throw new Error('Assignment not found');
+  }
+
+  assignment.submitted = true;
+  await assignment.save();
+  res.status(200).json(assignment);
+});
+
+module.exports = { getAssignment, createAssignment, getAllAssignments, 
+  addQuestionToAssignment, deleteAssignment, addAnswerToAssignment, 
+  deleteQuestionAssignment, submitAssignment }; 

@@ -47,7 +47,11 @@ const assignmentSchema = new mongoose.Schema({
         {
             type: String,
         }
-    ]
+    ],
+    submitted: {
+        type: Boolean,
+        default: false
+    },
 });
 
 module.exports = mongoose.model('Assignment', assignmentSchema);
