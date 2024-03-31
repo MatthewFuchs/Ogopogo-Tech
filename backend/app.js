@@ -21,7 +21,7 @@ mongoose.connect(process.env.MONGO_URI, {
 app.use(express.static(path.join(__dirname, '../frontend')));
 app.use(express.json());
 app.use(cors({
-    origin: 'http://127.0.0.1:5500', // Allow only this origin to access
+    origin: '*', // Allow all origins to access
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
     credentials: true // Allow sending of cookies and authentication headers
   }));

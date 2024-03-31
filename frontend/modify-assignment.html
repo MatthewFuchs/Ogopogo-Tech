@@ -4,46 +4,119 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modify Assignment</title>
-    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/assignment.css">
 </head>
 <body>
 
 <main>
     <div class="container" id="modifyAssignmentForm">
         <h2>Modify Assignment</h2>
-        <form action="/path-to-update-assignment" method="POST">
-            <!-- Form for updating assignment details like title, description -->
-            <!-- ... -->
-        </form>
 
         <section id="questionsContainer">
-            <h3>Questions</h3>
-            <!-- List existing questions here -->
-            <!-- Each question could have its own form for updating or a button for deleting -->
-            <!-- Example question item -->
-            <div class="question-item">
-                <span>Question: How does XYZ work?</span>
-                <button class="btn btn-edit">Edit</button>
-                <button class="btn btn-delete">Delete</button>
+            <textarea name="question" placeholder="Enter new question"></textarea>
+            <button type="submit" class="btn btn-add">Add Question</button>
 
-                <!-- Hidden form to edit the question, shown when 'Edit' is clicked -->
-                <form class="form-edit-question" style="display:none;">
-                    <!-- Inputs for editing the question -->
-                </form>
-            </div>
-
-            <!-- Form to add a new question -->
-            <!-- TODO: Need To Modify Here -->
-            <form action="/path-to-add-question" method="POST">
-                <textarea name="question" placeholder="Enter new question"></textarea>
-                <button type="submit" class="btn btn-add">Add Question</button>
-            </form>
+            <!-- Questions -->
         </section>
         
-        <!-- Button to save all changes and go back to the assignments list -->
         <button class="btn btn-save" onclick="window.location.href='assignments-list.html';">Save Changes</button>
     </div>
 </main>
+
+<script>
+let token = localStorage.getItem('userToken');
+    if (!token) {
+        token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MDBlOTgxOTZjMmRkNTQxY2ZmYzdlNyIsImlhdCI6MTcxMTMzNTgwOSwiZXhwIjoxNzEzOTI3ODA5fQ.UFgAtXOeg1r7j-4Ug5DOgN_EG1gqbjNkihJMKeC9mXY'
+    }
+
+document.addEventListener('DOMContentLoaded', async () => { 
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const assignmentId = urlParams.get('assignmentId');
+    const questionsContainer = document.getElementById('questionsContainer');
+    const addQuestionBtn = document.querySelector('.btn-add');
+
+    try {
+        const assignment = await fetch(`http://localhost:8080/api/assignments/${assignmentId}`)
+                                 .then(res => res.json());
+
+        displayQuestions(assignment.questions); 
+
+        addQuestionBtn.addEventListener('click', handleAddQuestion);
+    } catch (error) {
+        console.error("Error fetching assignment:", error);
+    }
+
+    function displayQuestions(questions) {
+        let count = -1;
+        questions.forEach(question => {
+            const questionItem = document.createElement('div');
+            questionItem.classList.add('question-item');
+
+            const questionText = document.createElement('h4');
+            questionText.textContent = question;
+
+            const deleteButton = document.createElement('button');
+            deleteButton.classList.add('btn', 'btn-delete');
+            deleteButton.textContent = 'Delete';
+
+            questionItem.appendChild(questionText);
+            questionItem.appendChild(deleteButton);
+
+    questionItem.querySelector('.btn-delete').addEventListener('click', () => {
+        if (confirm('Are you sure you want to delete this question?')) {
+            // Send DELETE request to `/api/questions/{questionId}`
+            count++;
+            handleDeleteQuestion(count);
+        }
+    });
+
+    questionsContainer.appendChild(questionItem);
+        });
+    }
+
+    async function handleAddQuestion() {
+        const questionText = document.querySelector('textarea[name="question"]').value;
+
+        try {
+          const response = await fetch(`http://localhost:8080/api/assignments/question/${assignmentId}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' , 'Authorization': `Bearer ${token}`},
+              body: JSON.stringify({ question: questionText })
+          });
+
+          if (response.ok) {
+              alert("Question added Succesfully!")
+              window.location.reload();
+          } 
+        } catch (error) {
+            console.error("Error adding question:", error);
+        }
+    }
+
+    async function handleDeleteQuestion(index) {
+        try {
+          const response = await fetch(`http://localhost:8080/api/assignments/question/${assignmentId}`, {
+              method: 'DELETE',
+              headers: { 'Content-Type': 'application/json' , 'Authorization': `Bearer ${token}`},
+              body: JSON.stringify({ questionNum: index })
+          });
+
+          if (response.ok) {
+              alert("Question deleted Succesfully!")
+              window.location.reload();
+          } 
+        } catch (error) {
+            console.error("Error deleting question:", error);
+        }
+    }
+
+    function getAssignmentIdFromUrl() {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('id'); 
+    }
+});
+</script>
 
 </body>
 </html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submitted Assignment</title>
+</head>
+<body>
+
+<main>
+    <div class="container">
+        <h2>Submitted Assignment</h2>
+        <div id="assignmentDetails">
+            <h3 id="assignmentTitle">Assignment Title</h3>
+            <h3 id="courseID">Course ID</h3>
+            <!-- Assignment items -->
+        </div>
+    </div>
+</main>
+
+<script>
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const assignmentId = urlParams.get('assignmentId');
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/api/assignments/${assignmentId}`);
+            const data = await response.json();
+            console.log(data);
+
+            // Display assignment details
+            const assignmentDetails = document.getElementById('assignmentDetails');
+            const questions = data.questions;
+
+            const assignmentTitle = document.getElementById('assignmentTitle');
+            assignmentTitle.innerHTML = data.title;
+            const courseID = document.getElementById('courseID');
+            courseID.innerHTML = "Course ID: " + data.courseID;
+
+            questions.forEach((question, index) => {
+                const questionItem = document.createElement('div');
+                questionItem.innerHTML = `
+                    <p><strong>Question ${index + 1}:</strong> ${question}</p>
+                    <p><strong>Answer:</strong> ${data.answers[index]}</p>
+                `;
+                assignmentDetails.appendChild(questionItem);
+            });
+        } catch (error) {
+            console.error('Error fetching assignment details:', error);
+        }
+    });
+</script>
+
+</body>
+</html>
