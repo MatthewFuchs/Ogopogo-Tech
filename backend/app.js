@@ -4,6 +4,14 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs'); 
+
+// Create the submissions directory if it doesn't exist
+const submissionsDir = path.join(__dirname, 'submissions'); // Use path.join for proper path resolution
+
+if (!fs.existsSync(submissionsDir)){
+    fs.mkdirSync(submissionsDir, { recursive: true });
+}
 
 if (process.env.NODE_ENV === 'test') {
   require('dotenv').config({ path: '.env' });
