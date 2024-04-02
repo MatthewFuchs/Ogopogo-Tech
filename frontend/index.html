@@ -27,44 +27,56 @@
     </header>
 
     <div class="container">
-        <!-- Main Content -->
         <main class="main-content">
             <h1>Your Courses</h1>
             <div class="courses-list">
-                <a href="" class="course-item">
-                    <h2>Introduction to Computer Science</h2>
-                    <p>Explore the basics of computer science with this introductory course, covering algorithms, data structures, and more.</p>
-                </a>
-                <a href="" class="course-item">
-                    <h2>Data Structures and Algorithms</h2>
-                    <p>Explore the basics of computer science with this introductory course, covering algorithms, data structures, and more.</p>
-                </a>
-                <a href="" class="course-item">
-                    <h2>Web Programming</h2>
-                    <p>Explore the basics of computer science with this introductory course, covering algorithms, data structures, and more.</p>
-                </a>
-                <a href="" class="course-item">
-                    <h2>Software Engineering</h2>
-                    <p>Explore the basics of computer science with this introductory course, covering algorithms, data structures, and more.</p>
-                </a>
-                <!-- Additional courses can be dynamically added here -->
             </div>
-
         </main>
-
-        <!-- Notifications Section -->
-        <aside class="notifications-sidebar">
-            <h2>Important Notifications</h2>
-            <ul class="notifications-list">
-                <li><strong>Due Date:</strong> Assignment #1 - <span>MM/DD/YYYY</span></li>
-                <!-- Additional notifications here -->
-            </ul>
-        </aside>
     </div>
 
     <!-- Footer -->
     <footer class="footer">
         <p>&copy; 2024 Ogopogo Tech. All rights reserved.</p>
     </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('userToken');
+            if (!token) {
+                window.location.href = '/log-in.html';
+                return;
+            }
+    
+            fetch('http://localhost:8002/api/courses/enrolled', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch enrolled courses');
+                }
+                return response.json();
+            })
+            .then(courses => {
+                const coursesList = document.querySelector('.courses-list');
+                coursesList.innerHTML = ''; // Clear existing courses
+                courses.forEach(course => {
+                    const courseElement = document.createElement('a');
+                    courseElement.className = 'course-item';
+                    courseElement.innerHTML = `
+                        <h2>${course.name}</h2>
+                        <p>${course.description}</p>
+                    `;
+                    // Append the course link here if needed
+                    coursesList.appendChild(courseElement);
+                });
+            })
+            .catch(error => {
+                console.log('Error:', error);
+            });
+        });
+        </script>
 </body>
 </html>
