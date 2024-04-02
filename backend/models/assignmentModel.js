@@ -47,13 +47,7 @@ const assignmentSchema = new mongoose.Schema({
         {
             type: String,
         }
-    ],
-    grade: {
-        type: Number,
-        required: false // Grades may not be initially present
-    }
-    
+    ]
 });
 
 module.exports = mongoose.model('Assignment', assignmentSchema);
-
