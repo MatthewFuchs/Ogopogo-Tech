@@ -8,7 +8,8 @@ const {
   deleteAssignment,
   addAnswerToAssignment,
   deleteQuestionAssignment,
-  submitAssignment
+  submitAssignment,
+  gradeAssignment
 } = require('../controller/assignmentController');
 const { protect } = require('../middleware/authMiddleware');
 

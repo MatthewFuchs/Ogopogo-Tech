@@ -150,9 +150,6 @@ const submitAssignment = asyncHandler(async (req, res) => {
   res.status(200).json(assignment);
 });
 
-module.exports = { getAssignment, createAssignment, getAllAssignments, 
-  addQuestionToAssignment, deleteAssignment, addAnswerToAssignment, 
-  deleteQuestionAssignment, submitAssignment }; 
 
 
 
@@ -185,7 +182,6 @@ const gradeAssignment = asyncHandler(async (req, res) => {
 });
 
 module.exports = {
-  // Include the new gradeAssignment function along with the existing exported functions
   gradeAssignment,
   getAssignment,
   createAssignment,
