@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Teacher</title>
+    <link rel="stylesheet" href="css/admin-dashboard.css">
+    <link rel="stylesheet" href="css/admin-add-teacher.css">
+</head>
+<body>
+
+    <header class="topbar">
+        <nav class="nav-menu">
+            <a href="admin-dashboard.html">Dashboard</a>
+            <a href="manage-users.html">Manage Users</a>
+            <a href="manage-courses.html">Manage Courses</a>
+            <!-- Add more admin links as needed -->
+        </nav>
+    </header>
+
+    <div class="admin-add-teacher">
+        <h1>Add New Teacher</h1>
+        <form id="add-teacher-form">
+            <div class="form-group">
+                <label for="teacherName">Teacher Name:</label>
+                <input type="text" id="teacherName" name="teacherName" required>
+            </div>
+            <div class="form-group">
+                <label for="teacherEmail">Teacher Email:</label>
+                <input type="email" id="teacherEmail" name="teacherEmail" required>
+            </div>
+            <div class="form-group">
+                <label for="course">Assign to Course:</label>
+                <select id="course" name="course">
+                    <!-- Populate this select with courses from your database -->
+                    <option value="course1">Course 1</option>
+                    <option value="course2">Course 2</option>
+                </select>
+            </div>
+            <button type="submit">Add Teacher</button>
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 Ogopogo Tech. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

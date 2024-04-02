@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Courses - Admin</title>
+    <link rel="stylesheet" href="css/admin-dashboard.css">
+    <link rel="stylesheet" href="css/manage-courses.css">
+</head>
+
+<header class="topbar">
+    <nav class="nav-menu">
+        <a href="admin-dashboard.html">Dashboard</a>
+        <a href="manage-users.html">Manage Users</a>
+        <a href="manage-courses.html">Manage Courses</a>
+        <!-- Add more admin links as needed -->
+    </nav>
+</header>
+
+<body>
+    <div class="container">
+        <h1>Manage Courses - Admin Page</h1>
+        <a href="create-course.html" class="admin-btn">Create New Course + </a> <!-- Button to link to create-course.html -->
+        <div id="coursesContainer">
+            <!-- Courses will be inserted here -->
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 Ogopogo Tech. All rights reserved.</p>
+    </footer>
+
+    <link rel="stylesheet" href="scripts/admin.js">
+
+    <script>fetchCourses();</script>
+
+</body>
+</html>
