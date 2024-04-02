@@ -28,6 +28,7 @@ app.use(cors({
 app.use('/api/user', require('./routes/userRoutes'));
 app.use('/api/assignments', require('./routes/assignmentRoutes')); 
 
+
 //courses route
 const courseRoutes = require('./routes/courseRoute-admin');
 app.use('/api/courses', courseRoutes);
@@ -41,3 +42,6 @@ app.use(morgan("dev"));
 
 module.exports = app;
 
+
+
+//Grade assignments route
