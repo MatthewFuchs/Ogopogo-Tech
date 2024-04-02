@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Course - Admin</title>
+    <link rel="stylesheet" href="css/admin-dashboard.css">
+    <link rel="stylesheet" href="css/create-course.css">
+</head>
+<body>
+
+    <header class="topbar">
+        <nav class="nav-menu">
+            <a href="admin-dashboard.html">Dashboard</a>
+            <a href="manage-users.html">Manage Users</a>
+            <a href="manage-courses.html">Manage Courses</a>
+            <!-- Add more admin links as needed -->
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>Create a New Course - Admin Page</h1>
+        <br>
+        <!-- Form for creating a new course, removed the action attribute -->
+        <form id="createCourseForm"> <!-- Added an ID for the form to reference in JS -->
+            <div class="input-group">
+                <label for="courseName">Course Name</label>
+                <input type="text" id="courseName" name="courseName" required>
+            </div>
+            <div class="input-group">
+                <label for="courseID">Course ID</label>
+                <input type="text" id="courseID" name="courseID" required>
+            </div>
+            
+            <div class="input-group">   
+                <label for="courseDescription">Course Description</label>
+                <textarea id="courseDescription" name="courseDescription" rows="4" required></textarea>
+            </div>
+            <div class="input-group">
+                <label for="courseInstructor">Course Instructor</label>
+                <input type="text" id="courseInstructor" name="courseInstructor" required>
+            </div>
+            <button type="submit" class="admin-btn">Create Course</button>
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 Ogopogo Tech. All rights reserved.</p>
+    </footer>
+
+    <link rel="stylesheet" href="scripts/admin.js">
+
+</body>
+</html>

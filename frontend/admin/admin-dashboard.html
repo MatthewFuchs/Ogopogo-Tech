@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="css/admin-dashboard.css">
+</head>
+<body>
+
+    <header class="topbar">
+        <nav class="nav-menu">
+            <a href="admin-dashboard.html">Dashboard</a>
+            <a href="manage-users.html">Manage Users</a>
+            <a href="manage-courses.html">Manage Courses</a>
+            <!-- Add more admin links as needed -->
+        </nav>
+    </header>
+
+    <div class="dashboard">
+        <h1>Admin Dashboard</h1>
+        
+        <section class="summary-stats">
+            <h2>Summary Statistics</h2>
+            <div>New Registrations: <span id="newRegistrations">-</span></div>
+            <div>Active Users: <span id="activeUsers">-</span></div>
+            <div>Course Enrollments: <span id="courseEnrollments">-</span></div>
+        </section>
+        
+        <section class="system-health">
+            <h2>System Health</h2>
+            <div>Server Status: <span id="serverStatus">-</span></div>
+            <div>Performance Metrics: <span id="performanceMetrics">-</span></div>
+        </section>
+        
+        <section class="user-activity">
+            <h2>User Activity</h2>
+            <div>Most Active Users: <span id="mostActiveUsers">-</span></div>
+        </section>
+        
+        <section class="course-management">
+            <h2>Course Management</h2>
+            <div>Popular Courses: <span id="popularCourses">-</span></div>
+        </section>
+        
+        <section class="feedback">
+            <h2>Feedback and Support</h2>
+            <div>Open Support Tickets: <span id="supportTickets">-</span></div>
+        </section>
+        
+        <section class="quick-actions">
+            <h2>Quick Actions</h2>
+            <button onclick="location.href='create-course.html'">Add New Course</button>
+            <button onclick="location.href='manage-users.html'">User Management</button>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 Ogopogo Tech. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

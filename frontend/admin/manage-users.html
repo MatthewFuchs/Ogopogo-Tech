@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Users</title>
+    <link rel="stylesheet" href="css/admin-dashboard.css">
+    <link rel="stylesheet" href="css/manage-users.css">
+</head>
+<body>
+    <header class="topbar">
+        <nav class="nav-menu">
+            <a href="admin-dashboard.html">Dashboard</a>
+            <a href="manage-users.html">Manage Users</a>
+            <a href="manage-courses.html">Manage Courses</a>
+            <!-- Add more admin links as needed -->
+        </nav>
+    </header>
+    
+    <main class="admin-content">
+        <h1>Manage Users</h1>
+        <table id="usersTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- User rows will be populated here -->
+            </tbody>
+        </table>
+        <section class="quick-actions">
+            <h2>Quick Actions</h2>
+            <button onclick="location.href='create-course.html'">Add New Course</button>
+            <button onclick="location.href='manage-users.html'">User Management</button>
+            <button onclick="location.href='admin-add-teacher.html'">Add Teacher</button>
+        </section>        
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 Ogopogo Tech. All rights reserved.</p>
+    </footer>
+
+    <script src="scripts/admin.js"></script> <!-- Script for dynamic user management -->
+</body>
+</html>

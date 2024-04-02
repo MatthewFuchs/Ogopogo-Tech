@@ -1,0 +1,80 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f7fa;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.topbar {
+    background-color: #000;
+    color: #fff;
+    padding: 10px 20px;
+    text-align: center;
+}
+
+.nav-menu a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.nav-menu a:hover {
+    color: #007bff;
+}
+
+.dashboard {
+    flex: 1;
+    padding: 20px;
+    width: calc(100% - 40px);
+    max-width: 1200px;
+    margin: 20px auto;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.footer {
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+    text-align: center;
+}
+
+section {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+section h2 {
+    margin-top: 0;
+}
+
+div {
+    margin-bottom: 10px;
+}
+
+button {
+    cursor: pointer;
+    padding: 10px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+}
+
+button:hover {
+    background-color: #0056b3;
+}

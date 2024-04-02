@@ -1,0 +1,22 @@
+.admin-content {
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 960px; /* Adjust based on your layout */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #ddd; /* For zebra-stripping, you could alternate background colors */
+}
+
+th {
+    background-color: #f4f7fa;
+}
+
+/* Add more styling as needed */
