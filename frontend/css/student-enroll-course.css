@@ -1,0 +1,61 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    background-color: #f4f7fa; /* Preserves the background color */
+}
+
+/* This wrapper is specifically for centering the form container */
+.main-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 120px); /* Adjust height calculation based on actual header/footer height */
+    padding: 20px; /* Padding to ensure content does not touch the viewport edges */
+}
+
+.container {
+    max-width: 600px;
+    width: 100%; /* Ensures responsiveness */
+    padding: 40px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    margin: 0 auto; /* Center the container horizontally */
+}
+
+.enroll-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.form-group label {
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+
+.form-group select, .submit-btn {
+    padding: 12px;
+    margin-top: 5px; /* Ensure a little space above for clarity */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.submit-btn {
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submit-btn:hover {
+    background-color: #004088;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+}

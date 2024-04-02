@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enroll in a Course</title>
+    <link rel="stylesheet" href="css/index.css"> <!-- Assuming reuse of existing styles -->
+    <link rel="stylesheet" href="css/student-enroll-course.css"> <!-- Additional CSS for this page -->
+</head>
+<body>
+    <!-- Topbar Navigation -->
+    <header class="topbar">
+        <div class="user-profile">
+            <a href="profile.html">User Profile</a>
+        </div>
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="index.html">Courses</a></li>
+                <li><a href="assignments-list-student.html">Assignments</a></li>
+                <li><a href="grades.html">Grades</a></li>
+                <li><a href="help.html">Help</a></li>
+            </ul>
+        </nav>
+        <div class="logout">
+            <a href="log-out.html">Log Out</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1>Enroll in a New Course</h1>
+        <form id="enroll-form" class="enroll-form">
+            <div class="form-group">
+                <label for="courseSelect">Select a Course:</label>
+                <select id="courseSelect" name="course">
+                    <!-- Your actual course list will be loaded here -->
+                </select>
+            </div>
+            <button type="submit" class="submit-btn">Enroll</button>
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 Ogopogo Tech. All rights reserved.</p>
+    </footer>
+
+    <script src="scripts/student-enroll.js"></script> <!-- Logic to load courses and handle enrollment -->
+</body>
+</html>
