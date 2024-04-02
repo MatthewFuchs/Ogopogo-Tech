@@ -4,20 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Assignment</title>
-    <link rel="stylesheet" href="css/assignment.css"> <!-- Ensure correct path -->
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/create-assignment.css">
 </head>
 <body>
 
-<main>
-    <div class="container" id="createAssignmentForm">
+<!-- Topbar Navigation -->
+<header class="topbar">
+    <div class="user-profile">
+        <a href="profile.html">User Profile</a>
+    </div>
+    <nav class="nav-menu">
+        <ul>
+            <li><a href="index.html">Courses</a></li>
+            <li><a href="assignments-list-student.html">Assignments</a></li>
+            <li><a href="grades.html">Grades</a></li>
+            <li><a href="help.html">Help</a></li>
+        </ul>
+    </nav>
+    <div class="logout">
+    <a href="log-out.html">Log Out</a>
+    </div>
+</header>
+
+<main class="main-content">
+    <div class="form-container">
         <h2>Create New Assignment</h2>
+        <form action="/assignments/create" method="POST" class="assignment-form">
         <form id="assignmentForm">
             <div class="form-group">
                 <label for="title">Title:</label>
-                <input type="text" id="title" name="title" required class="form-control">
+                <input type="text" id="title" name="title" required>
             </div>
             <div class="form-group">
                 <label for="description">Description:</label>
+                <textarea id="description" name="description"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="dueDate">Due Date:</label>
+                <input type="date" id="dueDate" name="dueDate">
+            </div>
+            <div class="form-group">
+                <label for="course">Course:</label>
+                <div class="select-wrapper">
+                    <select id="course" name="course" required>
+                        <option value="">Select a Course</option>
+                        <option value="art">Art</option>
+                        <option value="computer_science">Computer Science</option>
+                        <option value="economy">Economy</option>
+                    </select>
+                </div>
                 <textarea id="description" name="description" required class="form-control"></textarea>
             </div>
             <div class="form-group">
@@ -33,11 +69,15 @@
                 <label for="courseID">Course ID:</label>
                 <input type="text" id="courseID" name="courseID" required class="form-control">
             </div>
-            <button type="submit" class="btn-explore">Create Assignment</button>
+            <button type="submit" class="btn-submit">Create Assignment</button>
         </form>
     </div>
 </main>
 
+<!-- Footer -->
+<footer class="footer">
+    <p>&copy; 2024 Ogopogo Tech. All rights reserved.</p>
+</footer>
 <script>
     const assignmentForm = document.getElementById('assignmentForm');
     assignmentForm.addEventListener('submit', (event) => {

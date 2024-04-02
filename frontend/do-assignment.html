@@ -4,6 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Do Assignment</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/do-assignment.css">
+</head>
+<body>
+
+<header class="topbar">
+    <section class="user-profile">
+        <a href="profile.html">User Profile</a>
+    </section>
+    <nav class="nav-menu">
+        <ul>
+            <li><a href="index.html">Courses</a></li>
+            <li><a href="assignments-list-student.html">Assignments</a></li>
+            <li><a href="grades.html">Grades</a></li>
+            <li><a href="help.html">Help</a></li>
+        </ul>
+    </nav>
+    <section class="logout">
+        <a href="log-out.html">Log Out</a>
+    </section>
+</header>
+
+<main class="main-content">
+    <article class="assignment-container">
+        <h2>Complete Your Assignment</h2>
+        <p>Please answer the following questions and submit your assignment.</p>
+        
+        <form id="assignmentForm" action="/submit-assignment" method="POST">
+            <div class="questions-container">
+                <div class="question-item">
+                    <label for="question1">1. What is the capital of France?</label>
+                    <input type="text" id="question1" name="question1" class="form-input">
+                </div>
+                <!-- Additional questions can be added here -->
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">Submit Assignment</button>
+            </div>
     <link rel="stylesheet" href="css/assignment.css"> <!-- Ensure correct path -->
 </head>
 <body>
@@ -21,10 +59,19 @@
             <!-- Submit button for assignment -->
             <button type="submit" class="btn-explore">Submit Assignment</button>
         </form>
-    </div>
+    </article>
 </main>
 
+<footer class="footer">
+    <p>&copy; 2024 Ogopogo Tech. All rights reserved.</p>
+</footer>
+
 <script>
+    document.getElementById('assignmentForm').onsubmit = function(event) {
+        event.preventDefault();
+        alert('Assignment submitted!');
+        window.location.href = 'assignments-list-student.html';
+    };
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const assignmentId = urlParams.get('assignmentId');

@@ -4,6 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modify Assignment</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/modify-assignment.css">
+</head>
+<body>
+
+<header class="topbar">
+    <section class="user-profile">
+        <a href="profile.html">User Profile</a>
+    </section>
+    <nav class="nav-menu">
+        <ul>
+            <li><a href="index.html">Courses</a></li>
+            <li><a href="assignments-list-student.html">Assignments</a></li>
+            <li><a href="grades.html">Grades</a></li>
+            <li><a href="help.html">Help</a></li>
+        </ul>
+    </nav>
+    <section class="logout">
+        <a href="log-out.html">Log Out</a>
+    </section>
+</header>
+
+<main class="main-content">
+    <div class="assignment-details">
+        <h2>Assignment Title</h2>
+        <p>Edit the details and questions for your assignment below.</p>
     <link rel="stylesheet" href="css/assignment.css">
 </head>
 <body>
@@ -21,8 +47,40 @@
         
         <button class="btn btn-save" onclick="window.location.href='assignments-list.html';">Save Changes</button>
     </div>
+    
+    <section class="edit-assignment">
+        <form class="assignment-info" action="/path-to-update-assignment-details" method="POST">
+            <div class="form-group">
+                <label for="assignmentTitle">Title</label>
+                <input type="text" id="assignmentTitle" name="assignmentTitle">
+            </div>
+            <div class="form-group">
+                <label for="assignmentDescription">Description</label>
+                <textarea id="assignmentDescription" name="assignmentDescription"></textarea>
+            </div>
+            <button type="submit" class="btn-update">Update Details</button>
+        </form>
+    </section>
+    
+    <section class="assignment-questions">
+        <h3>Questions</h3>
+        <!-- Dynamically generated list of questions -->
+        <div class="question-list">
+            <!-- Example of a question -->
+            <div class="question" id="question1">
+                <p>What is the capital of France?</p>
+                <button class="btn-edit-question">Edit</button>
+                <button class="btn-delete-question">Delete</button>
+            </div>
+            <!-- Repeat for other questions -->
+        </div>
+        <button class="btn-add-question">Add New Question</button>
+    </section>
 </main>
 
+<footer class="footer">
+    <p>&copy; 2024 Ogopogo Tech. All rights reserved.</p>
+</footer>
 <script>
 let token = localStorage.getItem('userToken');
     if (!token) {

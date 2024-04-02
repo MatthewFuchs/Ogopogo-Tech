@@ -4,6 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Assignments List</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/assignments-list.css"> <!-- Updated to include specific CSS file -->
+</head>
+<body>
+
+<!-- Topbar Navigation -->
+<header class="topbar">
+    <div class="user-profile">
+        <a href="profile.html">User Profile</a>
+    </div>
+    <nav class="nav-menu">
+        <ul>
+            <li><a href="index.html">Courses</a></li>
+            <li><a href="assignments-list-student.html">Assignments</a></li>
+            <li><a href="grades.html">Grades</a></li>
+            <li><a href="help.html">Help</a></li>
+        </ul>
+    </nav>
+    <div class="logout">
+    <a href="log-out.html">Log Out</a>
+    </div>
+</header>
+
+<main class="main-content">
+    <h2 class="page-title">Assignments List</h2>
+    <div class="assignments-container">
+        <!-- Assignment Item 1 -->
+        <div class="assignment-item">
+            <div class="assignment-info">
+                <h3>Art Assignment</h3>
+                <p>Due Date: 2024-04-10</p>
+            </div>
+            <div class="assignment-actions">
+                <button class="btn modify-assignment">Modify</button>
+                <button class="btn delete-assignment">Delete</button>
+            </div>
+        </div>
+
+        <!-- Assignment Item 2 -->
+        <div class="assignment-item">
+            <div class="assignment-info">
+                <h3>Computer Science Assignment</h3>
+                <p>Due Date: 2024-05-20</p>
+            </div>
+            <div class="assignment-actions">
+                <button class="btn modify-assignment">Modify</button>
+                <button class="btn delete-assignment">Delete</button>
+            </div>
     <link rel="stylesheet" href="css/assignment.css">
 </head>
 <body>
@@ -13,9 +61,15 @@
         <div id="assignmentsContainer">
             <!-- Assignments -->
         </div>
-        <button class="btn-explore" onclick="window.location.href='create-assignment.html';">Create New Assignment</button>
+        <!-- Additional assignment items can follow the same structure -->
     </div>
+    <button class="btn create-new-assignment">Create New Assignment</button>
 </main>
+
+<!-- Footer -->
+<footer class="footer">
+    <p>&copy; 2024 Ogopogo Tech. All rights reserved.</p>
+</footer>
 
 <script>
     const assignmentsContainer = document.getElementById('assignmentsContainer');
