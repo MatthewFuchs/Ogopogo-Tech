@@ -6,10 +6,8 @@ const Assignment = require('../models/assignmentModel'); // Assuming you have an
 // @access  Public
 const getAssignment = asyncHandler(async (req, res) => {
     const assigns = await Assignment.findById(req.params.id); 
-    // Finds an assignment by its ID from the database
 
     res.status(200).json(assigns); 
-    // Returns the assignment as JSON with a 200 (success) status code
 });
 
 // @desc    Get all Assignments
@@ -17,26 +15,39 @@ const getAssignment = asyncHandler(async (req, res) => {
 // @access  Private (admin only)
 const getAllAssignments = asyncHandler(async (req, res) => {
     const assigns = await Assignment.find({}); 
-    // Finds all assignments in your database
 
     res.status(200).json(assigns); 
-    // Returns all assignments as JSON with a 200 (success) status code
 });
 
 // @desc    Create an Assignment
 // @route   POST /api/assignments
 // @access  Private (Instructor or Admin)
 const createAssignment = asyncHandler(async (req, res) => {
-    if (!req.body.title || !req.body.description || !req.body.type || !req.body.courseID) {
-        res.status(400); // Bad Request status
-        throw new Error('Please provide all fields'); 
+    if (!req.body.title) {
+      res.status(400);
+      throw new Error('Please provide a title');
+    }
+
+    if (!req.body.description) {
+      res.status(400);
+      throw new Error('Please provide a description');
+    }
+
+    if (!req.body.type) {
+      res.status(400);
+      throw new Error('Please provide a type');
+    }
+
+    if (!req.body.courseID) {
+      res.status(400);
+      throw new Error('Please provide a course ID');
     }
 
     // Set the instructor as the logged-in user 
-    req.body.instructorID = req.user.id; // Assuming you have user authentication
+    req.body.instructorID = req.user.id; 
 
     const assignment = await Assignment.create(req.body); // Creates a new assignment document
-    res.status(201).json(assignment); // 201 Created status
+    res.status(201).json(assignment); 
 });
 
 // @desc    Add Question to Assignment
@@ -50,13 +61,13 @@ const addQuestionToAssignment = asyncHandler(async (req, res) => {
 
     const assignment = await Assignment.findById(req.params.id); 
     if (!assignment) {
-      res.status(404); // Not Found status
+      res.status(404); 
       throw new Error('Assignment not found');
     }
 
     // Authorization: Ensure the user is the instructor of the assignment
     if (assignment.instructorID.toString() !== req.user.id) {
-      res.status(403); // Forbidden status
+      res.status(403); 
       throw new Error('Forbidden - You are not the instructor of this assignment');
     }
 
@@ -71,10 +82,15 @@ const addQuestionToAssignment = asyncHandler(async (req, res) => {
 // @route   PUT /api/assignments/answer/:id
 // @access  Private 
 const addAnswerToAssignment = asyncHandler(async (req, res) => {
-    if (!req.body.answer || !req.body.questionNum || req.body.questionNum == 0) {
+    if (!req.body.answer) {
         res.status(400);
         throw new Error('Please provide an answer to add!');
       }
+  
+      if (!req.body.questionNum ) {
+        res.status(400);
+        throw new Error('Please provide a question number');
+      } 
       
       const assignment = await Assignment.findById(req.params.id);
       if (!assignment) {
@@ -82,7 +98,7 @@ const addAnswerToAssignment = asyncHandler(async (req, res) => {
         throw new Error('Assignment not found');
       }
   
-      assignment.answers[req.body.questionNum] = req.body.answer;
+      assignment.answers[req.body.questionNum - 1] = req.body.answer;
       await assignment.save();
       
       res.status(201).json(assignment);
@@ -98,14 +114,42 @@ const deleteAssignment = asyncHandler(async (req, res) => {
         throw new Error('Assignment not found');
     }
 
-    // Authorization check needed
-    if (assignment.instructorID.toString() !== req.user.id) {
-        res.status(403); // Forbidden status
-        throw new Error('Forbidden - You are not the instructor of this assignment');
-      }
+    // Not needed as only admins will have access to delete assignment
+    // if (assignment.instructorID.toString() !== req.user.id) {
+    //     res.status(403); // Forbidden status
+    //     throw new Error('Forbidden - You are not the instructor of this assignment');
+    //   }
 
     await assignment.deleteOne(); 
     res.status(200).json({ id: req.params.id }); 
 });
 
-module.exports = { getAssignment, createAssignment, getAllAssignments, addQuestionToAssignment, deleteAssignment, addAnswerToAssignment }; 
+const deleteQuestionAssignment = asyncHandler(async (req, res) => {
+    const assignment = await Assignment.findById(req.params.id);
+    if (!assignment) {
+        res.status(404);
+        throw new Error('Assignment not found');
+    }
+
+    assignment.questions.splice(req.body.questionNum, 1);
+    assignment.answers.splice(req.body.questionNum, 1);
+    await assignment.save();
+
+    res.status(200).json(assignment);
+});
+
+const submitAssignment = asyncHandler(async (req, res) => {
+  const assignment = await Assignment.findById(req.params.id);
+  if (!assignment) {
+    res.status(404);
+    throw new Error('Assignment not found');
+  }
+
+  assignment.submitted = true;
+  await assignment.save();
+  res.status(200).json(assignment);
+});
+
+module.exports = { getAssignment, createAssignment, getAllAssignments, 
+  addQuestionToAssignment, deleteAssignment, addAnswerToAssignment, 
+  deleteQuestionAssignment, submitAssignment }; 
