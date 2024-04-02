@@ -153,3 +153,46 @@ const submitAssignment = asyncHandler(async (req, res) => {
 module.exports = { getAssignment, createAssignment, getAllAssignments, 
   addQuestionToAssignment, deleteAssignment, addAnswerToAssignment, 
   deleteQuestionAssignment, submitAssignment }; 
+
+
+
+//  gradeAssignment functionality
+// @desc    Grade an Assignment
+// @route   PUT /api/assignments/grade/:id
+// @access  Private (Instructor or Admin)
+const gradeAssignment = asyncHandler(async (req, res) => {
+  const { studentID, grade } = req.body; // Expecting studentID and grade from request body
+  const assignment = await Assignment.findById(req.params.id);
+
+  if (!assignment) {
+      res.status(404);
+      throw new Error('Assignment not found');
+  }
+
+  // Find existing grade index
+  const existingGradeIndex = assignment.grades.findIndex(g => g.studentID.toString() === studentID);
+
+  if (existingGradeIndex >= 0) {
+      // Update existing grade
+      assignment.grades[existingGradeIndex].grade = grade;
+  } else {
+      // Push new grade
+      assignment.grades.push({ studentID, grade });
+  }
+
+  await assignment.save();
+  res.status(200).json({ message: 'Grade updated successfully', assignment });
+});
+
+module.exports = {
+  // Include the new gradeAssignment function along with the existing exported functions
+  gradeAssignment,
+  getAssignment,
+  createAssignment,
+  getAllAssignments,
+  addQuestionToAssignment,
+  deleteAssignment,
+  addAnswerToAssignment,
+  deleteQuestionAssignment,
+  submitAssignment,
+};

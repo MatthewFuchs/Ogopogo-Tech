@@ -71,5 +71,9 @@ router.delete('/question/:id', protect, deleteQuestionAssignment);
 
 router.put('/submit/:id', protect, submitAssignment);
 
+// Grade an Assignment
+router.put('/grade/:id', protect, gradeAssignment);
+
+
 // Export the router to be mounted by the main application
 module.exports = router;
