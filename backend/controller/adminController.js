@@ -1,9 +1,10 @@
 const asyncHandler = require('express-async-handler');
 const Enrollment = require('../models/enrollmentModel');
+const Course = require('../models/courseModel-admin'); 
 
-// Function to list all enrollment requests
+// Function to list pending enrollment requests
 exports.listEnrollmentRequests = asyncHandler(async (req, res) => {
-    const enrollmentRequests = await Enrollment.find()
+    const enrollmentRequests = await Enrollment.find({ status: 'pending' })
         .populate('student', 'firstName lastName email')
         .populate('course', 'courseID description');
 
@@ -27,7 +28,16 @@ exports.updateEnrollmentRequest = asyncHandler(async (req, res) => {
     }
 
     enrollmentRequest.status = status; // Update the status
-    const updatedRequest = await enrollmentRequest.save(); // Save the updated request
+    const updatedRequest = await enrollmentRequest.save(); 
 
-    res.json(updatedRequest); // Send back the updated enrollment request
+    // If the request is accepted, add the student to the course's students array
+    if (status === 'accepted') {
+        const course = await Course.findById(enrollmentRequest.course);
+        if (!course.students.includes(enrollmentRequest.student)) {
+            course.students.push(enrollmentRequest.student);
+            await course.save();
+        }
+    }
+
+    res.json(updatedRequest); 
 });
