@@ -4,7 +4,7 @@
   "description": "e-learning application for COSC310",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node backend/server.js",
     "server": "nodemon server.js",
     "test": "jest"
   },
