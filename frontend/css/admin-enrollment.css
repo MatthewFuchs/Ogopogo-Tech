@@ -1,0 +1,89 @@
+/* Admin Enrollment Requests Page Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 20px;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    text-align: center;
+}
+
+.nav-links a {
+    color: #fff;
+    text-decoration: none;
+    padding: 0 15px;
+}
+
+.nav-links a.active {
+    color: #4CAF50;
+}
+
+main {
+    background-color: #fff;
+    margin: 20px auto;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    max-width: 800px;
+}
+
+h2 {
+    color: #333;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:disabled {
+    background-color: #ccc;
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}

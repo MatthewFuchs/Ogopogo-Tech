@@ -43,7 +43,7 @@ app.use('/api/courses', courseRoutes);
 app.use('/api/enroll', require('./routes/enrollmentRoutes'));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
+  app.use(express.static(path.join(__dirname, '../frontend')));
 });
 app.use(morgan("dev"));
 

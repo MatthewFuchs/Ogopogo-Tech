@@ -22,7 +22,11 @@ const courseSchema = new mongoose.Schema({
   instructor: {
     type: String, // Specifies the data type as String
     required: true 
-  }
+  },
+  students: [{ // New field to store enrolled students
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }]
 });
 
 module.exports = mongoose.model('Course', courseSchema);
