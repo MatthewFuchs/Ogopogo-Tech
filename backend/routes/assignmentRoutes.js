@@ -73,9 +73,7 @@ router.delete('/question/:id', protect, deleteQuestionAssignment);
 router.put('/submit/:id', protect, submitAssignment);
 
 // Grade an Assignment
-// Then, ensure your route is correct
 router.put('/grade/:id', protect, gradeAssignment);
-
 
 
 // Export the router to be mounted by the main application
