@@ -48,10 +48,19 @@ const assignmentSchema = new mongoose.Schema({
             type: String,
         }
     ],
-    submitted: {
-        type: Boolean,
-        default: false
-    },
-});
+    grades: [{
+        studentID: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            required: false
+        },
+        grade: {
+            type: Number,
+            required: true
+        }
+    }]
+    
 
+});
 module.exports = mongoose.model('Assignment', assignmentSchema);
+

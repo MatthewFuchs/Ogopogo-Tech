@@ -42,6 +42,7 @@ app.use('/api/user', require('./routes/userRoutes'));
 app.use(morgan("dev"));
 app.use('/api/assignments', require('./routes/assignmentRoutes')); 
 
+
 //courses route
 const courseRoutes = require('./routes/courseRoute-admin');
 app.use('/api/courses', courseRoutes);
@@ -54,4 +55,3 @@ app.get('*', (req, res) => {
 });
 
 module.exports = app;
-

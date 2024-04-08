@@ -11,6 +11,8 @@ const {
   addAnswerToAssignment,
   deleteQuestionAssignment,
   submitAssignment,
+  gradeAssignment
+
 } = require('../controller/assignmentController');
 const { protect } = require('../middleware/authMiddleware');
 
@@ -89,6 +91,10 @@ router.delete('/:id', protect, deleteAssignment);
 router.delete('/question/:id', protect, deleteQuestionAssignment);
 
 router.put('/submit/:id', protect, submitAssignment);
+
+// Grade an Assignment
+router.put('/grade/:id', protect, gradeAssignment);
+
 
 // Export the router to be mounted by the main application
 
