@@ -159,24 +159,28 @@ const submitAssignment = asyncHandler(async (req, res) => {
 // @access  Private (Instructor or Admin)
 const gradeAssignment = asyncHandler(async (req, res) => {
   const { studentID, grade, feedback } = req.body;
-  const assignmentID = req.params.id;
+  const assignment = await Assignment.findById(req.params.id);
 
-  // Check if assignment exists
-  const assignmentExists = await Assignment.findById(assignmentID);
-  if (!assignmentExists) {
-      res.status(404);
-      throw new Error('Assignment not found');
+  if (!assignment) {
+    res.status(404);
+    throw new Error('Assignment not found');
   }
 
-  // Create or update the grade
-  const gradeDoc = await Grade.findOneAndUpdate(
-      { assignmentID, studentID },
-      { grade, feedback },
-      { new: true, upsert: true } // Upsert option creates the document if it doesn't exist
-  );
+  const existingGradeIndex = assignment.grades.findIndex(g => g.studentID.toString() === studentID);
+  
+  if (existingGradeIndex >= 0) {
+    // Update existing grade
+    assignment.grades[existingGradeIndex].grade = grade;
+    assignment.grades[existingGradeIndex].feedback = feedback;
+  } else {
+    // Add new grade
+    assignment.grades.push({ studentID, grade, feedback });
+  }
 
-  res.status(200).json(gradeDoc);
+  await assignment.save();
+  res.status(200).json({ message: 'Grade updated successfully', assignment });
 });
+
 module.exports = {
   gradeAssignment,
   getAssignment,

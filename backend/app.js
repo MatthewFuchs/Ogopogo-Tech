@@ -41,7 +41,3 @@ app.get('*', (req, res) => {
 app.use(morgan("dev"));
 
 module.exports = app;
-
-
-
-//Grade assignments route
