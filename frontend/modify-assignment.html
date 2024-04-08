@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const questionText = document.querySelector('textarea[name="question"]').value;
 
         try {
-          const response = await fetch(`http://localhost:8080/api/assignments/question/${assignmentId}`, {
+          const response = await fetch(`http://localhost:8002/api/assignments/question/${assignmentId}`, {
               method: 'PUT',
               headers: { 'Content-Type': 'application/json' , 'Authorization': `Bearer ${token}`},
               body: JSON.stringify({ question: questionText })
@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     async function handleDeleteQuestion(index) {
         try {
-          const response = await fetch(`http://localhost:8080/api/assignments/question/${assignmentId}`, {
+          const response = await fetch(`http://localhost:8002/api/assignments/question/${assignmentId}`, {
               method: 'DELETE',
               headers: { 'Content-Type': 'application/json' , 'Authorization': `Bearer ${token}`},
               body: JSON.stringify({ questionNum: index })
