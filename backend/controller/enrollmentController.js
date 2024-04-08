@@ -3,11 +3,10 @@ const Enrollment = require('../models/enrollmentModel');
 const Course = require('../models/courseModel-admin'); 
 
 exports.submitEnrollmentRequest = asyncHandler(async (req, res) => {
-    const courseCode = req.params.courseId; 
     const studentId = req.user._id; 
 
     // find the course by its code
-    const course = await Course.findOne({ courseID: courseCode });
+    const course = await Course.findById(req.params.courseId);
     if (!course) {
         return res.status(404).json({ message: 'Course not found' });
     }

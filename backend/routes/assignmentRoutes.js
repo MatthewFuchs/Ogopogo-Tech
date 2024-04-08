@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
+const path = require('path');
 const {
   getAssignment,
   createAssignment,
@@ -10,8 +12,26 @@ const {
   deleteQuestionAssignment,
   submitAssignment,
   gradeAssignment
+
 } = require('../controller/assignmentController');
 const { protect } = require('../middleware/authMiddleware');
+
+// Configure Multer Storage
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    // This should set the directory to backend/submissions
+    cb(null, path.join(__dirname, '../submissions'));
+  },
+  filename: function(req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+  }
+});
+
+// Initialize upload variable with Multer configuration
+const upload = multer({
+  storage: storage,
+  // Add file filter if needed to accept specific types of files
+}).single('assignmentFile'); // 'assignmentFile' is the name attribute in the form
 
 /**
  * Route to create a new assignment.
@@ -77,4 +97,26 @@ router.put('/grade/:id', protect, gradeAssignment);
 
 
 // Export the router to be mounted by the main application
+
+/**
+ * Route to submit an assignment with a file upload.
+ * @route POST /api/assignments/submit/:id
+ * @access Private
+ */
+// Route to submit an assignment with a file upload, without authentication for testing.
+router.post('/submit/:id', (req, res) => {
+  console.log('File upload endpoint hit'); // Log when the endpoint is hit
+  upload(req, res, function(err) {
+    if(err) {
+      console.log('Error during file upload:', err); // Log any error during upload
+      return res.status(500).json({ message: 'File upload failed', error: err });
+    }
+    console.log('File uploaded successfully', req.file); // Log the uploaded file info
+    // Proceed with submission processing using req.file and req.body
+    submitAssignment(req, res);
+  });
+});
+
+// Continue with the rest of your routes...
+
 module.exports = router;

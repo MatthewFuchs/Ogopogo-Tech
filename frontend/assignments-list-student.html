@@ -31,18 +31,6 @@
     <div class="container" id="assignmentsListStudent">
         <h2>Your Assignments</h2>
         <div class="assignment-list">
-            <!-- Dynamically generate this list based on the assignments assigned to the student -->
-            <div class="assignment-item">
-                <h3>Art Assignment</h3>
-                <p>Due Date: 2024-04-10</p>
-                <button onclick="location.href='do-assignment.html?assignmentId=1'" class="btn-explore">Start Assignment</button>
-            </div>
-            <div class="assignment-item">
-                <h3>Computer Science Assignment</h3>
-                <p>Due Date: 2024-05-20</p>
-                <button onclick="location.href='do-assignment.html?assignmentId=2'" class="btn-explore">Start Assignment</button>
-            </div>
-            <!-- Repeat for each assignment available to the student -->
         </div>
     </div>
 </main>
@@ -60,7 +48,7 @@
 
         // If a token exists, attempt to fetch assignments from server
         if (token) {
-        fetch('http://localhost:8080/api/assignments/', {
+        fetch('http://localhost:8002/api/assignments/', {
             method: 'GET',
             headers: {
             'Content-Type': 'application/json',

@@ -11,7 +11,7 @@
         <h1>Manage Courses - Admin Page</h1>
         <a href="create-course.html" class="admin-btn">Create New Course + </a> <!-- Button to link to create-course.html -->
         <div id="coursesContainer">
-            <!-- Courses will be inserted here -->
+            <!-- fetched courses will be inserted here using the Eventlistener from the below script -->
         </div>
     </div>
 
@@ -46,9 +46,16 @@
                 .catch(error => {
                     console.error('Error fetching courses:', error);
                     const container = document.getElementById('coursesContainer');
-                    container.innerHTML = '<p>Error loading courses. Please try again later.</p>';
+                    container.innerHTML = '<p>Error loading courses.</p>';
                 });
         }
+
+        function deleteCourse(courseId) {
+            fetch(`http://localhost:8080/api/courses/${courseId}`, { method: 'DELETE' })
+                .then(() => fetchCourses()) // Refresh the courses list after deletion
+                .catch(error => console.error('Error:', error));
+        }
+
     </script>
 </body>
 </html>

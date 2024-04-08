@@ -16,7 +16,6 @@ exports.createCourse = asyncHandler(async (req, res) => {
 
 // Get all courses
 
-
 exports.getCourses = async (req, res) => {
   try {
     const courses = await Course.find({});
