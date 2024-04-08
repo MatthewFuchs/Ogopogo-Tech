@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Submitted Assignment</title>
+    <link rel="stylesheet" href="css/submitted-assignment.css">
 </head>
 <body>
 
@@ -24,7 +25,7 @@
             
             <h3 id="assignmentTitle">Assignment Title</h3>
             <h3 id="courseID">Course ID</h3>
-            <!-- Assignment items -->
+            <!-- Assignment items will be dynamically added here -->
         </div>
     </div>
 </main>
@@ -38,7 +39,6 @@
         try {
             const response = await fetch(`http://localhost:8080/api/assignments/${assignmentId}`);
             const data = await response.json();
-            console.log(data);
 
             // Display assignment details
             const assignmentDetails = document.getElementById('assignmentDetails');
@@ -62,23 +62,20 @@
         }
     });
     
-        //Submit Grade handler
-        document.getElementById('gradeForm').addEventListener('submit', function(e) {
+    //Submit Grade handler
+    document.getElementById('gradeForm').addEventListener('submit', function(e) {
         e.preventDefault();
 
         const grade = document.getElementById('grade').value;
 
-        // Assuming you need to identify the student and instructor, replace placeholders accordingly
         fetch(`http://localhost:8080/api/assignments/grade/${assignmentId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                // Add authorization header if needed
             },
             body: JSON.stringify({
-                studentID: 'STUDENT_ID_HERE', // Determine how you get the student ID
+                studentID: 'STUDENT_ID_HERE', 
                 grade: grade,
-                // Add instructorID if required by your API
             })
         })
         .then(response => response.json())
@@ -91,8 +88,6 @@
             alert('Failed to submit grade.');
         });
     });
-
-
 </script>
 
 </body>

@@ -1,6 +1,9 @@
 const asyncHandler = require('express-async-handler'); // Provides error handling for async routes
 const Assignment = require('../models/assignmentModel'); // Assuming you have an Assignment model
 
+const Grade = require('../models/gradeModel'); // Import the Grade model
+
+
 // @desc    Get Assignment by ID
 // @route   GET /api/assignments/:id
 // @access  Public
@@ -150,37 +153,30 @@ const submitAssignment = asyncHandler(async (req, res) => {
   res.status(200).json(assignment);
 });
 
-
-
-
 //  gradeAssignment functionality
 // @desc    Grade an Assignment
 // @route   PUT /api/assignments/grade/:id
 // @access  Private (Instructor or Admin)
 const gradeAssignment = asyncHandler(async (req, res) => {
-  const { studentID, grade } = req.body; // Expecting studentID and grade from request body
-  const assignment = await Assignment.findById(req.params.id);
+  const { studentID, grade, feedback } = req.body;
+  const assignmentID = req.params.id;
 
-  if (!assignment) {
+  // Check if assignment exists
+  const assignmentExists = await Assignment.findById(assignmentID);
+  if (!assignmentExists) {
       res.status(404);
       throw new Error('Assignment not found');
   }
 
-  // Find existing grade index
-  const existingGradeIndex = assignment.grades.findIndex(g => g.studentID.toString() === studentID);
+  // Create or update the grade
+  const gradeDoc = await Grade.findOneAndUpdate(
+      { assignmentID, studentID },
+      { grade, feedback },
+      { new: true, upsert: true } // Upsert option creates the document if it doesn't exist
+  );
 
-  if (existingGradeIndex >= 0) {
-      // Update existing grade
-      assignment.grades[existingGradeIndex].grade = grade;
-  } else {
-      // Push new grade
-      assignment.grades.push({ studentID, grade });
-  }
-
-  await assignment.save();
-  res.status(200).json({ message: 'Grade updated successfully', assignment });
+  res.status(200).json(gradeDoc);
 });
-
 module.exports = {
   gradeAssignment,
   getAssignment,
