@@ -43,15 +43,14 @@ const assignmentSchema = new mongoose.Schema({
             type: String,
         }
     ],
-    answers: [
-        {
-            type: String,
-        }
-    ],
     submitted: {
         type: Boolean,
         default: false
     },
+    submissions: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Submission'
+    }]
 });
 
 module.exports = mongoose.model('Assignment', assignmentSchema);

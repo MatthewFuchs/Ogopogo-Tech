@@ -49,7 +49,7 @@
     </div>
     
     <section class="edit-assignment">
-        <form class="assignment-info" action="/path-to-update-assignment-details" method="POST">
+        <form class="assignment-info">
             <div class="form-group">
                 <label for="assignmentTitle">Title</label>
                 <input type="text" id="assignmentTitle" name="assignmentTitle">
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const addQuestionBtn = document.querySelector('.btn-add');
 
     try {
-        const assignment = await fetch(`http://localhost:8080/api/assignments/${assignmentId}`)
+        const assignment = await fetch(`http://localhost:8002/api/assignments/${assignmentId}`)
                                  .then(res => res.json());
 
         displayQuestions(assignment.questions); 

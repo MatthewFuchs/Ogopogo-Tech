@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler'); // Provides error handling for async routes
-const Assignment = require('../models/assignmentModel'); // Assuming you have an Assignment model
+const Assignment = require('../models/assignmentModel');
+const Submission = require('../models/submissionModel');
 
 // @desc    Get Assignment by ID
 // @route   GET /api/assignments/:id
@@ -72,36 +73,9 @@ const addQuestionToAssignment = asyncHandler(async (req, res) => {
     }
 
     assignment.questions.push(req.body.question); 
-    assignment.answers.push(""); // Adds a new question and a placeholder answer
     await assignment.save(); // Saves the changes to the database
 
     res.status(201).json(assignment); 
-});
-
-// @desc    Add Answer to Assignment
-// @route   PUT /api/assignments/answer/:id
-// @access  Private 
-const addAnswerToAssignment = asyncHandler(async (req, res) => {
-    if (!req.body.answer) {
-        res.status(400);
-        throw new Error('Please provide an answer to add!');
-      }
-  
-      if (!req.body.questionNum ) {
-        res.status(400);
-        throw new Error('Please provide a question number');
-      } 
-      
-      const assignment = await Assignment.findById(req.params.id);
-      if (!assignment) {
-        res.status(404);
-        throw new Error('Assignment not found');
-      }
-  
-      assignment.answers[req.body.questionNum - 1] = req.body.answer;
-      await assignment.save();
-      
-      res.status(201).json(assignment);
 });
 
 // @desc    Delete an Assignment
@@ -139,17 +113,72 @@ const deleteQuestionAssignment = asyncHandler(async (req, res) => {
 });
 
 const submitAssignment = asyncHandler(async (req, res) => {
-  const assignment = await Assignment.findById(req.params.id);
+  if (!req.body.assignmentID) {
+    res.status(400);
+    throw new Error('Please provide an assignment ID');
+  }
+  
+  const assignment = await Assignment.findById(req.body.assignmentID);
   if (!assignment) {
     res.status(404);
     throw new Error('Assignment not found');
   }
 
+  if (!req.body.studentID) {
+    res.status(400);
+    throw new Error('Please provide a student ID');
+  }
+
+  if (!req.body.answers) {
+    res.status(400);
+    throw new Error('Please provide answers');
+  }
+
+  const submission = await Submission.create(req.body);
+
   assignment.submitted = true;
+  assignment.submissions.push(submission);
   await assignment.save();
   res.status(200).json(assignment);
 });
 
+const getAllSubmissions = asyncHandler(async (req, res) => {
+  const assignment = await Assignment.findById(req.params.id);
+  if (!assignment) {
+    res.status(404);
+    throw new Error('Assignment not found');
+  }
+  
+  res.status(200).json(assignment.submissions); 
+});
+
+const getSubmission = asyncHandler(async (req, res) => {
+  const submission = await Submission.findById(req.params.id);
+  if (!submission) {
+    res.status(404);
+    throw new Error('Submission not found');
+  }
+  res.status(200).json(submission);
+})
+
+const gradeSubmission = asyncHandler(async (req, res) => {
+  const submission = await Submission.findById(req.params.id);
+  if (!submission) {
+    res.status(404);
+    throw new Error('Submission not found');
+  }
+
+  if (!req.body.grade) {
+    res.status(400);
+    throw new Error('Please provide a grade');
+  }
+
+  submission.grade = req.body.grade;
+  submission.graded = true;
+  await submission.save();
+  res.status(200).json(submission);
+})
+
 module.exports = { getAssignment, createAssignment, getAllAssignments, 
-  addQuestionToAssignment, deleteAssignment, addAnswerToAssignment, 
-  deleteQuestionAssignment, submitAssignment }; 
+  addQuestionToAssignment, deleteAssignment, 
+  deleteQuestionAssignment, submitAssignment, getAllSubmissions, getSubmission, gradeSubmission }; 

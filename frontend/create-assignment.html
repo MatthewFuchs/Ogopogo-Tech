@@ -30,7 +30,6 @@
 <main class="main-content">
     <div class="form-container">
         <h2>Create New Assignment</h2>
-        <form action="/assignments/create" method="POST" class="assignment-form">
         <form id="assignmentForm">
             <div class="form-group">
                 <label for="title">Title:</label>
@@ -40,11 +39,11 @@
                 <label for="description">Description:</label>
                 <textarea id="description" name="description"></textarea>
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label for="dueDate">Due Date:</label>
                 <input type="date" id="dueDate" name="dueDate">
-            </div>
-            <div class="form-group">
+            </div> -->
+            <!-- <div class="form-group">
                 <label for="course">Course:</label>
                 <div class="select-wrapper">
                     <select id="course" name="course" required>
@@ -55,7 +54,7 @@
                     </select>
                 </div>
                 <textarea id="description" name="description" required class="form-control"></textarea>
-            </div>
+            </div> -->
             <div class="form-group">
                 <label for="type">Type:</label>
                 <select id="type" name="type" required class="form-control">
@@ -95,7 +94,7 @@
             token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MDBlOTgxOTZjMmRkNTQxY2ZmYzdlNyIsImlhdCI6MTcxMTMzNTgwOSwiZXhwIjoxNzEzOTI3ODA5fQ.UFgAtXOeg1r7j-4Ug5DOgN_EG1gqbjNkihJMKeC9mXY'
         }
 
-        fetch('http://localhost:8080/api/assignments/', {
+        fetch('http://localhost:8002/api/assignments/', {
             method: 'POST',
             headers: {
                     'Content-Type': 'application/json',

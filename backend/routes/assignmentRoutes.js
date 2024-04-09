@@ -8,9 +8,11 @@ const {
   getAllAssignments,
   addQuestionToAssignment,
   deleteAssignment,
-  addAnswerToAssignment,
   deleteQuestionAssignment,
   submitAssignment,
+  getAllSubmissions,
+  getSubmission, 
+  gradeSubmission
 } = require('../controller/assignmentController');
 const { protect } = require('../middleware/authMiddleware');
 
@@ -69,16 +71,6 @@ router.get('/', protect, getAllAssignments);
 router.put('/question/:id', protect, addQuestionToAssignment);
 
 /**
- * Route to add an answer to an assignment question.
- * This endpoint likely modifies an existing assignment question by adding an answer
- * to it. You'll need to determine the structure (assignment ID, question ID ) and
- * how the answer data is transmitted.   
- * @route PUT /api/assignments/answer/:id 
- * @access Private 
- */
-router.put('/answer/:id', protect, addAnswerToAssignment);
-
-/**
  * Route to delete an assignment.
  * This endpoint removes an assignment based on its ID in the URL parameter.  
  * @route DELETE /api/assignments/:id 
@@ -88,7 +80,13 @@ router.delete('/:id', protect, deleteAssignment);
 
 router.delete('/question/:id', protect, deleteQuestionAssignment);
 
-router.put('/submit/:id', protect, submitAssignment);
+router.put('/submit/', protect, submitAssignment);
+
+router.get('/submit/:id', getAllSubmissions);
+
+router.get('/submit/get/:id', getSubmission);
+
+router.put('/submit/grade/:id', protect, gradeSubmission);
 
 // Export the router to be mounted by the main application
 

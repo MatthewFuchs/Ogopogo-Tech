@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submitted Assignment</title>
+</head>
+<body>
+
+<main>
+    <div class="container">
+        <h2>Submitted Assignment</h2>
+        <div id="assignmentDetails">
+            <h3 id="assignmentTitle">Assignment Title</h3>
+            <h3 id="courseID">Course ID</h3>
+            <!-- Assignment items -->
+        </div>
+    </div>
+</main>
+
+<script>
+    let token = localStorage.getItem('userToken');
+    if (!token) {
+        token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MDBlOTgxOTZjMmRkNTQxY2ZmYzdlNyIsImlhdCI6MTcxMTMzNTgwOSwiZXhwIjoxNzEzOTI3ODA5fQ.UFgAtXOeg1r7j-4Ug5DOgN_EG1gqbjNkihJMKeC9mXY';
+    }
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const assignmentId = urlParams.get('assignmentId');
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        try {
+            const response = await fetch(`http://localhost:8002/api/assignments/${assignmentId}`);
+            const data = await response.json();
+            console.log(data);
+
+            // Display assignment details
+            const assignmentDetails = document.getElementById('assignmentDetails');
+            const questions = data.questions;
+            const submissions = data.submissions;
+
+            const assignmentTitle = document.getElementById('assignmentTitle');
+            assignmentTitle.innerHTML = data.title;
+            const courseID = document.getElementById('courseID');
+            courseID.innerHTML = "Course ID: " + data.courseID;
+
+            submissions.forEach(async (submission, index) => {
+                const subResponse = await fetch(`http://localhost:8002/api/assignments/submit/get/${submission}`)
+                const subData = await subResponse.json();
+                console.log(subData);
+
+                const submissionItem = document.createElement('div');
+                submissionItem.innerHTML = '<h3>Submission ' + (index + 1) + '</h3>';
+                submissionItem.innerHTML += '<p><strong>Student ID:</strong> ' + subData.studentID + '</p>';
+                for (let index = 0; index < questions.length; index++) {
+                    submissionItem.innerHTML += `
+                        <p><strong>Question ${index + 1}:</strong> ${questions[index]}</p>
+                        <p><strong>Answer ${index + 1}:</strong> ${subData.answers[index]}</p>
+                    `;
+                }   
+                if (subData.graded) {
+                    submissionItem.innerHTML += `<p><strong>Grade:</strong> ${subData.grade}</p>`;
+                } else {
+                    submissionItem.innerHTML += `<p><strong>Grade:</strong></p>
+                                                <input type="text" id="grade${index}"></input>`;
+                    submissionItem.innerHTML += `<p><button onclick="gradeSubmission(${index}, '${subData._id}')">Grade</button></p>`;
+                }
+                assignmentDetails.appendChild(submissionItem);
+            });
+        } catch (error) {
+            console.error('Error fetching assignment details:', error);
+        }
+    });
+
+    async function gradeSubmission(index, id) {
+        const grade = document.getElementById(`grade${index}`).value;
+        try {
+            const response = await fetch(`http://localhost:8002/api/assignments/submit/grade/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                body: JSON.stringify({ grade: grade })
+            });
+            alert('Grade submitted successfully');
+            window.location.reload();
+    } catch (error) {
+        console.error('Error grading submission:', error);
+    }
+}
+</script>
+
+</body>
+</html>

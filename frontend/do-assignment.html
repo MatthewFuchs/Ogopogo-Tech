@@ -28,26 +28,6 @@
 
 <main class="main-content">
     <article class="assignment-container">
-        <h2>Complete Your Assignment</h2>
-        <p>Please answer the following questions and submit your assignment.</p>
-        
-        <form id="assignmentForm" action="/submit-assignment" method="POST">
-            <div class="questions-container">
-                <div class="question-item">
-                    <label for="question1">1. What is the capital of France?</label>
-                    <input type="text" id="question1" name="question1" class="form-input">
-                </div>
-                <!-- Additional questions can be added here -->
-            </div>
-            <div class="form-actions">
-                <button type="submit" class="btn-submit">Submit Assignment</button>
-            </div>
-    <link rel="stylesheet" href="css/assignment.css"> <!-- Ensure correct path -->
-</head>
-<body>
-
-<main>
-    <div class="container" id="doAssignment">
         <h2 id="assignmentTitle">Assignment Title</h2>
         <p id="assignmentDescription">Complete the questions below and submit your answers.</p>
         
@@ -57,21 +37,18 @@
             </div>
 
             <!-- Submit button for assignment -->
-            <button type="submit" class="btn-explore">Submit Assignment</button>
+            <button type="submit" id="submitBtn" class="btn-explore">Submit Assignment</button>
         </form>
-    </article>
+    <link rel="stylesheet" href="css/assignment.css"> <!-- Ensure correct path -->
 </main>
+<body>
 
 <footer class="footer">
     <p>&copy; 2024 Ogopogo Tech. All rights reserved.</p>
 </footer>
 
 <script>
-    document.getElementById('assignmentForm').onsubmit = function(event) {
-        event.preventDefault();
-        alert('Assignment submitted!');
-        window.location.href = 'assignments-list-student.html';
-    };
+    let studentID;
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const assignmentId = urlParams.get('assignmentId');
@@ -83,7 +60,7 @@
     document.addEventListener('DOMContentLoaded', async () => { 
         // Fetch questions from API
         try {
-            const response = await fetch(`http://localhost:8080/api/assignments/${assignmentId}`, {
+            const response = await fetch(`http://localhost:8002/api/assignments/${assignmentId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -112,48 +89,11 @@
         }
     });
 
-    document.getElementById('assignmentForm').onsubmit = async function(event) {
-    event.preventDefault();
+    document.getElementById('submitBtn').onclick = async function(event) {
     const answers = document.querySelectorAll('.question-item input[type="text"]');
     
-    // Array to store promises for each answer submission
-    const answerPromises = [];
-
-    answers.forEach(async (answer, index) => {
-        const answerText = answer.value;
-
-        // Assuming you are using fetch API for AJAX calls
-        const response = await fetch(`http://localhost:8080/api/assignments/answer/${assignmentId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({ answer: answerText, questionNum: (index + 1) })
-        });
-
-        const data = await response.json();
-        console.log('Answer submitted:', data);
-        answerPromises.push(response);
-    });
-
-    // Wait for all answer submissions to complete
-    Promise.all(answerPromises)
-    .then(async () => {
-        const response = await fetch(`http://localhost:8080/api/assignments/submit/${assignmentId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        });
-        alert('Assignment submitted!');
-        window.location.href = 'assignments-list-student.html'; // Redirect to student's assignments list
-    })
-    .catch(error => {
-        console.error('Error submitting answers:', error);
-        alert('Error submitting answers. Please try again.');
-    });
+    alert('Your answers have been submitted successfully!');
+    
 };
 </script>
 

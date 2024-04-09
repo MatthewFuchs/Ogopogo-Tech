@@ -32,19 +32,35 @@
             // Display assignment details
             const assignmentDetails = document.getElementById('assignmentDetails');
             const questions = data.questions;
+            const submissions = data.submissions;
 
             const assignmentTitle = document.getElementById('assignmentTitle');
             assignmentTitle.innerHTML = data.title;
             const courseID = document.getElementById('courseID');
             courseID.innerHTML = "Course ID: " + data.courseID;
 
-            questions.forEach((question, index) => {
-                const questionItem = document.createElement('div');
-                questionItem.innerHTML = `
-                    <p><strong>Question ${index + 1}:</strong> ${question}</p>
-                    <p><strong>Answer:</strong> ${data.answers[index]}</p>
-                `;
-                assignmentDetails.appendChild(questionItem);
+            submissions.forEach(async (submission, index) => {
+                const subResponse = await fetch(`http://localhost:8002/api/assignments/submit/get/${submission}`)
+                const subData = await subResponse.json();
+                console.log(subData);
+
+                if (subData.studentID == '6600e98196c2dd541cffc7e7') {
+                    const submissionItem = document.createElement('div');
+                    submissionItem.innerHTML = '<h3>Submission </h3>';
+                    submissionItem.innerHTML += '<p><strong>Course ID:</strong> ' + subData.courseID + '</p>';
+                    for (let index = 0; index < questions.length; index++) {
+                        submissionItem.innerHTML += `
+                            <p><strong>Question ${index + 1}:</strong> ${questions[index]}</p>
+                            <p><strong>Answer ${index + 1}:</strong> ${subData.answers[index]}</p>
+                        `;
+                    }   
+                    if (subData.graded) {
+                        submissionItem.innerHTML += `<p><strong>Grade:</strong> ${subData.grade}</p>`;
+                    } else {
+                        submissionItem.innerHTML += `<p><strong>Grade:</strong> Not Graded</p>`;
+                    }
+                    assignmentDetails.appendChild(submissionItem);
+                }
             });
         } catch (error) {
             console.error('Error fetching assignment details:', error);

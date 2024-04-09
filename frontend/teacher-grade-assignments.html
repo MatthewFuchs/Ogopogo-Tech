@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Assignments</title>
+    <title>Submitted Assignments</title>
     <link rel="stylesheet" href="css/index.css"> <!-- Ensure correct path -->
     <link rel="stylesheet" href="css/assignment-list-student.css">
 </head>
@@ -29,7 +29,7 @@
 
 <main>
     <div class="container" id="assignmentsListStudent">
-        <h2>Your Assignments</h2>
+        <h2>Submitted Assignments</h2>
         <div class="assignment-list">
         </div>
     </div>
@@ -65,27 +65,15 @@
         })
         .then(assignments => {
                 const assignmentList = document.querySelector('.assignment-list');
-                assignments.forEach(assignment => {
+                assignments.forEach(assignment => {        
                 const assignmentItem = document.createElement('div');
                 assignmentItem.classList.add('assignment-item');
-                console.log(assignment);
-        
-                if (assignment.submitted) {
-                    assignmentItem.innerHTML = `
-                    <h3 id="title">${assignment.title}</h3>
-                    <p>Description: ${assignment.description}</p>
-                    <p>Type: ${assignment.type}</p>
-                    <p>CourseID: ${assignment.courseID}</p>
-                    <button onclick="location.href='student-submitted-assignment.html?assignmentId=${assignment._id}'" class="btn-explore">View Submission</button>`;
-                } else {
-                    assignmentItem.innerHTML = `
-                    <h3 id="title">${assignment.title}</h3>
-                    <p>Description: ${assignment.description}</p>
-                    <p>Type: ${assignment.type}</p>
-                    <p>CourseID: ${assignment.courseID}</p>
-                    <button onclick="location.href='do-assignment.html?assignmentId=${assignment._id}'" class="btn-explore">Do Assignment</button>`;
-                }
-        
+                assignmentItem.innerHTML = `
+                <h3 id="title">${assignment.title}</h3>
+                <p>Description: ${assignment.description}</p>
+                <p>Type: ${assignment.type}</p>
+                <p>CourseID: ${assignment.courseID}</p>
+                <button onclick="location.href='teacher-submitted-assignment.html?assignmentId=${assignment._id}'" class="btn-explore">View Submissions</button>`;
                 assignmentList.appendChild(assignmentItem);
             });})
         .catch(error => {
