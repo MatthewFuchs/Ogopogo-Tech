@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>assignment-submit-file</title>
+        <link rel="stylesheet" href="css/index.css">
+        <link rel="stylesheet" href="css/do-assignment.css">
+    </head>
+<body>
+
+    <header class="topbar">
+        <section class="user-profile">
+            <a href="profile.html">User Profile</a>
+        </section>
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="index.html">Courses</a></li>
+                <li><a href="assignments-list-student.html">Assignments</a></li>
+                <li><a href="grades.html">Grades</a></li>
+                <li><a href="help.html">Help</a></li>
+            </ul>
+        </nav>
+        <section class="logout">
+            <a href="log-out.html">Log Out</a>
+        </section>
+    </header>
+
+<main class="main-content">
+    <article class="assignment-container">
+        <h2>Essay Assignment Submission</h2>
+        <p>Please upload your essay file with your analysis on the provided topic.</p>
+        
+        <form id="essayForm" action="http://localhost:8002/api/assignments/submit/essayAssignmentId" method="post" enctype="multipart/form-data">
+            <div class="question-item">
+                <label for="essayFile">Upload your essay:</label>
+                <input type="file" id="essayFile" name="assignmentFile" required />
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">Submit Essay</button>
+            </div>
+        </form>
+    </article>
+</main>
+
+<footer class="footer">
+    <!-- Footer Content -->
+</footer>
+
+<script>
+    document.getElementById('essayForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        fetch(this.action, {
+            method: 'POST',
+            headers: {
+                // If your server requires an authorization header, include it here
+                'Authorization': `Bearer ${localStorage.getItem('userToken')}`
+            },
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // console.log(data);
+            alert('Essay uploaded successfully!');
+            // window.location.href = 'assignments-list-student.html'; // Redirect to the assignments list
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error uploading essay. Please try again.');
+        });
+    });
+</script>
+
+</body>
+</html>

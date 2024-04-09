@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Do Assignment</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/do-assignment.css">
+</head>
+<body>
+
+<header class="topbar">
+    <section class="user-profile">
+        <a href="profile.html">User Profile</a>
+    </section>
+    <nav class="nav-menu">
+        <ul>
+            <li><a href="index.html">Courses</a></li>
+            <li><a href="assignments-list-student.html">Assignments</a></li>
+            <li><a href="grades.html">Grades</a></li>
+            <li><a href="help.html">Help</a></li>
+        </ul>
+    </nav>
+    <section class="logout">
+        <a href="log-out.html">Log Out</a>
+    </section>
+</header>
+
+<main class="main-content">
+    <article class="assignment-container">
+        <h2 id="assignmentTitle">Loading Assignment...</h2>
+        <p id="assignmentDescription">Please wait while we load the assignment details.</p>
+        
+        <form id="assignmentForm" method="post" enctype="multipart/form-data">
+            <div id="questionsContainer" class="questions-container">
+                <!-- Questions will be loaded here dynamically -->
+            </div>
+            <div class="question-item">
+                <label for="assignmentFile">Upload your file:</label>
+                <input type="file" id="assignmentFile" name="assignmentFile" required />
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">Submit Assignment</button>
+            </div>
+        </form>
+    </article>
+</main>
+
+<footer class="footer">
+    <!-- Footer Content -->
+</footer>
+
+<script>
+    const assignmentId = new URLSearchParams(window.location.search).get('assignmentId');
+    const token = localStorage.getItem('userToken');
+
+    async function fetchAssignmentQuestions() {
+        try {
+            const response = await fetch(`http://localhost:8002/api/assignments/${assignmentId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            const data = await response.json();
+            
+            document.getElementById('assignmentTitle').innerText = data.title || "Assignment";
+            document.getElementById('assignmentDescription').innerText = data.description || "Please complete the following:";
+            
+            const questionsContainer = document.getElementById('questionsContainer');
+            data.questions.forEach((question, index) => {
+                const questionItem = document.createElement('div');
+                questionItem.classList.add('question-item');
+                questionItem.innerHTML = `
+                    <label>${index + 1}. ${question.questionText}</label>
+                    <input type="text" name="answer${index}" required>
+                `;
+                questionsContainer.appendChild(questionItem);
+            });
+
+            document.getElementById('assignmentForm').action = `http://localhost:8002/api/assignments/submit/${assignmentId}`;
+        } catch (error) {
+            console.error('Error fetching questions:', error);
+        }
+    }
+
+    document.getElementById('assignmentForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+        fetch(this.action, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('Assignment submitted successfully!');
+            window.location.href = 'assignments-list-student.html';
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error submitting assignment. Please try again.');
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', fetchAssignmentQuestions);
+</script>
+
+</body>
+</html>
