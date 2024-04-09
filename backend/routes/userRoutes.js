@@ -6,6 +6,7 @@ const { protect } = require('../middleware/authMiddleware');
 const multer = require('multer');
 const storage = multer.memoryStorage(); // use memory storage
 const upload = multer({ storage: storage });
+const User = require('../models/userModel');
 
 /**
  * Route to register a new user.
@@ -43,6 +44,19 @@ router.put('/me', protect, upload.single('profilePhoto'), updateUserDetails);
  * @access Private
  */
 router.put('/me', protect, updateUserDetails);
+
+router.get('/info/:userId', async (req, res) => {
+    try {
+        const user = await User.findById(req.params.userId).select('-password');
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.json(user);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
 
 // Export the router to be mounted by the main application
 module.exports = router;

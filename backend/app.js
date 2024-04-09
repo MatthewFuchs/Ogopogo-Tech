@@ -1,10 +1,10 @@
 const express = require('express');
-const dotenv = require('dotenv').config({path: '../.env'});
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs'); 
+const dotenv = require('dotenv').config({path: path.resolve(__dirname, '../.env')});
 
 // Create the submissions directory if it doesn't exist
 // const submissionsDir = path.join(__dirname, 'submissions'); // Use path.join for proper path resolution
@@ -23,8 +23,7 @@ const app = express();
 console.log(process.env.MONGO_URI)
 // MONGO_URI saved in .env file with cluster username and password
 mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 1000
 }).then(() => console.log("MongoDB connected")).catch((err) => console.log("MongoDB connection failed!", err));
 // app.use(express.static(path.join(__dirname, '../frontend')));
 app.use(express.json());
@@ -53,5 +52,6 @@ app.use(morgan("dev"));
 app.get('*', (req, res) => {
   app.use(express.static(path.join(__dirname, '../frontend')));
 });
+console.log("end")
 
 module.exports = app;
