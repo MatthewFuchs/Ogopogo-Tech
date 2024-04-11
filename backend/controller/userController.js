@@ -21,10 +21,10 @@ const uploadMiddleware = upload.single('profilePhoto');
  * @access Public
  */
 const registerUser = asyncHandler(async (req, res) => {
-    const { firstName, lastName, email, password, birthday } = req.body;
+    const { firstName, lastName, email, password, birthday, role } = req.body; // Include role in destructuring
 
     // Validate that all required fields are provided
-    if (!firstName || !lastName || !email || !password || !birthday) {
+    if (!firstName || !lastName || !email || !password || !birthday || !role) { // Check role is provided
         res.status(400);
         throw new Error('Please add all fields');
     }
@@ -40,9 +40,9 @@ const registerUser = asyncHandler(async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPass = await bcrypt.hash(password, salt);
 
-    // Create a new user with the hashed password
+    // Create a new user with the hashed password and provided role
     const user = await User.create({
-        role: "student",
+        role, // Dynamically set the role based on the input
         firstName,
         lastName,
         email,
@@ -53,10 +53,11 @@ const registerUser = asyncHandler(async (req, res) => {
     // Respond with the user's details and a JWT token if the user was successfully created
     if (user) {
         res.status(201).json({
+            _id: user._id,
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
-            role: user.role,
+            role: user.role, // Include role in the response
             token: generateToken(user._id),
         });
     } else {
@@ -64,6 +65,7 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new Error('Invalid user data');
     }
 });
+
 
 /**
  * Authenticate a user.
@@ -131,7 +133,16 @@ const updateUserDetails = asyncHandler(async (req, res) => {
 
     if (firstName) user.firstName = firstName;
     if (lastName) user.lastName = lastName;
-    if (email) user.email = email;
+    // Check if the new email is different from the current email
+    if (email && email !== user.email) {
+        // Check for existing user with the new email
+        const emailExists = await User.findOne({ email });
+        if (emailExists) {
+            res.status(409);
+            throw new Error('Email already exists. Please use a different email.');
+        }
+        user.email = email;
+    }
     if (birthday) user.birthday = birthday;
 
     // If a password is provided, hash it before saving
@@ -145,18 +156,27 @@ const updateUserDetails = asyncHandler(async (req, res) => {
         user.profilePhoto = req.file.buffer;
     }
 
-    await user.save();
+    try {
+        await user.save();
 
-    res.json({
-        _id: user._id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        birthday: user.birthday,
-        // Send the profile photo as a base64 string if it exists
-        profilePhoto: user.profilePhoto ? user.profilePhoto.toString('base64') : null,
-        role: user.role
-    });
+        res.json({
+            _id: user._id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            birthday: user.birthday,
+            // Send the profile photo as a base64 string if it exists
+            profilePhoto: user.profilePhoto ? user.profilePhoto.toString('base64') : null,
+            role: user.role
+        });
+    } catch (error) {
+        // Handle the duplicate key error
+        if (error.code === 11000) {
+            res.status(409).json({ message: 'Email already exists. Please use a different email.' });
+        } else {
+            res.status(500).json({ message: 'An error occurred while updating the profile.' });
+        }
+    }
 });
 
 /**

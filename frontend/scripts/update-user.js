@@ -77,19 +77,25 @@ document.getElementById('updateProfileForm').addEventListener('submit', function
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            if(response.status === 409) { // Assuming 409 indicates a duplicate email
+                throw new Error('The email address is already in use. Please use a different email.');
+            } else {
+                throw new Error('Network response was not ok');
+            }
         }
         return response.json();
     })
     .then(data => {
         alert('Profile updated successfully!');
-        window.location.href = '/frontend/profile.html'; 
-        fetchAndFillUserData(); // Refreshing user data on the page
+        window.location.href = '/frontend/profile.html'; // Redirecting after successful update
     })
     .catch(error => {
+        alert(error.message); // Alerting the user in case of an error
         console.error('There has been a problem with your update operation:', error);
     });
 });
+
+
 
 // Fetching and filling user data when the page loads
 fetchAndFillUserData();

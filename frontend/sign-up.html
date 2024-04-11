@@ -48,6 +48,17 @@
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
         </div>
+        <div class="form-group">
+            <label>Role:</label>
+            <div>
+                <input type="radio" id="student" name="role" value="student" required>
+                <label for="student">Student</label>
+            </div>
+            <div>
+                <input type="radio" id="teacher" name="role" value="teacher" required>
+                <label for="teacher">Teacher</label>
+            </div>
+        </div>        
         <button type="submit">Sign Up</button>
     </form>
     <p class="existing-account">Already have an account? <a href="log-in.html">Log In</a></p>
@@ -83,6 +94,7 @@
             email: document.getElementById('email').value,
             password: document.getElementById('password').value,
             birthday: document.getElementById('dob').value,
+            role: document.querySelector('input[name="role"]:checked').value,
         };
 
         fetch('http://localhost:8002/api/user/', {
@@ -93,16 +105,20 @@
             body: JSON.stringify(formData),
         })
         .then(response => {
-            if (!response.ok) {
+            if (response.ok) {
+                return response.json();
+            } else if (response.status === 400) { // Assuming 409 status code for duplicate email
+                throw new Error('Email already exists. Please use a different email.');
+            } else {
                 throw new Error('Network response was not ok');
             }
-            return response.json();
         })
         .then(data => {
             alert('Registration successful! Welcome to SkillQuik!');
             console.log(data);
         })
         .catch(error => {
+            alert(error.message); 
             console.error('There has been a problem with your fetch operation:', error);
         });
     }); 
