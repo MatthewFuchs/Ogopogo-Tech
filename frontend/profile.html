@@ -108,6 +108,14 @@
 
             // Append the new link to the navigation container
             navContainer.appendChild(adminLink);
+
+            // Create the new link element for Manage Course
+            const manageCourseLink = document.createElement('a');
+            manageCourseLink.href = 'manage-courses.html';
+            manageCourseLink.textContent = 'Manage Course';
+    
+            // Append the new link to the navigation container
+            navContainer.appendChild(manageCourseLink);
         } else {
             console.log('User role is not admin:', userRole); // Debugging line
         }
