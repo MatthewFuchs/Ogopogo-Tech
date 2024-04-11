@@ -78,6 +78,13 @@
         modifyButton.classList.add('btn-explore', 'modify-assignment');
         modifyButton.textContent = 'Modify Assignment';
 
+        const viewSubmissions = document.createElement('button');
+        viewSubmissions.addEventListener('click', function() {
+          window.location.href = `teacher-submitted-assignment.html?assignmentId=${_id}`;
+        });
+        viewSubmissions.classList.add('btn-explore', 'view-submissions');
+        viewSubmissions.textContent = 'View Submissions';
+
         const deleteButton = document.createElement('button');
         deleteButton.classList.add('btn-explore', 'delete-assignment');
         deleteButton.textContent = 'Delete Assignment';
@@ -109,6 +116,7 @@
         assignmentItem.appendChild(assignmentType);
         assignmentItem.appendChild(assignmentCourse);
         assignmentItem.appendChild(modifyButton);
+        assignmentItem.appendChild(viewSubmissions);
         assignmentItem.appendChild(deleteButton);
 
         return assignmentItem;

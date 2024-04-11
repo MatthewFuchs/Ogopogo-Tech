@@ -37,7 +37,7 @@
             </div>
 
             <!-- Submit button for assignment -->
-            <button type="submit" id="submitBtn" class="btn-explore">Submit Assignment</button>
+            <button onclick="handleSubmission()" type="submit" id="buttonSubmit" class="btn-explore">Submit Assignment</button>
         </form>
     <link rel="stylesheet" href="css/assignment.css"> <!-- Ensure correct path -->
 </main>
@@ -89,12 +89,35 @@
         }
     });
 
-    document.getElementById('submitBtn').onclick = async function(event) {
-    const answers = document.querySelectorAll('.question-item input[type="text"]');
-    
-    alert('Your answers have been submitted successfully!');
-    
-};
+
+
+    async function handleSubmission() {  
+        alert("Assignment submitted successfully!");
+        
+        const answers = document.querySelectorAll('.question-item input[type="text"]');
+        const answerValues = answers.map(answer => answer.value); 
+
+        fetch('localhost:8002/api/assignments/submit', {
+            method: 'PUT',
+            headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+            body: JSON.stringify({
+            assignmentId: assignmentId,
+            studentID: '66146885b61a6dba36433a5a',
+            answers: answerValues
+        }),
+        })
+        .then(response => {
+            alert('Assignment submitted successfully!');
+            window.location.href = 'assignments-list-student.html';
+        })
+        .catch(error => {
+            alert('Error! Assignment not submitted');
+            console.error(error);
+        });
+        };
 </script>
 
 </body>
