@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Essay Assignment</title>
+</head>
+<body>
+    <h1>Submit Your Essay</h1>
+    <form id="essay-upload-form" enctype="multipart/form-data">
+        <input type="file" id="essayFile" name="assignmentFile" required>
+        <button type="submit">Submit Essay</button>
+    </form>
+
+    <script>
+        document.getElementById('essay-upload-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Get assignment ID from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const assignmentId = urlParams.get('id');
+
+            if (!assignmentId) {
+                alert('Assignment ID is missing!');
+                return;
+            }
+
+            const formData = new FormData();
+            const essayFile = document.getElementById('essayFile').files[0];
+            formData.append('assignmentFile', essayFile);
+
+            // Replace 'http://localhost:8002' with your actual API URL
+            fetch(`http://localhost:8002/api/assignments/submit/${assignmentId}`, {
+                method: 'POST',
+                body: formData,
+                // Add any needed headers for authentication here
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                window.location.href = 'assignments-list-student.html'; // Redirect back to the assignments list
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
