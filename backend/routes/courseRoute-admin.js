@@ -4,11 +4,18 @@ const router = express.Router();
 const { createCourse, getCourses, updateCourse, deleteCourse } = require("./../controller/courseController-admin");
 const { protect } = require('../middleware/authMiddleware');
 const Course = require('../models/courseModel-admin');
+const { getTeachers } = require('../controller/userController'); 
 
 router.post('', createCourse);
 router.get('/', getCourses);
 router.put('/:id', updateCourse);
 router.delete('/:id', deleteCourse);
+
+
+
+router.get('/teachers', getTeachers);  // This will handle GET requests to /api/courses/teachers
+
+
 router.get('/enrolled', protect, async (req, res) => {
     try {
         const enrolledCourses = await Course.find({ students: req.user._id })

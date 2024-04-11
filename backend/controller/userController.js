@@ -190,11 +190,22 @@ const generateToken = (id) => {
     });
 };
 
+
+const getTeachers = asyncHandler(async (req, res) => {
+    try {
+        const teachers = await User.find({ role: 'teacher' }).select('_id firstName lastName');
+        res.json(teachers);
+    } catch (error) {
+        res.status(500).send('Server Error: ' + error.message);
+    }
+});
+
 // Exporting the functions to be used in other parts of the application
 module.exports = {
     registerUser,
     loginUser,
     getMe,
     updateUserDetails,
-    uploadMiddleware
+    uploadMiddleware,
+    getTeachers
 };

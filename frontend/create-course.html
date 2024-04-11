@@ -26,13 +26,35 @@
                 <textarea id="courseDescription" name="courseDescription" rows="4" required></textarea>
             </div>
             <div class="input-group">
-                <label for="courseInstructor">Course Instructor</label>
-                <input type="text" id="courseInstructor" name="courseInstructor" required>
+                <label for="teacherSelect">Teacher:</label>
+                <select id="teacherSelect">
+                    <option value="">Select a Teacher</option>
+                </select>
             </div>
             <button type="submit" class="admin-btn">Create Course</button>
         </form>
     </div>
     <script>
+
+            document.addEventListener('DOMContentLoaded', function() {
+                fetch('http://localhost:8002/api/courses/teachers')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch teachers');
+                        }
+                        return response.json();
+                    })
+                    .then(teachers => {
+                        const select = document.getElementById('teacherSelect');
+                        teachers.forEach(teacher => {
+                            const option = new Option(teacher.firstName + ' ' + teacher.lastName, teacher._id);
+                            select.appendChild(option);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            });
         document.getElementById('createCourseForm').addEventListener('submit', function(e) {
             e.preventDefault(); // Prevent default form submission
     
