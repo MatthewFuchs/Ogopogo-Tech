@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+
+<header>
+    <nav>
+        <div class="nav-links" id="navContainer">
+            <a href="index.html">My Courses</a>
+            <a href="courses.html">Browse Courses</a>
+            <button id="logoutBtn" class="logout">Log Out</button>
+
+        </div>
+
+    </nav>
+</header>
+
+<div class="profile-page-container">
+    <div class="profile-header">
+        <img id="profilePhoto" src="" alt="Profile Photo" class="profile-photo" />
+        <h1 id="userFullNameHeading"></h1>
+    </div>
+    
+    <div class="profile-details">
+        <h2>User Details</h2>
+        <p><strong>Name:</strong> <span id="userFullName"></span></p>
+        <p><strong>Email:</strong> <span id="userEmail"></span></p>
+        <p><strong>Birthday:</strong> <span id="userBirthday"></span></p>
+    </div>
+    
+    
+    <div class="actions">
+        <button id="editProfileButton" class="edit-profile">Edit Profile</button>
+        <button id="logoutButton" class="logout">Log Out</button>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-container">
+        <div class="footer-section">
+            <h3>Ogopogo Tech</h3>
+            <p>Innovating for a better tomorrow.</p>
+        </div>
+        <div class="footer-section">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+        </div>
+        <div class="footer-section">
+            <h4>Newsletter</h4>
+            <form action="#">
+                <input type="email" placeholder="Your email" required>
+                <button type="submit">Subscribe</button>
+            </form>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2024 Ogopogo Tech. All rights reserved.</p>
+    </div>
+</footer>
+
+
+<script src="scripts/profile.js"></script>
+<script>
+    async function fetchUserRole(userId) {
+        try {
+            const response = await fetch(`http://localhost:8002/api/user/info/${userId}`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch user role');
+            }
+            const data = await response.json();
+            return data.role; // Assuming the response includes the role
+        } catch (error) {
+            console.error('Error fetching user role:', error);
+            return null;
+        }
+    }
+    
+    document.addEventListener('DOMContentLoaded', async function() {
+        const tokenPayload = getUserTokenPayload();
+        if (!tokenPayload) {
+            console.error('No token payload found');
+            return;
+        }
+        
+        console.log('User ID:', tokenPayload.id); // Debugging line
+    
+        const userRole = await fetchUserRole(tokenPayload.id);
+        console.log('Fetched user role:', userRole); // Debugging line
+    
+        if (userRole === 'admin') {
+            const navContainer = document.getElementById('navContainer');
+    
+            // Create the new link element
+            const adminLink = document.createElement('a');
+            adminLink.href = 'admin-enrollments.html';
+            adminLink.textContent = 'Admin Enrollments';
+            console.log("Admin link should be added now");
+    
+            // Append the new link to the navigation container
+            navContainer.appendChild(adminLink);
+        } else {
+            console.log('User role is not admin:', userRole); // Debugging line
+        }
+    });
+
+    function getUserTokenPayload() {
+        // Retrieve the actual token from localStorage
+        const token = localStorage.getItem('userToken');
+        if (!token) {
+            console.error('Token not found in localStorage');
+            return null;
+        }
+        
+        // Split the token into its parts
+        const parts = token.split('.');
+        if (parts.length !== 3) {
+            console.error('The token is invalid');
+            return null;
+        }
+        
+        try {
+            // Decode the payload part of the token
+            const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
+            console.log(payload);
+            return payload;
+        } catch (e) {
+            console.error('Error decoding the token', e);
+            return null;
+        }
+    }
+    
+</script>
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <!-- Topbar Navigation -->
+    <header class="topbar">
+        <div class="user-profile">
+            <a href="profile.html">User Profile</a>
+        </div>
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="index.html">Courses</a></li>
+                <li><a href="assignments-list-student.html">Assignments</a></li>
+                <li><a href="grades.html">Grades</a></li>
+                <li><a href="courses.html">All Courses</a></li>
+            </ul>
+        </nav>
+        <div class="logout">
+            <!-- Replaced link with button for log out functionality -->
+            <button id="logoutBtn">Log Out</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <main class="main-content">
+            <h1>Your Courses</h1>
+            <div class="courses-list">
+                <!-- Courses will be loaded here -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 Ogopogo Tech. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('userToken');
+            if (!token) {
+                window.location.href = 'log-in.html'; // Corrected the redirect path
+                return;
+            }
+
+            // Fetch enrolled courses
+            fetch('http://localhost:8002/api/courses/enrolled', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch enrolled courses');
+                }
+                return response.json();
+            })
+            .then(courses => {
+                const coursesList = document.querySelector('.courses-list');
+                coursesList.innerHTML = ''; // Clear existing courses
+                courses.forEach(course => {
+                    const courseElement = document.createElement('div'); // Changed to div for better structure
+                    courseElement.className = 'course-item';
+                    courseElement.innerHTML = `
+                        <h2>${course.name}</h2>
+                        <p>${course.description}</p>
+                    `;
+                    coursesList.appendChild(courseElement);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error); // Changed to console.error for visibility
+            });
+
+            // Log out functionality
+            const logoutBtn = document.getElementById('logoutBtn');
+            logoutBtn.addEventListener('click', function() {
+                localStorage.removeItem('userToken'); // Clear the userToken from localStorage
+                window.location.href = 'log-in.html'; // Redirect to the log-in page
+            });
+        });
+    </script>
+</body>
+</html>

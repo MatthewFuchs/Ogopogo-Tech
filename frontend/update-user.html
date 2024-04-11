@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Profile</title>
+    <link rel="stylesheet" href="css/sign-up.css"> <!-- Reusing sign-up.css for styling -->
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-links">
+                <a href="index.html">SkillQuik</a>
+            </div>
+            <div class="nav-links">
+                <a href="courses.html">Courses</a>
+                <a href="blog.html">Blog</a>
+                <a href="about.html">About</a>
+                <!-- This needs to be linked to the backend so the page changes when someone is logged in-->
+            </div>
+        </nav>
+    </header>
+
+<div class="signup-container auth-container">
+    <h2>Update Profile</h2>
+    <form id="updateProfileForm">
+        <div class="form-group">
+            <label for="profilePhoto">Profile Picture:</label>
+            <input type="file" id="profilePhoto" name="profilePhoto" accept="image/*">
+        </div>        
+        <div class="form-group">
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstName" required>
+        </div>
+        <div class="form-group">
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastName" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>        
+        <div class="form-group">
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" name="dob">
+        </div>
+        <div class="form-group">
+            <label for="password">New Password (optional):</label>
+            <input type="password" id="password" name="password">
+            <small>Leave blank to keep current password.</small>
+        </div>
+        <button type="submit">Update Profile</button>
+    </form>
+</div>
+<footer>
+    <div class="footer-container">
+        <div class="footer-section">
+            <h3>Ogopogo Tech</h3>
+            <p>Innovating for a better tomorrow.</p>
+        </div>
+        <div class="footer-section">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    <div class="footer-bottom">
+        <p>&copy; 2024 Ogopogo Tech. All rights reserved.</p>
+    </div>
+</footer>
+<script src="scripts/update-user.js"></script>
+
+</body>
+</html>

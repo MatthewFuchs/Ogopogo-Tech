@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submitted Assignment</title>
+    <link rel="stylesheet" href="css/submitted-assignment.css">
+</head>
+<body>
+
+<main>
+    <div class="container">
+        <h2>Submitted Assignment</h2>
+        <div id="assignmentDetails">
+            <!-- Adding field for grade assignment -->
+
+            <div id="gradeSubmission">
+                <h3>Submit Grade</h3>
+                <form id="gradeForm">
+                    <label for="grade">Grade:</label>
+                    <input type="number" id="grade" name="grade" required>
+                    <button type="submit">Submit Grade</button>
+                </form>
+            </div>
+            
+            <h3 id="assignmentTitle">Assignment Title</h3>
+            <h3 id="courseID">Course ID</h3>
+            <!-- Assignment items will be dynamically added here -->
+        </div>
+    </div>
+</main>
+
+<script>
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const assignmentId = urlParams.get('assignmentId');
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/api/assignments/${assignmentId}`);
+            const data = await response.json();
+
+            // Display assignment details
+            const assignmentDetails = document.getElementById('assignmentDetails');
+            const questions = data.questions;
+
+            const assignmentTitle = document.getElementById('assignmentTitle');
+            assignmentTitle.innerHTML = data.title;
+            const courseID = document.getElementById('courseID');
+            courseID.innerHTML = "Course ID: " + data.courseID;
+
+            questions.forEach((question, index) => {
+                const questionItem = document.createElement('div');
+                questionItem.innerHTML = `
+                    <p><strong>Question ${index + 1}:</strong> ${question}</p>
+                    <p><strong>Answer:</strong> ${data.answers[index]}</p>
+                `;
+                assignmentDetails.appendChild(questionItem);
+            });
+        } catch (error) {
+            console.error('Error fetching assignment details:', error);
+        }
+    });
+    
+    //Submit Grade handler
+    document.getElementById('gradeForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const grade = document.getElementById('grade').value;
+
+        fetch(`http://localhost:8080/api/assignments/grade/${assignmentId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                studentID: 'STUDENT_ID_HERE', 
+                grade: grade,
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('Grade submitted successfully!');
+            // Handle successful grade submission, such as updating the UI
+        })
+        .catch(error => {
+            console.error('Error submitting grade:', error);
+            alert('Failed to submit grade.');
+        });
+    });
+</script>
+
+</body>
+</html>

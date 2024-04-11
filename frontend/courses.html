@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses - Ogopogo Tech</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/courses.css">
+</head>
+<body>
+
+<header>
+    <nav>
+        <div class="nav-links">
+            <a href="index.html">My Courses</a>
+            <div class="logout">
+                <!-- Replaced link with button for log out functionality -->
+                <button id="logoutBtn">Log Out</button>
+            </div>
+        </div>
+        
+    </nav>
+</header>
+
+<main>
+
+    <section id="coursesContainer">
+        <!-- Courses will be dynamically added here -->
+    </section>
+</main>
+
+<footer>
+    <div class="footer-container">
+        <!-- Footer content omitted for brevity -->
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2024 Ogopogo Tech. All rights reserved.</p>
+    </div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('http://localhost:8002/api/courses') // Adjust the port and endpoint as necessary
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(courses => {
+
+        const coursesContainer = document.getElementById('coursesContainer');
+        coursesContainer.innerHTML = ''; // Clear the container
+
+        courses.forEach(course => {
+            const courseElement = document.createElement('article');
+            courseElement.className = 'course';
+            courseElement.innerHTML = `
+            <a href="course-detail.html?courseId=${course._id}">
+                <img class="course-image" src="${course.image || 'course-placeholder.jpg'}" alt="Course Thumbnail">
+                <div class="course-info">
+                    <h2 class="course-title">${course.name}</h2>
+                    <p class="course-description">${course.description}</p>
+                </div>
+            </a>
+        `;
+        
+            coursesContainer.appendChild(courseElement);
+        });
+    })
+    .catch(error => {
+        console.error('There has been a problem with your fetch operation:', error);
+    });
+    const logoutBtn = document.getElementById('logoutBtn');
+    logoutBtn.addEventListener('click', function() {
+        localStorage.removeItem('userToken'); // Clear the userToken from localStorage
+        window.location.href = 'log-in.html'; // Redirect to the log-in page
+    });
+});
+</script>
+</body>
+</html>
