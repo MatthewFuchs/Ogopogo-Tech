@@ -19,7 +19,7 @@
         document.addEventListener('DOMContentLoaded', fetchCourses);
 
         function fetchCourses() {
-            fetch('http://localhost:8080/api/courses')
+            fetch('http://localhost:8002/api/courses')
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
@@ -51,7 +51,7 @@
         }
 
         function deleteCourse(courseId) {
-            fetch(`http://localhost:8080/api/courses/${courseId}`, { method: 'DELETE' })
+            fetch(`http://localhost:8002/api/courses/${courseId}`, { method: 'DELETE' })
                 .then(() => fetchCourses()) // Refresh the courses list after deletion
                 .catch(error => console.error('Error:', error));
         }
