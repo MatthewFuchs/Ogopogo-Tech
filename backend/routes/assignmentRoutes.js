@@ -12,18 +12,19 @@ const {
   deleteQuestionAssignment,
   submitAssignment,
   gradeAssignment
-
 } = require('../controller/assignmentController');
 const { protect } = require('../middleware/authMiddleware');
 
 // Configure Multer Storage
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
-    // This should set the directory to backend/submissions
+    // Adjusted the path to store files in the desired directory
     cb(null, path.join(__dirname, '../submissions'));
   },
   filename: function(req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    // Prefix the filename with the student ID to ensure uniqueness and traceability
+    const studentId = req.user ? req.user.id : 'anonymous';
+    cb(null, `${studentId}-${Date.now()}${path.extname(file.originalname)}`);
   }
 });
 
@@ -32,6 +33,22 @@ const upload = multer({
   storage: storage,
   // Add file filter if needed to accept specific types of files
 }).single('assignmentFile'); // 'assignmentFile' is the name attribute in the form
+
+// Middleware to ensure the file upload is part of the route that needs it
+const uploadMiddleware = (req, res, next) => {
+  upload(req, res, function(err) {
+    if (err) {
+      // Handle the error case
+      console.log('Error during file upload:', err);
+      return res.status(500).json({ message: 'File upload failed', error: err });
+    }
+    if (!req.file) {
+      return res.status(400).json({ message: 'Please upload a file' });
+    }
+    console.log('File uploaded successfully', req.file);
+    next();
+  });
+};
 
 /**
  * Route to create a new assignment.
@@ -96,27 +113,21 @@ router.put('/submit/:id', protect, submitAssignment);
 router.put('/grade/:id', protect, gradeAssignment);
 
 
-// Export the router to be mounted by the main application
+
 
 /**
  * Route to submit an assignment with a file upload.
  * @route POST /api/assignments/submit/:id
  * @access Private
+ * Enhanced to include authentication and file upload.
  */
-// Route to submit an assignment with a file upload, without authentication for testing.
-router.post('/submit/:id', (req, res) => {
-  console.log('File upload endpoint hit'); // Log when the endpoint is hit
-  upload(req, res, function(err) {
-    if(err) {
-      console.log('Error during file upload:', err); // Log any error during upload
-      return res.status(500).json({ message: 'File upload failed', error: err });
-    }
-    console.log('File uploaded successfully', req.file); // Log the uploaded file info
-    // Proceed with submission processing using req.file and req.body
-    submitAssignment(req, res);
-  });
+router.post('/submit/:id', protect, uploadMiddleware, (req, res) => {
+  // At this point, file is uploaded and student ID is available via `req.user.id`
+  // Proceed with submission processing using `req.file` and `req.body`, along with `req.user`
+  submitAssignment(req, res);
 });
 
 // Continue with the rest of your routes...
 
+// Export the router to be mounted by the main application
 module.exports = router;

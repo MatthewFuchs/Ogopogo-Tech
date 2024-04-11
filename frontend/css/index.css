@@ -11,6 +11,11 @@ body {
     overflow: auto;
 }
 
+.main-content, .main-content p, .main-content h1, .main-content h2, .main-content h3, .main-content h4, .main-content h5, .main-content h6, .main-content label {
+    color: #655fd4; /* Sets text color to not white
+}
+
+
 .container {
     flex: 1;
     display: flex;

@@ -58,6 +58,22 @@ const assignmentSchema = new mongoose.Schema({
             type: Number,
             required: true
         }
+    }],
+    
+    submissions: [{
+        studentID: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            required: true
+        },
+        file: {
+            type: String, // Path to the file in the server
+            required: true
+        },
+        submittedOn: {
+            type: Date,
+            default: Date.now
+        }
     }]
     
 
