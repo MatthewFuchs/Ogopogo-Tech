@@ -10,6 +10,10 @@ body, html {
     font-family: 'Arial', sans-serif;
 }
 
+.logout{
+    color: black;
+}
+
 /* Profile specific styles */
 .profile-page-container {
     max-width: 800px;

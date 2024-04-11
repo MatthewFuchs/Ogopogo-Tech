@@ -11,15 +11,13 @@
 
 <header>
     <nav>
-        <div class="nav-links">
-            <a href="index.html">SkillQuik</a>
+        <div class="nav-links" id="navContainer">
+            <a href="index.html">My Courses</a>
+            <a href="courses.html">Browse Courses</a>
+            <button id="logoutBtn" class="logout">Log Out</button>
+
         </div>
-        <div class="nav-links">
-            <a href="courses.html">Courses</a>
-            <a href="blog.html">Blog</a>
-            <a href="about.html">About</a>
-            <!-- This needs to be linked to the backend so the page changes when someone is logged in-->
-        </div>
+
     </nav>
 </header>
 
@@ -53,20 +51,9 @@
             <h4>Quick Links</h4>
             <ul>
                 <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About Us</a></li>
-                <li><a href="services.html">Services</a></li>
-                <li><a href="blog.html">Blog</a></li>
-                <li><a href="contact.html">Contact</a></li>
             </ul>
         </div>
         <div class="footer-section">
-            <h4>Follow Us</h4>
-            <div class="social-icons">
-                <a href="#facebook"><img src="facebook-icon.png" alt="Facebook"></a>
-                <a href="#twitter"><img src="twitter-icon.png" alt="Twitter"></a>
-                <a href="#linkedin"><img src="linkedin-icon.png" alt="LinkedIn"></a>
-                <a href="#instagram"><img src="instagram-icon.png" alt="Instagram"></a>
-            </div>
         </div>
         <div class="footer-section">
             <h4>Newsletter</h4>
@@ -83,6 +70,76 @@
 
 
 <script src="scripts/profile.js"></script>
+<script>
+    async function fetchUserRole(userId) {
+        try {
+            const response = await fetch(`http://localhost:8002/api/user/info/${userId}`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch user role');
+            }
+            const data = await response.json();
+            return data.role; // Assuming the response includes the role
+        } catch (error) {
+            console.error('Error fetching user role:', error);
+            return null;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', async function() {
+        const tokenPayload = getUserTokenPayload();
+        if (!tokenPayload) {
+            console.error('No token payload found');
+            return;
+        }
+
+        console.log('User ID:', tokenPayload.id); // Debugging line
+
+        const userRole = await fetchUserRole(tokenPayload.id);
+        console.log('Fetched user role:', userRole); // Debugging line
+
+        if (userRole === 'admin') {
+            const navContainer = document.getElementById('navContainer');
+
+            // Create the new link element
+            const adminLink = document.createElement('a');
+            adminLink.href = 'admin-enrollments.html';
+            adminLink.textContent = 'Admin Enrollments';
+            console.log("Admin link should be added now");
+
+            // Append the new link to the navigation container
+            navContainer.appendChild(adminLink);
+        } else {
+            console.log('User role is not admin:', userRole); // Debugging line
+        }
+    });
+
+    function getUserTokenPayload() {
+        // Retrieve the actual token from localStorage
+        const token = localStorage.getItem('userToken');
+        if (!token) {
+            console.error('Token not found in localStorage');
+            return null;
+        }
+
+        // Split the token into its parts
+        const parts = token.split('.');
+        if (parts.length !== 3) {
+            console.error('The token is invalid');
+            return null;
+        }
+
+        try {
+            // Decode the payload part of the token
+            const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
+            console.log(payload);
+            return payload;
+        } catch (e) {
+            console.error('Error decoding the token', e);
+            return null;
+        }
+    }
+
+</script>
 
 </body>
 </html>
