@@ -48,15 +48,19 @@
             }
             return response.json();
         })
-        .then(courseData => { // Use 'courseData' to avoid confusion
-            const { name, description, instructor, isEnrolled } = courseData; // Destructure for clarity
+        .then(courseData => {
+            const { name, description, instructor, isEnrolled, isRequested } = courseData;
     
             document.getElementById('courseTitle').textContent = name;
             document.getElementById('courseDescription').textContent = description;
             document.getElementById('courseInstructor').textContent = `Instructor: ${instructor}`;
     
             const enrollButton = document.getElementById('enrollButton');
-            if (token && !isEnrolled) { // Now directly using 'isEnrolled' from the destructured 'courseData'
+            if (isRequested) {
+                enrollButton.textContent = 'Enrollment Request Already Submitted';
+                enrollButton.disabled = true;
+                enrollButton.style.display = 'inline-block';
+            } else if (token && !isEnrolled) {
                 enrollButton.style.display = 'inline-block';
                 enrollButton.onclick = () => enrollInCourse(courseId);
             } else {
@@ -67,6 +71,7 @@
             console.error('There has been a problem with your fetch operation:', error);
         });
     });
+    
     
     
     function enrollInCourse(courseId) {
@@ -80,7 +85,7 @@
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Failed to submit enrollment request');
+                throw new Error('Enrollment request already submitted');
             }
             return response.json();
         })
