@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Assignments</title>
-    <link rel="stylesheet" href="css/index.css"> <!-- Ensure correct path -->
+    <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/assignment-list-student.css">
 </head>
 <body>
@@ -39,96 +39,86 @@
     <p>&copy; 2024 Ogopogo Tech. All rights reserved.</p>
 </footer>
 <script>
-
 document.addEventListener('DOMContentLoaded', () => {
+    fetchAssignments();
+    updateUserRoleLink();
+});
+
+async function fetchAssignments() {
     const token = localStorage.getItem('userToken');
-    if (token) {
-        // Fetch the user's profile information to get the role
-        fetch('http://localhost:8002/api/user/me', {
+    if (!token) {
+        window.location.href = '/frontend/log-in.html';
+        return;
+    }
+
+    try {
+        const response = await fetch('http://localhost:8002/api/assignments/', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch data');
+        }
+        const assignments = await response.json();
+        displayAssignments(assignments);
+    } catch (error) {
+        console.error('Error fetching assignments:', error);
+    }
+}
+
+function displayAssignments(assignments) {
+    const assignmentList = document.querySelector('.assignment-list');
+    assignments.forEach(assignment => {
+        const assignmentItem = document.createElement('div');
+        assignmentItem.classList.add('assignment-item');
+
+        const link = assignment.type === 'essay' ? 
+            `do-assignment-essay.html?assignmentId=${assignment._id}` : 
+            `do-assignment.html?assignmentId=${assignment._id}`;
+
+        assignmentItem.innerHTML = `
+            <h3>${assignment.title}</h3>
+            <p>Description: ${assignment.description}</p>
+            <p>Type: ${assignment.type}</p>
+            <p>CourseID: ${assignment.courseID}</p>
+            <button onclick="location.href='${link}'" class="btn-explore">Do Assignment</button>
+        `;
+
+        assignmentList.appendChild(assignmentItem);
+    });
+}
+
+async function updateUserRoleLink() {
+    const token = localStorage.getItem('userToken');
+    if (!token) {
+        return;
+    }
+
+    try {
+        const response = await fetch('http://localhost:8002/api/user/me', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
             }
-        })
-        .then(response => response.json())
-        .then(data => {
-            const userRole = data.role; // Here you get the user's role from the response
-            const assignmentsLink = document.getElementById('assignmentsLink').firstElementChild;
-
-            if (userRole === 'student') {
-                assignmentsLink.setAttribute('href', 'assignments-list-student.html');
-            } else if (userRole === 'admin' || userRole === 'teacher') {
-                assignmentsLink.setAttribute('href', 'assignments-list.html');
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching user data:', error);
         });
-    }
-});
 
+        const data = await response.json();
+        const assignmentsLink = document.getElementById('assignmentsLink').firstElementChild;
 
-    async function fetchAssignments() {
-        let token = localStorage.getItem('userToken');
-        if (!token) {
-            token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MDBlOTgxOTZjMmRkNTQxY2ZmYzdlNyIsImlhdCI6MTcxMTMzNTgwOSwiZXhwIjoxNzEzOTI3ODA5fQ.UFgAtXOeg1r7j-4Ug5DOgN_EG1gqbjNkihJMKeC9mXY'
-        }
-
-        // If a token exists, attempt to fetch assignments from server
-        if (token) {
-        fetch('http://localhost:8002/api/assignments/', {
-            method: 'GET',
-            headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-            }
-        })
-        .then(response => {
-            // If the server responds with an error, throw an error
-            if (!response.ok) {
-            throw new Error('Failed to fetch data');
-            }
-            // parse the JSON response
-            return response.json();
-        })
-        .then(assignments => {
-                const assignmentList = document.querySelector('.assignment-list');
-                assignments.forEach(assignment => {
-                const assignmentItem = document.createElement('div');
-                assignmentItem.classList.add('assignment-item');
-                console.log(assignment);
-        
-                if (assignment.submitted) {
-                    assignmentItem.innerHTML = `
-                    <h3 id="title">${assignment.title}</h3>
-                    <p>Description: ${assignment.description}</p>
-                    <p>Type: ${assignment.type}</p>
-                    <p>CourseID: ${assignment.courseID}</p>
-                    <button onclick="location.href='student-submitted-assignment.html?assignmentId=${assignment._id}'" class="btn-explore">View Submission</button>`;
-                } else {
-                    assignmentItem.innerHTML = `
-                    <h3 id="title">${assignment.title}</h3>
-                    <p>Description: ${assignment.description}</p>
-                    <p>Type: ${assignment.type}</p>
-                    <p>CourseID: ${assignment.courseID}</p>
-                    <button onclick="location.href='do-assignment.html?assignmentId=${assignment._id}'" class="btn-explore">Do Assignment</button>`;
-                }
-        
-                assignmentList.appendChild(assignmentItem);
-            });})
-        .catch(error => {
-            console.error(error);
-        });
+        if (data.role === 'student') {
+            assignmentsLink.setAttribute('href', 'assignments-list-student.html');
         } else {
-        
-        window.location.href = '/frontend/log-in.html';
-        } 
+            assignmentsLink.setAttribute('href', 'assignments-list.html');
+        }
+    } catch (error) {
+        console.error('Error fetching user data:', error);
     }
-    
-    document.addEventListener('DOMContentLoaded', async () => { 
-        fetchAssignments();
-    }); 
-    </script>
+}
+</script>
 
 </body>
 </html>

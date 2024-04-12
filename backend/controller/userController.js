@@ -83,7 +83,7 @@ const loginUser = asyncHandler(async (req, res) => {
     // Check provided password against hashed password in the database
     if (user && (await bcrypt.compare(password, user.password))) {
         res.json({
-            _id: user.id,
+            _id: user._id, // Make sure to send the _id
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,

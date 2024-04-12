@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Essay Assignment</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/do-assignment.css">
+</head>
+<body>
+
+    <header class="topbar">
+        <section class="user-profile">
+            <a href="profile.html">User Profile</a>
+        </section>
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="index.html">Courses</a></li>
+                <li><a href="assignments-list-student.html">Assignments</a></li>
+                <li><a href="grades.html">Grades</a></li>
+                <li><a href="help.html">Help</a></li>
+            </ul>
+        </nav>
+        <section class="logout">
+            <a href="log-out.html">Log Out</a>
+        </section>
+    </header>
+
+<main class="main-content">
+    <article class="assignment-container">
+        <h2 id="assignmentTitle">Essay Assignment Submission</h2>
+        <p id="assignmentDescription">Please upload your essay using the form below.</p>
+        
+        <form id="essayForm">
+            <div class="form-group">
+                <label for="fileUpload">Upload your essay:</label>
+                <input type="file" id="fileUpload" name="assignmentFile" required>
+            </div>
+            <button type="submit" id="submitEssayButton" class="btn-explore">Submit Essay</button>
+        </form>
+    </article>
+</main>
+
+<footer class="footer">
+    <!-- Footer content here -->
+</footer>
+
+<script>
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const assignmentId = urlParams.get('assignmentId');
+    let token = localStorage.getItem('userToken');
+
+    document.getElementById('essayForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    const formData = new FormData(this);
+    // Removed appending assignmentId since it's already in the URL
+    const token = localStorage.getItem('userToken');
+
+    fetch(`http://localhost:8002/api/assignments/submit/${assignmentId}`, {
+    method: 'POST',
+    headers: {
+        'Authorization': `Bearer ${token}`
+        // Don't set 'Content-Type': 'multipart/form-data' here, let the browser set it
+    },
+    body: formData
+})
+.then(response => {
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+    return response.json();
+})
+.then(data => {
+    console.log('Upload successful:', data);
+    // Handle successful upload here
+})
+.catch(error => {
+    console.error('Error during the upload:', error);
+    // Handle error here
+});
+
+});
+
+</script>
+
+</body>
+</html>

@@ -61,6 +61,8 @@ function handleLogin(e) {
     })
     .then(data => {
         if (data.token) {
+            // Store the user's _id for later use
+            localStorage.setItem('userId', data._id);
             // Stores the login status and token in localStorage
             localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('userToken', data.token);

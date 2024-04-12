@@ -4,6 +4,35 @@
  * to the update user page when the "Edit Profile" button is clicked.
  */
 
+
+document.addEventListener('DOMContentLoaded', () => {
+  const token = localStorage.getItem('userToken');
+  if (token) {
+      // Fetch the user's profile information to get the role
+      fetch('http://localhost:8002/api/user/me', {
+          method: 'GET',
+          headers: {
+              'Authorization': `Bearer ${token}`
+          }
+      })
+      .then(response => response.json())
+      .then(data => {
+          const userRole = data.role; // Here you get the user's role from the response
+          const assignmentsLink = document.getElementById('assignmentsLink').firstElementChild;
+
+          if (userRole === 'student') {
+              assignmentsLink.setAttribute('href', 'assignments-list-student.html');
+          } else if (userRole === 'admin' || userRole === 'teacher') {
+              assignmentsLink.setAttribute('href', 'assignments-list.html');
+          }
+      })
+      .catch(error => {
+          console.error('Error fetching user data:', error);
+      });
+  }
+});
+
+
 // Wait for the DOM to fully load before executing the script
 document.addEventListener('DOMContentLoaded', function () {
   // Attempt to retrieve the user's token from localStorage

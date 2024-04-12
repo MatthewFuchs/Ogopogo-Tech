@@ -37,7 +37,7 @@
             </div>
 
             <!-- Submit button for assignment -->
-            <button onclick="handleSubmission()" type="submit" id="buttonSubmit" class="btn-explore">Submit Assignment</button>
+            <button type="submit" id="buttonSubmit" class="btn-explore">Submit Assignment</button>
         </form>
     <link rel="stylesheet" href="css/assignment.css"> <!-- Ensure correct path -->
 </main>
@@ -50,8 +50,11 @@
 <script>
     let studentID;
     const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const assignmentId = urlParams.get('assignmentId');
+const urlParams = new URLSearchParams(queryString);
+const assignmentId = urlParams.get('assignmentId');
+
+// Add the console log here to check the assignmentId
+console.log('Assignment ID:', assignmentId);
     let token = localStorage.getItem('userToken');
     if (!token) {
         token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MDBlOTgxOTZjMmRkNTQxY2ZmYzdlNyIsImlhdCI6MTcxMTMzNTgwOSwiZXhwIjoxNzEzOTI3ODA5fQ.UFgAtXOeg1r7j-4Ug5DOgN_EG1gqbjNkihJMKeC9mXY'
@@ -148,33 +151,57 @@
 
 
 
-    async function handleSubmission() {  
-        alert("Assignment submitted successfully!");
-        
-        const answers = document.querySelectorAll('.question-item input[type="text"]');
-        const answerValues = answers.map(answer => answer.value); 
+async function handleSubmission(event) {
+    event.preventDefault(); // Prevent the default form submission behavior
 
-        fetch('localhost:8002/api/assignments/submit', {
-            method: 'PUT',
+    // Retrieve the user's _id from localStorage
+    const userId = localStorage.getItem('userId');
+    if (!userId) {
+        alert("User ID not found, please log in again.");
+        return; // Stop the submission if no user ID is found
+    }
+
+    const fileInput = document.getElementById('fileUpload');
+    const formData = new FormData();
+
+    // Append the student ID to the formData
+    formData.append('studentID', userId);
+
+    // Add file to formData if it exists
+    if (fileInput && fileInput.files.length > 0) {
+        formData.append('assignmentFile', fileInput.files[0]);
+    }
+
+    try {
+        const response = await fetch(`http://localhost:8002/api/assignments/submit/${assignmentId}`, {
+            method: 'POST',
             headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-            body: JSON.stringify({
-            assignmentId: assignmentId,
-            studentID: '66146885b61a6dba36433a5a',
-            answers: answerValues
-        }),
-        })
-        .then(response => {
-            alert('Assignment submitted successfully!');
-            window.location.href = 'assignments-list-student.html';
-        })
-        .catch(error => {
-            alert('Error! Assignment not submitted');
-            console.error(error);
+                'Authorization': `Bearer ${token}`
+                // Don't set Content-Type here, let the browser do it
+            },
+            body: formData
         });
-        };
+
+        // Log the response and error if not OK
+        if (!response.ok) {
+            const errorResponse = await response.text(); // Get the raw response body
+            console.error('Submission error:', errorResponse); // Log raw response body
+            alert(`Error during submission: ${errorResponse}`);
+        } else {
+            const result = await response.json();
+            alert('Assignment submitted successfully!');
+            console.log(result);
+            window.location.href = 'assignments-list-student.html';
+        }
+    } catch (error) {
+        console.error('Error during submission:', error);
+        alert('Error! Assignment not submitted. ' + error.message);
+    }
+}
+
+
+
+
 </script>
 
 </body>

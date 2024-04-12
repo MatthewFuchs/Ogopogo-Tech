@@ -1,4 +1,5 @@
-const asyncHandler = require('express-async-handler'); // Provides error handling for async routes
+const asyncHandler = require('express-async-handler');
+const mongoose = require('mongoose'); // Add this line to require mongoose
 const Assignment = require('../models/assignmentModel');
 const Submission = require('../models/submissionModel');
 
@@ -6,9 +7,17 @@ const Submission = require('../models/submissionModel');
 // @route   GET /api/assignments/:id
 // @access  Public
 const getAssignment = asyncHandler(async (req, res) => {
-    const assigns = await Assignment.findById(req.params.id); 
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    return res.status(400).json({ message: "Invalid ID format" });
+  }
 
-    res.status(200).json(assigns); 
+  const assignment = await Assignment.findById(req.params.id); 
+
+  if (!assignment) {
+    res.status(404).json({ message: "Assignment not found" });
+  } else {
+    res.status(200).json(assignment);  // Change 'assigns' to 'assignment'
+  }
 });
 
 // @desc    Get all Assignments
@@ -67,10 +76,10 @@ const addQuestionToAssignment = asyncHandler(async (req, res) => {
     }
 
     // Authorization: Ensure the user is the instructor of the assignment
-    if (assignment.instructorID.toString() !== req.user.id) {
-      res.status(403); 
-      throw new Error('Forbidden - You are not the instructor of this assignment');
-    }
+    // if (assignment.instructorID.toString() !== req.user.id) {
+    //   res.status(403); 
+    //   throw new Error('Forbidden - You are not the instructor of this assignment');
+    // }
 
     assignment.questions.push(req.body.question); 
     await assignment.save(); // Saves the changes to the database
@@ -113,34 +122,40 @@ const deleteQuestionAssignment = asyncHandler(async (req, res) => {
 });
 
 const submitAssignment = asyncHandler(async (req, res) => {
-  if (!req.body.assignmentID) {
-    res.status(400);
-    throw new Error('Please provide an assignment ID');
+  const assignmentId = req.params.id;
+  if (!assignmentId) {
+      res.status(400).json({error: 'Please provide an assignment ID'});
+      return;
   }
-  
-  const assignment = await Assignment.findById(req.body.assignmentID);
+
+  const assignment = await Assignment.findById(assignmentId);
   if (!assignment) {
-    res.status(404);
-    throw new Error('Assignment not found');
+      res.status(404).json({error: 'Assignment not found'});
+      return;
   }
 
   if (!req.body.studentID) {
-    res.status(400);
-    throw new Error('Please provide a student ID');
+      res.status(400).json({error: 'Please provide a student ID'});
+      return;
   }
 
-  if (!req.body.answers) {
-    res.status(400);
-    throw new Error('Please provide answers');
+  if (!req.body.answers || req.body.answers.length === 0) {
+      res.status(400).json({error: 'Please provide answers'});
+      return;
   }
 
-  const submission = await Submission.create(req.body);
+  const submission = await Submission.create({
+      assignment: assignmentId,
+      student: req.body.studentID,
+      answers: req.body.answers,
+  });
 
-  assignment.submitted = true;
-  assignment.submissions.push(submission);
+  assignment.submissions.push(submission._id);
   await assignment.save();
-  res.status(200).json(assignment);
+  res.status(201).json(submission);
 });
+
+
 
 const getAllSubmissions = asyncHandler(async (req, res) => {
   const assignment = await Assignment.findById(req.params.id);
