@@ -30,17 +30,26 @@ router.get('/:courseId', async (req, res) => {
     try {
         const course = await Course.findById(req.params.courseId).select('-students');
         let isEnrolled = false;
+        let isRequested = false;
 
         // Check if the user is logged in and enrolled in the course
         if (req.user) {
             const studentEnrollment = await Course.findOne({ _id: req.params.courseId, students: req.user._id });
             isEnrolled = !!studentEnrollment;
+            
+            const existingRequest = await Enrollment.findOne({
+                student: req.user._id,
+                course: req.params.courseId,
+                status: { $in: ['pending', 'accepted'] }
+            });
+            isRequested = !!existingRequest;
         }
 
         // Include 'isEnrolled' only if the user is logged in
         const courseResponse = course.toObject();
         if (req.user) {
             courseResponse.isEnrolled = isEnrolled;
+            courseResponse.isRequested = isRequested;
         }
 
         res.json(courseResponse);
