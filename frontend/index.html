@@ -15,7 +15,7 @@
         <nav class="nav-menu">
             <ul>
                 <li><a href="index.html">Courses</a></li>
-                <li><a href="assignments-list-student.html">Assignments</a></li>
+                <li id="assignmentsLink"><a href="#">Assignments</a></li>
                 <li><a href="grades.html">Grades</a></li>
                 <li><a href="courses.html">All Courses</a></li>
             </ul>
@@ -38,6 +38,35 @@
         <p>&copy; 2024 Ogopogo Tech. All rights reserved.</p>
     </footer>
     <script>
+
+document.addEventListener('DOMContentLoaded', () => {
+    const token = localStorage.getItem('userToken');
+    if (token) {
+        // Fetch the user's profile information to get the role
+        fetch('http://localhost:8002/api/user/me', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            const userRole = data.role; // Here you get the user's role from the response
+            const assignmentsLink = document.getElementById('assignmentsLink').firstElementChild;
+
+            if (userRole === 'student') {
+                assignmentsLink.setAttribute('href', 'assignments-list-student.html');
+            } else if (userRole === 'admin' || userRole === 'teacher') {
+                assignmentsLink.setAttribute('href', 'assignments-list.html');
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching user data:', error);
+        });
+    }
+});
+
+
         document.addEventListener('DOMContentLoaded', function() {
             const token = localStorage.getItem('userToken');
             if (!token) {
