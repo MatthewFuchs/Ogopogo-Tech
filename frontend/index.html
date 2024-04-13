@@ -96,6 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     courseElement.innerHTML = `
                         <h2>${course.name}</h2>
                         <p>${course.description}</p>
+                        <button onclick="window.location.href = 'assignments-list-student.html?courseId=${course.courseID}'">View Assignments</button>
                     `;
                     // Append the course link here if needed
                     coursesList.appendChild(courseElement);

@@ -30,6 +30,7 @@
 
 <main>
     <ul id="fileList"></ul>
+
 </main>
 
 <script>
@@ -39,7 +40,7 @@
     document.addEventListener('DOMContentLoaded', function() {
     console.log('Document ready. Fetching files.');
 
-    fetch('/api/files', {
+    fetch('http://localhost:8002/api/files', {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`, // Replace with the actual token

@@ -37,7 +37,7 @@
             </div>
 
             <!-- Submit button for assignment -->
-            <button type="submit" id="buttonSubmit" class="btn-explore">Submit Assignment</button>
+            <button onclick="handleSubmission()" type="submit" id="buttonSubmit" class="btn-explore">Submit Assignment</button>
         </form>
     <link rel="stylesheet" href="css/assignment.css"> <!-- Ensure correct path -->
 </main>
@@ -48,13 +48,10 @@
 </footer>
 
 <script>
-    let studentID;
+    const userId = localStorage.getItem('userId');
     const queryString = window.location.search;
-const urlParams = new URLSearchParams(queryString);
-const assignmentId = urlParams.get('assignmentId');
-
-// Add the console log here to check the assignmentId
-console.log('Assignment ID:', assignmentId);
+    const urlParams = new URLSearchParams(queryString);
+    const assignmentId = urlParams.get('assignmentId');
     let token = localStorage.getItem('userToken');
     if (!token) {
         token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MDBlOTgxOTZjMmRkNTQxY2ZmYzdlNyIsImlhdCI6MTcxMTMzNTgwOSwiZXhwIjoxNzEzOTI3ODA5fQ.UFgAtXOeg1r7j-4Ug5DOgN_EG1gqbjNkihJMKeC9mXY'
@@ -92,116 +89,37 @@ console.log('Assignment ID:', assignmentId);
         }
     });
 
-    document.addEventListener('DOMContentLoaded', async () => { 
-    // Fetch the assignment details
-    try {
-        const response = await fetch(`http://localhost:8002/api/assignments/${assignmentId}`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
-        const data = await response.json();
+
+
+    async function handleSubmission() {  
+        event.preventDefault();
         
-        const assignmentTitle = document.getElementById('assignmentTitle');
-        assignmentTitle.innerHTML = data.title;
-        const assignmentDescription = document.getElementById('assignmentDescription');
-        assignmentDescription.innerHTML = data.description;
+        const answers = Array.from(document.querySelectorAll('.question-item input[type="text"]'));
+        const answerValues = answers.map(answer => answer.value); 
 
-        // Generate HTML based on assignment type
-        const questionContainer = document.getElementById('questionContainer');
-        switch(data.type) {
-            case 'multiquestion':
-                data.questions.forEach((question, index) => {
-                    const questionItem = document.createElement('div');
-                    questionItem.classList.add('question-item');
-                    questionItem.innerHTML = `
-                        <label for="question${index + 1}">${index + 1}. ${question}</label>
-                        <input type="text" id="question${index + 1}" name="question${index + 1}" class="form-control" required>
-                    `;
-                    questionContainer.appendChild(questionItem);
-                });
-                break;
-            case 'mcq':
-                data.questions.forEach((question, index) => {
-                    // Assuming 'question' is an object with 'text' and 'options'
-                    const questionItem = document.createElement('div');
-                    questionItem.classList.add('question-item');
-                    let optionsHTML = question.options.map((option, optionIndex) => 
-                        `<input type="radio" id="option${optionIndex}" name="question${index + 1}" value="${option}"> <label for="option${optionIndex}">${option}</label>`
-                    ).join('<br>');
-                    questionItem.innerHTML = `
-                        <label>${index + 1}. ${question.text}</label>
-                        <div>${optionsHTML}</div>
-                    `;
-                    questionContainer.appendChild(questionItem);
-                });
-                break;
-            case 'essay':
-                questionContainer.innerHTML = `
-                    <label for="fileUpload">Upload your essay:</label>
-                    <input type="file" id="fileUpload" name="fileUpload" required>
-                `;
-                break;
+        const formData = {
+            assignmentID: assignmentId,
+            studentID: userId,
+            answers: answerValues
         }
-    } catch (error) {
-        console.error('Error fetching questions:', error);
-    }
-});
 
-
-
-
-async function handleSubmission(event) {
-    event.preventDefault(); // Prevent the default form submission behavior
-
-    // Retrieve the user's _id from localStorage
-    const userId = localStorage.getItem('userId');
-    if (!userId) {
-        alert("User ID not found, please log in again.");
-        return; // Stop the submission if no user ID is found
-    }
-
-    const fileInput = document.getElementById('fileUpload');
-    const formData = new FormData();
-
-    // Append the student ID to the formData
-    formData.append('studentID', userId);
-
-    // Add file to formData if it exists
-    if (fileInput && fileInput.files.length > 0) {
-        formData.append('assignmentFile', fileInput.files[0]);
-    }
-
-    try {
-        const response = await fetch(`http://localhost:8002/api/assignments/submit/${assignmentId}`, {
-            method: 'POST',
+        fetch('http://localhost:8002/api/assignments/submit/', {
+            method: 'PUT',
             headers: {
-                'Authorization': `Bearer ${token}`
-                // Don't set Content-Type here, let the browser do it
-            },
-            body: formData
-        });
-
-        // Log the response and error if not OK
-        if (!response.ok) {
-            const errorResponse = await response.text(); // Get the raw response body
-            console.error('Submission error:', errorResponse); // Log raw response body
-            alert(`Error during submission: ${errorResponse}`);
-        } else {
-            const result = await response.json();
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+            body: JSON.stringify(formData),
+        })
+        .then(response => {
             alert('Assignment submitted successfully!');
-            console.log(result);
             window.location.href = 'assignments-list-student.html';
-        }
-    } catch (error) {
-        console.error('Error during submission:', error);
-        alert('Error! Assignment not submitted. ' + error.message);
-    }
-}
-
-
-
-
+        })
+        .catch(error => {
+            alert('Error! Assignment not submitted');
+            console.error(error);
+        });
+        };
 </script>
 
 </body>

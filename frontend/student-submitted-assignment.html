@@ -22,6 +22,7 @@
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const assignmentId = urlParams.get('assignmentId');
+    const userId = localStorage.getItem('userId');
 
     document.addEventListener('DOMContentLoaded', async () => {
         try {
@@ -44,7 +45,7 @@
                 const subData = await subResponse.json();
                 console.log(subData);
 
-                if (subData.studentID == '6600e98196c2dd541cffc7e7') {
+                if (subData.studentID == userId) {
                     const submissionItem = document.createElement('div');
                     submissionItem.innerHTML = '<h3>Submission </h3>';
                     submissionItem.innerHTML += '<p><strong>Course ID:</strong> ' + subData.courseID + '</p>';
