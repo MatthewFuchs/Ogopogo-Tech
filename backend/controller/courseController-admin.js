@@ -2,17 +2,41 @@ const asyncHandler = require('express-async-handler');
 const Course = require('../models/courseModel-admin');
 
 // Create a new course
+// exports.createCourse = asyncHandler(async (req, res) => {
+//     const { name, courseID, description, instructor } = req.body;
+//     // Check for required fields
+//     if (!name || !description || !instructor) {
+//         res.status(400);
+//         throw new Error('All fields are required');
+//     }
+//     // Create and save the course
+//     const course = await Course.create({ name, courseID, description, instructor });
+//     res.status(201).json(course);
+// });
+
+// Create a new course
 exports.createCourse = asyncHandler(async (req, res) => {
     const { name, courseID, description, instructor } = req.body;
+    
     // Check for required fields
-    if (!name || !description || !instructor) {
-        res.status(400);
-        throw new Error('All fields are required');
+    if (!name || !courseID || !description || !instructor) {
+        res.status(400).json({ message: 'All fields are required' });
+        return;
     }
+    
+    // Check if a course with the same ID already exists
+    const existingCourse = await Course.findOne({ courseID });
+    if (existingCourse) {
+        res.status(400).json({ message: 'Course already exists' }); // Custom error message
+        return;
+    }
+
     // Create and save the course
     const course = await Course.create({ name, courseID, description, instructor });
     res.status(201).json(course);
 });
+
+
 
 // Get all courses
 
