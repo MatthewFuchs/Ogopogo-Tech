@@ -48,7 +48,6 @@
 </footer>
 
 <script>
-    let studentID;
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const assignmentId = urlParams.get('assignmentId');
@@ -92,22 +91,24 @@
 
 
     async function handleSubmission() {  
-        alert("Assignment submitted successfully!");
+        event.preventDefault();
         
-        const answers = document.querySelectorAll('.question-item input[type="text"]');
+        const answers = Array.from(document.querySelectorAll('.question-item input[type="text"]'));
         const answerValues = answers.map(answer => answer.value); 
 
-        fetch('localhost:8002/api/assignments/submit', {
+        const formData = {
+            assignmentID: assignmentId,
+            studentID: '66146885b61a6dba36433a5a',
+            answers: answerValues
+        }
+
+        fetch('http://localhost:8002/api/assignments/submit/', {
             method: 'PUT',
             headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-            body: JSON.stringify({
-            assignmentId: assignmentId,
-            studentID: '66146885b61a6dba36433a5a',
-            answers: answerValues
-        }),
+            body: JSON.stringify(formData),
         })
         .then(response => {
             alert('Assignment submitted successfully!');
@@ -117,7 +118,7 @@
             alert('Error! Assignment not submitted');
             console.error(error);
         });
-        };
+    };
 </script>
 
 </body>

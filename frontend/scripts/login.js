@@ -63,6 +63,7 @@ function handleLogin(e) {
         if (data.token) {
             // Stores the login status and token in localStorage
             localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userID', data._id);
             localStorage.setItem('userToken', data.token);
             // Updates UI based on login status
             updateLoginStatus();
