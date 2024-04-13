@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/manage-courses.css">
 </head>
 <body>
+    <a href="profile.html" class="back-button">&#8592; Back</a>
     <div class="container">
         <h1>Manage Courses - Admin Page</h1>
         <a href="create-course.html" class="admin-btn">Create New Course + </a> <!-- Button to link to create-course.html -->
@@ -19,7 +20,7 @@
         document.addEventListener('DOMContentLoaded', fetchCourses);
 
         function fetchCourses() {
-            fetch('http://localhost:8080/api/courses')
+            fetch('http://localhost:8002/api/courses')
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
@@ -38,7 +39,7 @@
                             <h3>${course.name}</h3>
                             <p><strong>ID:</strong> ${course.courseID}</p>
                             <p><strong>Description:</strong> ${course.description}</p>
-                            <p><strong>Instructor:</strong> ${course.instructor}</p>
+                            <p><strong>Instructor ID:</strong> ${course.instructor}</p>
                         `;
                         container.appendChild(courseDiv);
                     });
@@ -51,7 +52,7 @@
         }
 
         function deleteCourse(courseId) {
-            fetch(`http://localhost:8080/api/courses/${courseId}`, { method: 'DELETE' })
+            fetch(`http://localhost:8002/api/courses/${courseId}`, { method: 'DELETE' })
                 .then(() => fetchCourses()) // Refresh the courses list after deletion
                 .catch(error => console.error('Error:', error));
         }
