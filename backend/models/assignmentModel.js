@@ -50,7 +50,11 @@ const assignmentSchema = new mongoose.Schema({
     submissions: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Submission'
-    }]
+    }],
+    ansOptions: [{
+        type: Array
+    }
+    ]
 });
 
 module.exports = mongoose.model('Assignment', assignmentSchema);

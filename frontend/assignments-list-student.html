@@ -41,7 +41,7 @@
 <script>
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
-    const courseID = urlParams.get('courseID');
+    const courseID = urlParams.get('courseId');
     console.log(courseID);
 
     async function fetchAssignments() {
@@ -70,8 +70,9 @@
         .then(assignments => {
                 const assignmentList = document.querySelector('.assignment-list');
                 assignments.forEach(assignment => {
+                console.log('**', courseID, '**', assignment.courseID);
                 if (courseID != null) {
-                    if (courseID !== assignment.courseID) {
+                    if (courseID != assignment.courseID) {
                         return;
                     }
                 }

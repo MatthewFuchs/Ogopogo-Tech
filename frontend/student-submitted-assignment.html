@@ -47,7 +47,6 @@
                 if (subData.studentID == '66146885b61a6dba36433a5a') {
                     const submissionItem = document.createElement('div');
                     submissionItem.innerHTML = '<h3>Submission </h3>';
-                    submissionItem.innerHTML += '<p><strong>Course ID:</strong> ' + subData.courseID + '</p>';
                     for (let index = 0; index < questions.length; index++) {
                         submissionItem.innerHTML += `
                             <p><strong>Question ${index + 1}:</strong> ${questions[index]}</p>

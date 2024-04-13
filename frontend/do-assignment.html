@@ -66,21 +66,45 @@
             });
             const data = await response.json();
             const questions = data.questions;
+            const ansOptions = data.ansOptions;
 
             const assignmentTitle = document.getElementById('assignmentTitle');
             assignmentTitle.innerHTML = data.title;
             const assignmentDescription = document.getElementById('assignmentDescription');
             assignmentDescription.innerHTML = data.description;
 
-            // Generate HTML for each question
             const questionContainer = document.getElementById('questionContainer');
             questions.forEach((question, index) => {
                 const questionItem = document.createElement('div');
                 questionItem.classList.add('question-item');
-                questionItem.innerHTML = `
+                if (data.type == "mcq") {
+                    questionItem.innerHTML = `
+                        <label for="question${index + 1}">${index + 1}. ${question}</label>
+                        <ul class="mcqContainer">
+                            <li>
+                                <input style= "display: inline;" type="radio" id="ansA" value="${ansOptions[index][0]}">
+                                <label for="ansA">${ansOptions[index][0]}</label>
+                            </li>
+                            <li>
+                                <input style= "display: inline;" type="radio" id="ansB" value="${ansOptions[index][1]}">
+                                <label for="ansA">${ansOptions[index][1]}</label>
+                            </li>
+                            <li>
+                                <input style= "display: inline;" type="radio" id="ansC" value="${ansOptions[index][2]}">
+                                <label for="ansA">${ansOptions[index][2]}</label>
+                            </li>
+                            <li>
+                                <input style= "display: inline;" type="radio" id="ansD" value="${ansOptions[index][3]}">
+                                <label for="ansA">${ansOptions[index][3]}</label>
+                            </li>
+                        </ul>
+                    `;
+                } else {
+                    questionItem.innerHTML = `
                     <label for="question${index + 1}">${index + 1}. ${question}</label>
                     <input type="text" id="question${index + 1}" name="question${index + 1}" class="form-control" required>
-                `;
+                    `;
+                }
                 questionContainer.appendChild(questionItem);
             });
         } catch (error) {

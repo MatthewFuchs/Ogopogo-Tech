@@ -79,8 +79,34 @@
 </footer>
 <script>
     const assignmentForm = document.getElementById('assignmentForm');
+    let allCourses = ["COSC360", "COSC407"];
+    document.addEventListener('DOMContentLoaded', () => {
+        fetch('http://localhost:8002/api/courses/enrolled', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch enrolled courses');
+                }
+                return response.json();
+            })
+            .then(courses => {
+                courses.forEach(course => {
+                    allCourses.push(course.courseID);
+                });
+            });
+    })
+
     assignmentForm.addEventListener('submit', (event) => {
         event.preventDefault();
+        if (!allCourses.includes(document.getElementById('courseID').value)) {
+            alert('Course ID does not exist');
+            return;
+        }
 
         const formData = {
             title: document.getElementById('title').value,
@@ -107,7 +133,7 @@
         })
         .then(response => {
             alert('Assignment created successfully!');
-            window.location.reload();
+            window.location.href = 'assignments-list.html';
         })
         .catch(error => {
             alert('Error! Assignment creation not succesful');

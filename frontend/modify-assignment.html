@@ -40,6 +40,13 @@
 
         <section id="questionsContainer">
             <textarea name="question" placeholder="Enter new question"></textarea>
+            <div class="mcqContainer" style="visibility: hidden; display: flex; align-items: center; justify-content: center; flex-direction: column">
+                <textarea name="ansA" placeholder="Enter option A"></textarea>
+                <textarea name="ansB" placeholder="Enter option B"></textarea>
+                <textarea name="ansC" placeholder="Enter option C"></textarea>
+                <textarea name="ansD" placeholder="Enter option D"></textarea>
+                <textarea name="correct" placeholder="Enter correct answer (A, B, C, D)"></textarea>
+            </div>
             <button type="submit" class="btn btn-add">Add Question</button>
 
             <!-- Questions -->
@@ -53,6 +60,7 @@
     <p>&copy; 2024 Ogopogo Tech. All rights reserved.</p>
 </footer>
 <script>
+let assignmentType = "";
 let token = localStorage.getItem('userToken');
     if (!token) {
         token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MDBlOTgxOTZjMmRkNTQxY2ZmYzdlNyIsImlhdCI6MTcxMTMzNTgwOSwiZXhwIjoxNzEzOTI3ODA5fQ.UFgAtXOeg1r7j-4Ug5DOgN_EG1gqbjNkihJMKeC9mXY'
@@ -69,14 +77,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         const assignment = await fetch(`http://localhost:8002/api/assignments/${assignmentId}`)
                                  .then(res => res.json());
 
-        displayQuestions(assignment.questions); 
+        assignmentType = assignment.type;
+        displayQuestions(assignment.questions, assignment.ansOptions); 
+        if (assignmentType == 'mcq') {
+            const mcqContainer = document.querySelector('.mcqContainer');
+            mcqContainer.style.visibility = 'visible';
+        }
 
         addQuestionBtn.addEventListener('click', handleAddQuestion);
     } catch (error) {
         console.error("Error fetching assignment:", error);
     }
 
-    function displayQuestions(questions) {
+    function displayQuestions(questions, answers) {
         let count = -1;
         questions.forEach(question => {
             const questionItem = document.createElement('div');
@@ -90,6 +103,23 @@ document.addEventListener('DOMContentLoaded', async () => {
             deleteButton.textContent = 'Delete';
 
             questionItem.appendChild(questionText);
+            if (assignmentType == 'mcq') {
+                const ansA = document.createElement('h5');
+                ansA.textContent = answers[questions.indexOf(question)][0];
+                const ansB = document.createElement('h5');
+                ansB.textContent = answers[questions.indexOf(question)][1];
+                const ansC = document.createElement('h5');
+                ansC.textContent = answers[questions.indexOf(question)][2];
+                const ansD = document.createElement('h5');
+                ansD.textContent = answers[questions.indexOf(question)][3];
+                const correct = document.createElement('h5');
+                correct.textContent = 'Correct Answer = ' + answers[questions.indexOf(question)][4];
+                questionItem.appendChild(ansA);
+                questionItem.appendChild(ansB);
+                questionItem.appendChild(ansC);
+                questionItem.appendChild(ansD);
+                questionItem.appendChild(correct);
+            }
             questionItem.appendChild(deleteButton);
 
     questionItem.querySelector('.btn-delete').addEventListener('click', () => {
@@ -106,12 +136,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     async function handleAddQuestion() {
         const questionText = document.querySelector('textarea[name="question"]').value;
+        let ansA, ansB, ansC, ansD, correct;
+        if (assignmentType == "mcq") {
+            ansA = document.querySelector('textarea[name="ansA"]').value;
+            ansB = document.querySelector('textarea[name="ansB"]').value;
+            ansC = document.querySelector('textarea[name="ansC"]').value;
+            ansD = document.querySelector('textarea[name="ansD"]').value;
+            correct = document.querySelector('textarea[name="correct"]').value;
+        }
 
         try {
           const response = await fetch(`http://localhost:8002/api/assignments/question/${assignmentId}`, {
               method: 'PUT',
               headers: { 'Content-Type': 'application/json' , 'Authorization': `Bearer ${token}`},
-              body: JSON.stringify({ question: questionText })
+              body: JSON.stringify({ question: questionText, ansOptions: assignmentType == "mcq" ? [ansA, ansB, ansC, ansD, correct] : null})
           });
 
           if (response.ok) {

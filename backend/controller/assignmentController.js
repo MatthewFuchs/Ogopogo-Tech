@@ -66,11 +66,15 @@ const addQuestionToAssignment = asyncHandler(async (req, res) => {
       throw new Error('Assignment not found');
     }
 
-    // Authorization: Ensure the user is the instructor of the assignment
-    if (assignment.instructorID.toString() !== req.user.id) {
-      res.status(403); 
-      throw new Error('Forbidden - You are not the instructor of this assignment');
+    if (req.body.ansOptions) {
+      assignment.ansOptions.push(req.body.ansOptions);
     }
+
+    // Authorization: Ensure the user is the instructor of the assignment
+    // if (assignment.instructorID.toString() !== req.user.id) {
+    //   res.status(403); 
+    //   throw new Error('Forbidden - You are not the instructor of this assignment');
+    // }
 
     assignment.questions.push(req.body.question); 
     await assignment.save(); // Saves the changes to the database
@@ -106,7 +110,6 @@ const deleteQuestionAssignment = asyncHandler(async (req, res) => {
     }
 
     assignment.questions.splice(req.body.questionNum, 1);
-    assignment.answers.splice(req.body.questionNum, 1);
     await assignment.save();
 
     res.status(200).json(assignment);
